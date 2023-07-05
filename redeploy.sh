@@ -1,5 +1,6 @@
 homeDir="/home/ubuntu/makeitaifor-me-server";
 
+cd $homeDir; # go to home directory
 /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm install; 
 /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm run build;
 

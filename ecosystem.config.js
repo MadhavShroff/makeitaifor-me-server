@@ -2,8 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'NestJS Application',
-      script: 'dist/main.js',
-
+      script: '/home/ubuntu/makeitaifor-me-server/dist/main.js',
       // Options reference: https://pm2.io/doc/en/runtime/reference/ecosystem-file/
       instances: 'max', // 'max' will create as many instances as you have CPU cores
       autorestart: true, // Automatically restart app if it crashes or stops
