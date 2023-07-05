@@ -3,7 +3,7 @@
   remote_user: ubuntu
   tasks:
     - name: "Pull changes"
-      ansible.builtin.shell: git pull
+      ansible.builtin.shell: sudo git pull
       become: yes
       args: 
         chdir: /home/ubuntu/makeitaifor-me-server
