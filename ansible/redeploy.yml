@@ -3,13 +3,13 @@
   remote_user: ubuntu
   tasks:
     - name: "Pull changes"
-      ansible.builtin.shell: sudo git pull
+      ansible.builtin.git:
+        repo: 'https://github.com/MadhavShroff/makeitaifor-me-server'
+        dest: /home/ubuntu/makeitaifor-me-server
+        update: yes
+        accept_hostkey: yes
       become: yes
-      args: 
-        chdir: /home/ubuntu/makeitaifor-me-server
 
-    - name: Run redeploy script
-      ansible.builtin.shell: /bin/bash /home/ubuntu/makeitaifor-me-server/redeploy.sh
+    - name: "Run redeploy script"
+      ansible.builtin.command: '/bin/bash /home/ubuntu/makeitaifor-me-server/redeploy.sh'
       become: yes
-      args: 
-        chdir: /home/ubuntu/makeitaifor-me-server
