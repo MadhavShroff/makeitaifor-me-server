@@ -11,3 +11,10 @@
     - name: "Run redeploy script"
       ansible.builtin.command: '/bin/bash /home/ubuntu/makeitaifor-me-server/redeploy.sh'
       become: yes
+      register: redeploy_result  # Register the output to a variable
+
+    - name: "Print redeploy result"
+      debug:
+        msg: "{{ item }}"
+      loop: "{{ redeploy_result.stdout_lines }}"
+      when: redeploy_result.stdout_lines is defined  # Make sure stdout_lines exists before trying to print it
