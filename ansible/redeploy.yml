@@ -6,8 +6,6 @@
       ansible.builtin.git:
         repo: 'https://github.com/MadhavShroff/makeitaifor-me-server'
         dest: /home/ubuntu/makeitaifor-me-server
-        update: yes
-        accept_hostkey: yes
       become: yes
 
     - name: "Run redeploy script"

@@ -1,4 +1,4 @@
-homeDir="/home/ubuntu/philosophers-football";
+homeDir="/home/ubuntu/makeitaifor-me-server";
 
 /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm install; /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm run build;
 
