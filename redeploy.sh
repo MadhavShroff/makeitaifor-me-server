@@ -3,5 +3,4 @@ homeDir="/home/ubuntu/makeitaifor-me-server";
 /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm install; 
 /home/ubuntu/.nvm/versions/node/v18.16.1/bin/npm run build;
 
-/home/ubuntu/.nvm/versions/node/v18.16.1/bin/pm2 stop "ai-server"; # stop server if running
-/home/ubuntu/.nvm/versions/node/v18.16.1/bin/pm2 start $homeDir/dist/main.js --name "ai-server"; # start server
+/home/ubuntu/.nvm/versions/node/v18.16.1/bin/pm2 startOrRestart $homeDir/ecosystem.config.js --name "ai-server"; # start server
