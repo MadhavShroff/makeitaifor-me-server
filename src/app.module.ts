@@ -8,11 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
     }),
+    AuthModule,
     UsersModule,
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
