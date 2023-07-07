@@ -16,7 +16,7 @@ export class User extends Document {
 
   @Field()
   @Prop({ required: true, index: true, unique: true })
-  username: string;
+  email: string;
 
   @Field()
   @Prop({ required: true })

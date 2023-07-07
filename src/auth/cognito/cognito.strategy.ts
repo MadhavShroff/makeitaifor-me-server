@@ -58,6 +58,8 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
       })
     ).data;
 
+    console.log('userinfo received: ', userinfo);
+
     let [provider, providerId] = userinfo.username.split('_');
     if (!providerId) {
       provider = 'cognito';
