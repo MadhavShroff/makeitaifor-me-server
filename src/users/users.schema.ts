@@ -11,8 +11,8 @@ export class User extends Document {
   provider: Provider;
 
   @Field()
-  @Prop({ required: true })
-  providerId: string;
+  @Prop({ required: true, index: true, unique: true })
+  id: string;
 
   @Field()
   @Prop({ required: true, index: true, unique: true })
