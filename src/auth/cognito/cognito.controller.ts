@@ -17,6 +17,14 @@ export class CognitoController {
     // Guard redirects
   }
 
+  @Get('/me')
+  @UseGuards(CognitoOauthGuard)
+  async cognitoAuthMe(@Req() req: Request) {
+    console.log(req.headers);
+    console.log(req.cookies);
+    return req.user;
+  }
+
   @Get('redirect')
   @UseGuards(CognitoOauthGuard)
   async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
