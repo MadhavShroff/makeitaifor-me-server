@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule as NestJwtModule } from '@nestjs/jwt';
 import JwtAuthService from './jwt.service';
 import { ConfigService } from '@nestjs/config';
+import { JwtAuthStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { ConfigService } from '@nestjs/config';
       }),
     }),
   ],
-  providers: [JwtAuthService],
+  providers: [JwtAuthService, JwtAuthStrategy],
   exports: [JwtAuthService], // If you want to use JwtAuthService in other modules
 })
 export class JwtModule {}
