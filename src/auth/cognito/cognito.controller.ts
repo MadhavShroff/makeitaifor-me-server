@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import JwtAuthService from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
+import { JwtAuthGuard } from '../jwt/jwt.guard';
 
 @Controller('auth/cognito')
 export class CognitoController {
@@ -13,15 +14,14 @@ export class CognitoController {
 
   @Get()
   @UseGuards(CognitoOauthGuard)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async cognitoAuth(@Req() _req) {
     // Guard redirects
   }
 
   @Get('/me')
-  @UseGuards(CognitoOauthGuard)
+  @UseGuards(JwtAuthGuard)
   async cognitoAuthMe(@Req() req: Request) {
-    console.log(req.headers);
-    console.log(req.cookies);
     return req.user;
   }
 
@@ -36,7 +36,8 @@ export class CognitoController {
       accessToken,
       {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
+        secure: true,
       },
     );
     console.log('cookie set:', accessToken);
