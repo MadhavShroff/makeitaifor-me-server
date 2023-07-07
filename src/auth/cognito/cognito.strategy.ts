@@ -67,14 +67,14 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     }
 
     let user = await this.usersService.findOne({
-      where: { provider, providerId },
+      where: { provider, email: userinfo.email },
     });
     if (!user) {
       user = await this.usersService.create({
         provider,
         providerId,
         name: userinfo.name,
-        username: userinfo.email,
+        email: userinfo.email,
       });
     }
 
