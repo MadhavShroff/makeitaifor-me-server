@@ -2,7 +2,8 @@ import { Provider } from '../../types/user';
 
 export class CreateUserDto {
   provider: Provider;
-  providerId: string;
+  id: string;
   email: string;
   name: string;
+  username: string;
 }

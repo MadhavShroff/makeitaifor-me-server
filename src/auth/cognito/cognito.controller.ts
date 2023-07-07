@@ -20,7 +20,7 @@ export class CognitoController {
   @Get('redirect')
   @UseGuards(CognitoOauthGuard)
   async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    console.log('cognitoAuthRedirect');
+    console.log('req.user', req.user);
     const { accessToken } = this.jwtAuthService.login(req.user);
     console.log('accessToken', accessToken);
     res.cookie(
