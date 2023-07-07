@@ -58,11 +58,12 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
       })
     ).data;
 
-    console.log('userinfo received: ', userinfo);
+    console.log('userinfo received before calling findOne: ', userinfo);
 
     let user = await this.usersService.findOne({
       where: { id: userinfo.sub },
     });
+    console.log('user found: ', user);
     if (!user) {
       user = await this.usersService.create({
         provider: 'cognito',
