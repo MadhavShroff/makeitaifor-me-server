@@ -20,8 +20,10 @@ export class CognitoController {
   }
 
   @Get('/me')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(CognitoOauthGuard)
   async cognitoAuthMe(@Req() req: Request) {
+    console.log('Received token:', req.headers.authorization); // log the received token
+    console.log('User payload:', req.user); // log the user payload
     return req.user;
   }
 
