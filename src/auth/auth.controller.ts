@@ -7,6 +7,6 @@ export class AuthController {
 
   @Post('/exchange')
   async exchangeCodeForUser(@Body('code') code: string) {
-    return await this.authService.exchangeCodeForTokens(code);
+    // return await this.authService.exchangeCodeForTokens(code);
   }
 }
