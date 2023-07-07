@@ -61,7 +61,7 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     let [provider, providerId] = userinfo.username.split('_');
     if (!providerId) {
       provider = 'cognito';
-      providerId = userinfo.username;
+      providerId = userinfo.email;
     }
 
     let user = await this.usersService.findOne({
