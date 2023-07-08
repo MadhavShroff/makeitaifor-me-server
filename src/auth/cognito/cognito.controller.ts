@@ -21,7 +21,7 @@ export class CognitoController {
 
   @Get('/me')
   async cognitoAuthMe(@Req() req: Request) {
-    console.log('Received token:', req.headers.authorization); // log the received token
+    console.log('Received token:', req.headers); // log the received token
     console.log('User payload:', req.user); // log the user payload
     console.log('req.cookies', req.cookies || 'no cookies available');
     return req.user;
