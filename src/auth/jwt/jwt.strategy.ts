@@ -6,11 +6,12 @@ import { ConfigService } from '@nestjs/config';
 export type JwtPayload = { name: string; username: string; id: string };
 
 @Injectable()
-export class JwtAuthStrategy extends PassportStrategy(Strategy) {
+export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(configService: ConfigService) {
     const extractJwtFromCookie = (req) => {
       let token = null;
       if (req && req.cookies) {
+        console.log('req.cookies', req.cookies);
         token = req.cookies[configService.get<string>('SESSION_COOKIE_KEY')];
       }
       return token;
