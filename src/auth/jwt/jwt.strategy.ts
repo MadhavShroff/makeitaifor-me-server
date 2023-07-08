@@ -12,14 +12,8 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
     const extractJwtFromCookie = (req) => {
       let token = null;
       if (req && req.cookies) {
-        console.log('req.cookies', req.cookies);
         token = req.cookies[configService.get<string>('SESSION_COOKIE_KEY')];
       }
-      console.log(
-        'token key:',
-        configService.get<string>('SESSION_COOKIE_KEY'),
-      );
-      console.log('token', token);
       return token;
     };
 
@@ -31,7 +25,6 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
-    console.log('payload received at valiadte()', payload);
     return { id: payload.id, username: payload.username, name: payload.name };
   }
 }

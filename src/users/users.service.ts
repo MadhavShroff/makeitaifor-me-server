@@ -17,7 +17,6 @@ export class UsersService {
   }
 
   findOne(params: FilterQuery<User & Document>): Promise<User> {
-    console.log('params received in findOne: ', params);
     return this.userModel.findOne(params).exec();
   }
 

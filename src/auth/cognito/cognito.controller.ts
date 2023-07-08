@@ -22,18 +22,13 @@ export class CognitoController {
   @Get('/me')
   @UseGuards(JwtAuthGuard)
   async cognitoAuthMe(@Req() req: Request) {
-    console.log('Received token:', req.headers); // log the received token
-    console.log('User payload:', req.user); // log the user payload
-    console.log('req.cookies', req.cookies || 'no cookies available');
     return req.user;
   }
 
   @Get('redirect')
   @UseGuards(CognitoOauthGuard)
   async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    console.log('req.user', req.user);
     const { accessToken } = this.jwtAuthService.login(req.user);
-    console.log('accessToken', accessToken);
     res.cookie(
       this.configService.get<string>('SESSION_COOKIE_KEY'),
       accessToken,
@@ -43,7 +38,6 @@ export class CognitoController {
         secure: true,
       },
     );
-    console.log('cookie set:', accessToken);
     return res.redirect('https://makeitaifor.me/');
   }
 }
