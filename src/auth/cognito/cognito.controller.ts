@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import JwtAuthService from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
-import { JwtAuthGuard } from '../jwt/jwt.guard';
+// import { JwtAuthGuard } from '../jwt/jwt.guard';
 
 @Controller('auth/cognito')
 export class CognitoController {
@@ -20,7 +20,6 @@ export class CognitoController {
   }
 
   @Get('/me')
-  @UseGuards(JwtAuthGuard)
   async cognitoAuthMe(@Req() req: Request) {
     console.log('Received token:', req.headers.authorization); // log the received token
     console.log('User payload:', req.user); // log the user payload
