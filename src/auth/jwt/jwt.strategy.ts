@@ -10,6 +10,7 @@ export type JwtPayload = { name: string; username: string; id: string };
 export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(configService: ConfigService) {
     const extractJwtFromCookie = (req) => {
+      console.log('req', req);
       let token = null;
       if (req && req.cookies) {
         console.log('req.cookies', req.cookies);
