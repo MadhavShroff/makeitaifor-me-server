@@ -38,6 +38,6 @@ export class CognitoController {
         secure: true,
       },
     );
-    return res.redirect('https://makeitaifor.me/');
+    return res.redirect('https://makeitaifor.me/profile');
   }
 }
