@@ -11,7 +11,7 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
-  app.use(csurf());
+  app.use(csurf({ cookie: { httpOnly: true, secure: true, signed: true } }));
   await app.listen(3000);
 }
 bootstrap();
