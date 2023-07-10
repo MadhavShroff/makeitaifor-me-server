@@ -40,10 +40,13 @@ export class CognitoController {
     );
     const whereami = this.configService.get<string>('WHEREAMI');
     if (whereami === 'localhost') {
+      console.log('redirecting to localhost:3000/profile');
       return res.redirect('http://localhost:3000/profile');
     } else if (whereami === 'production') {
+      console.log('redirecting to makeitaifor.me/profile');
       return res.redirect('https://makeitaifor.me/profile');
     }
+    console.log('redirecting to makeitaifor.me/profile');
     return res.redirect('https://makeitaifor.me/profile');
   }
 }
