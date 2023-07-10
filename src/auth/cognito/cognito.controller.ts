@@ -38,6 +38,12 @@ export class CognitoController {
         secure: true,
       },
     );
+    const whereami = this.configService.get<string>('WHEREAMI');
+    if (whereami === 'localhost') {
+      return res.redirect('http://localhost:3000/profile');
+    } else if (whereami === 'production') {
+      return res.redirect('https://makeitaifor.me/profile');
+    }
     return res.redirect('https://makeitaifor.me/profile');
   }
 }
