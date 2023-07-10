@@ -38,13 +38,6 @@ export class CognitoController {
         secure: true,
       },
     );
-    const devOrProduction = this.configService.get<string>('DEV');
-    if (devOrProduction === 'DEV') {
-      console.log('redirecting to localhost:3000/profile' + devOrProduction);
-      return res.redirect('http://localhost:3000/profile');
-    } else if (devOrProduction === 'PRODUCTION') {
-      console.log('redirecting to makeitaifor.me/profile' + devOrProduction);
-      return res.redirect('https://makeitaifor.me/profile');
-    }
+    return res.redirect('https://makeitaifor.me/profile');
   }
 }
