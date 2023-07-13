@@ -46,6 +46,22 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         });
     }
     async generateUploadUrl(filename, mimetype, user) {
+        const bucketParams = {
+            Bucket: user.id,
+        };
+        try {
+            await this.s3.headBucket(bucketParams).promise();
+            console.log('Bucket already exists');
+        }
+        catch (error) {
+            if (error.code === 'NotFound') {
+                console.log('Bucket does not exist, creating now');
+                await this.s3.createBucket(bucketParams).promise();
+            }
+            else {
+                throw error;
+            }
+        }
         const params = {
             Bucket: user.id,
             Key: filename,
