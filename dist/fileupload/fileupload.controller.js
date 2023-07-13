@@ -29,7 +29,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
     async generateUploadUrl(filename, mimetype, req) {
         console.log(filename, mimetype);
         console.log(req.user);
-        const uploadUrl = await this.fileUploadService.generateUploadUrl(filename, mimetype, { user: req.user });
+        const uploadUrl = await this.fileUploadService.generateUploadUrl(filename, mimetype, req.user);
         return { uploadUrl };
     }
 };

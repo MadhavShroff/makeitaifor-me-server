@@ -43,7 +43,7 @@ export class FileUploadController {
     const uploadUrl = await this.fileUploadService.generateUploadUrl(
       filename,
       mimetype,
-      { user: req.user },
+      req.user,
     );
     return { uploadUrl };
   }
