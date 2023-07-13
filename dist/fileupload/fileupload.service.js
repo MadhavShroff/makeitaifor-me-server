@@ -53,6 +53,7 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
             ACL: 'public-read',
             Expires: 60 * 60,
         };
+        console.log(params);
         return this.s3.getSignedUrlPromise('putObject', params);
     }
 };
