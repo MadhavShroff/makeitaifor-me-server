@@ -38,12 +38,13 @@ export class FileUploadController {
     @Query('mimetype') mimetype: string,
     @Req() req,
   ): Promise<{ uploadUrl: string }> {
+    console.log(filename, mimetype);
+    console.log(req.user);
     const uploadUrl = await this.fileUploadService.generateUploadUrl(
       filename,
       mimetype,
       { user: req.user },
     );
-
     return { uploadUrl };
   }
 }
