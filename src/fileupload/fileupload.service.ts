@@ -56,6 +56,7 @@ export class FileUploadService {
       ACL: 'public-read', // files will be publicly readable
       Expires: 60 * 60, // presigned URL expiration time in seconds
     };
+    console.log(params);
     return this.s3.getSignedUrlPromise('putObject', params);
   }
 }
