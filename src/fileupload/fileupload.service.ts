@@ -53,7 +53,7 @@ export class FileUploadService {
       Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
       Key: filename,
       ContentType: mimetype,
-      ACL: 'public-read', // files will be publicly readable
+      //   ACL: 'public-read', // files will be publicly readable
       Expires: 60 * 60, // presigned URL expiration time in seconds
     };
     console.log(params);

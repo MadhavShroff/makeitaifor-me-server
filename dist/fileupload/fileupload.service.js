@@ -50,7 +50,6 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
             Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
             Key: filename,
             ContentType: mimetype,
-            ACL: 'public-read',
             Expires: 60 * 60,
         };
         console.log(params);
