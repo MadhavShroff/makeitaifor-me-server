@@ -8,4 +8,7 @@ export declare class FileUploadController {
     generateUploadUrl(filename: string, mimetype: string, req: any): Promise<{
         uploadUrl: string;
     }>;
+    listFiles(req: any): Promise<{
+        files: any[];
+    }>;
 }

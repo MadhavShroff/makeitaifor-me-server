@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
+import { ListObjectsOutput } from 'aws-sdk/clients/s3';
 
 @Injectable()
 export class FileUploadService {
@@ -50,14 +51,21 @@ export class FileUploadService {
     user: any,
   ): Promise<string> {
     const params = {
-      Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
+      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
       Key: filename,
       ContentType: mimetype,
-      //   ACL: 'public-read', // files will be publicly readable
       Expires: 60 * 60, // presigned URL expiration time in seconds
     };
     console.log(params);
     console.log(user);
     return this.s3.getSignedUrlPromise('putObject', params);
+  }
+
+  async listFiles(user: any): Promise<any[]> {
+    const params = {
+      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
+    };
+    const res: ListObjectsOutput = this.s3.listObjects(params);
+    return res.Contents;
   }
 }

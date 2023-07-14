@@ -6,4 +6,5 @@ export declare class FileUploadService {
     constructor(configService: ConfigService);
     uploadFile(buffer: Buffer, name: string, type: string, user: any): Promise<string>;
     generateUploadUrl(filename: string, mimetype: string, user: any): Promise<string>;
+    listFiles(user: any): Promise<any[]>;
 }

@@ -32,6 +32,11 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const uploadUrl = await this.fileUploadService.generateUploadUrl(filename, mimetype, req.user);
         return { uploadUrl };
     }
+    async listFiles(req) {
+        console.log('List files for user: ', req.user);
+        const files = await this.fileUploadService.listFiles(req.user);
+        return { files };
+    }
 };
 __decorate([
     (0, common_1.Post)(),
@@ -53,6 +58,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "generateUploadUrl", null);
+__decorate([
+    (0, common_1.Get)('list-files'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], FileUploadController.prototype, "listFiles", null);
 exports.FileUploadController = FileUploadController = __decorate([
     (0, common_1.Controller)('fileupload'),
     __metadata("design:paramtypes", [fileupload_service_1.FileUploadService])

@@ -47,7 +47,7 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
     }
     async generateUploadUrl(filename, mimetype, user) {
         const params = {
-            Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
+            Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
             Key: filename,
             ContentType: mimetype,
             Expires: 60 * 60,
@@ -55,6 +55,13 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         console.log(params);
         console.log(user);
         return this.s3.getSignedUrlPromise('putObject', params);
+    }
+    async listFiles(user) {
+        const params = {
+            Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
+        };
+        const res = this.s3.listObjects(params);
+        return res.Contents;
     }
 };
 exports.FileUploadService = FileUploadService = __decorate([
