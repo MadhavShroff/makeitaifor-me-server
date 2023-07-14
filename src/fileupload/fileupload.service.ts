@@ -71,7 +71,6 @@ export class FileUploadService {
         if (err) {
           reject(err);
         } else {
-          console.log(data); // successful response
           resolve(data.Contents);
         }
       });
