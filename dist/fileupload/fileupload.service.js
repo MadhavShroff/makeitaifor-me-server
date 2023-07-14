@@ -60,8 +60,13 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         const params = {
             Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
         };
-        const res = this.s3.listObjects(params);
-        return res.Contents;
+        return await this.s3.listObjects(params, (err, data) => {
+            if (err)
+                throw err;
+            else
+                console.log(data);
+            return data;
+        });
     }
 };
 exports.FileUploadService = FileUploadService = __decorate([

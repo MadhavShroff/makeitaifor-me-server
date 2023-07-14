@@ -65,7 +65,10 @@ export class FileUploadService {
     const params = {
       Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
     };
-    const res: ListObjectsOutput = this.s3.listObjects(params);
-    return res.Contents;
+    return await this.s3.listObjects(params, (err, data) => {
+      if (err) throw err;
+      else console.log(data); // successful response
+      return data;
+    });
   }
 }
