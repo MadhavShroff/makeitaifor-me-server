@@ -49,29 +49,15 @@ export class FileUploadService {
     mimetype: string,
     user: any,
   ): Promise<string> {
-    const bucketParams = {
-      Bucket: user.id, // replace with your bucket name
-    };
-    try {
-      // Check if the bucket exists
-      await this.s3.headBucket(bucketParams).promise();
-      console.log('Bucket already exists');
-    } catch (error) {
-      if (error.code === 'NotFound') {
-        console.log('Bucket does not exist, creating now');
-        await this.s3.createBucket(bucketParams).promise();
-      } else {
-        throw error;
-      }
-    }
     const params = {
-      Bucket: user.id,
+      Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
       Key: filename,
       ContentType: mimetype,
       ACL: 'public-read', // files will be publicly readable
       Expires: 60 * 60, // presigned URL expiration time in seconds
     };
     console.log(params);
+    console.log(user);
     return this.s3.getSignedUrlPromise('putObject', params);
   }
 }
