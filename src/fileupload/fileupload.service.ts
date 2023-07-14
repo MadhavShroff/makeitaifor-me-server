@@ -63,12 +63,18 @@ export class FileUploadService {
 
   async listFiles(user: any): Promise<any[]> {
     const params = {
-      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
+      Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
+      Prefix: `${user.id}/`,
     };
-    return await this.s3.listObjects(params, (err, data) => {
-      if (err) throw err;
-      else console.log(data); // successful response
-      return data;
+    return new Promise((resolve, reject) => {
+      this.s3.listObjects(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log(data); // successful response
+          resolve(data.Contents);
+        }
+      });
     });
   }
 }
