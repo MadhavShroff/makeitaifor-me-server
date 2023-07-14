@@ -53,6 +53,7 @@ export class FileUploadController {
   async listFiles(@Req() req): Promise<{ files: any[] }> {
     console.log('List files for user: ', req.user);
     const files = await this.fileUploadService.listFiles(req.user);
+    console.log(files);
     return { files };
   }
 }
