@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { Readable } from 'stream';
-import { ListObjectsOutput } from 'aws-sdk/clients/s3';
 
 @Injectable()
 export class FileUploadService {
@@ -56,8 +55,6 @@ export class FileUploadService {
       ContentType: mimetype,
       Expires: 60 * 60, // presigned URL expiration time in seconds
     };
-    console.log(params);
-    console.log(user);
     return this.s3.getSignedUrlPromise('putObject', params);
   }
 

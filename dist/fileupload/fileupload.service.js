@@ -52,8 +52,6 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
             ContentType: mimetype,
             Expires: 60 * 60,
         };
-        console.log(params);
-        console.log(user);
         return this.s3.getSignedUrlPromise('putObject', params);
     }
     async listFiles(user) {
@@ -67,7 +65,6 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
                     reject(err);
                 }
                 else {
-                    console.log(data);
                     resolve(data.Contents);
                 }
             });

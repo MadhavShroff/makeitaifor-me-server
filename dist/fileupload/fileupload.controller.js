@@ -33,9 +33,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         return { uploadUrl };
     }
     async listFiles(req) {
-        console.log('List files for user: ', req.user);
         const files = await this.fileUploadService.listFiles(req.user);
-        console.log(files);
         return { files };
     }
 };
