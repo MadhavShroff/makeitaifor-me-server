@@ -8,21 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LangChainGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
-    handleMessage(client, payload) {
-        console.log('received event at message with data: ', payload);
-        return `Received your message: ${payload}`;
-    }
-    buttonClicked(client, payload) {
-        console.log('received event at buttonClicked with data: ', payload);
-        return 'Acknowledged button click!';
-    }
     handleConnection(client, ...args) {
         console.log(`Client connected: ${client.id}`);
+    }
+    handleMessage(message) {
+        console.log('Received message: ', message);
+        return `Hello world, you sent: ${message}`;
+    }
+    buttonClicked(data) {
+        console.log('Received event at buttonClicked with data: ', data);
+        return 'Acknowledged button click!';
     }
 };
 __decorate([
@@ -31,14 +34,16 @@ __decorate([
 ], LangChainGateway.prototype, "server", void 0);
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
+    __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", String)
 ], LangChainGateway.prototype, "handleMessage", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('buttonClicked'),
+    __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", String)
 ], LangChainGateway.prototype, "buttonClicked", null);
 exports.LangChainGateway = LangChainGateway = __decorate([

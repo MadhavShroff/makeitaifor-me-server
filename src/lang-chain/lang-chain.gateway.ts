@@ -1,8 +1,9 @@
 import {
-  SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
   OnGatewayConnection,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
@@ -18,19 +19,19 @@ export class LangChainGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
+  handleConnection(client: Socket, ...args: any[]) {
+    console.log(`Client connected: ${client.id}`);
+  }
+
   @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    console.log('received event at message with data: ', payload);
-    return `Received your message: ${payload}`;
+  handleMessage(@MessageBody() message: string): string {
+    console.log('Received message: ', message);
+    return `Hello world, you sent: ${message}`;
   }
 
   @SubscribeMessage('buttonClicked')
-  buttonClicked(client: any, payload: any): string {
-    console.log('received event at buttonClicked with data: ', payload);
+  buttonClicked(@MessageBody() data: any): string {
+    console.log('Received event at buttonClicked with data: ', data);
     return 'Acknowledged button click!';
-  }
-
-  handleConnection(client: Socket, ...args: any[]) {
-    console.log(`Client connected: ${client.id}`);
   }
 }
