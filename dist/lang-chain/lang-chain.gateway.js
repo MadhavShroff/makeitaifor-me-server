@@ -16,6 +16,9 @@ exports.LangChainGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
+    afterInit(server) {
+        console.log('Initialized Gateway!');
+    }
     handleConnection(client) {
         console.log(`Client connected: ${client.id}`);
     }
