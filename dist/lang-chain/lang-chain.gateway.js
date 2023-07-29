@@ -16,22 +16,37 @@ exports.LangChainGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
-    handleConnection(client, ...args) {
+    handleConnection(client) {
         console.log(`Client connected: ${client.id}`);
+    }
+    handleDisconnect(client) {
+        console.log(`Client disconnected: ${client.id}`);
     }
     handleMessage(message) {
         console.log('Received message: ', message);
-        return `Hello world, you sent: ${message}`;
+        return `Received at 'message', you sent: ${message}`;
     }
     buttonClicked(data) {
         console.log('Received event at buttonClicked with data: ', data);
-        return 'Acknowledged button click!';
+        return 'Acknowledged button click! : ' + data;
     }
 };
 __decorate([
     (0, websockets_1.WebSocketServer)(),
     __metadata("design:type", socket_io_1.Server)
 ], LangChainGateway.prototype, "server", void 0);
+__decorate([
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", void 0)
+], LangChainGateway.prototype, "handleConnection", null);
+__decorate([
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", void 0)
+], LangChainGateway.prototype, "handleDisconnect", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
     __param(0, (0, websockets_1.MessageBody)()),

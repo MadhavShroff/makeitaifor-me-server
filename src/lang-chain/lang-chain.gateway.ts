@@ -1,9 +1,11 @@
 import {
   WebSocketGateway,
   OnGatewayConnection,
+  OnGatewayDisconnect,
   WebSocketServer,
   SubscribeMessage,
   MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
@@ -15,23 +17,29 @@ import { Server, Socket } from 'socket.io';
     credentials: true,
   },
 })
-export class LangChainGateway implements OnGatewayConnection {
+export class LangChainGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
 
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(@ConnectedSocket() client: Socket) {
     console.log(`Client connected: ${client.id}`);
+  }
+
+  handleDisconnect(@ConnectedSocket() client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('message')
   handleMessage(@MessageBody() message: string): string {
     console.log('Received message: ', message);
-    return `Hello world, you sent: ${message}`;
+    return `Received at 'message', you sent: ${message}`;
   }
 
   @SubscribeMessage('buttonClicked')
   buttonClicked(@MessageBody() data: any): string {
     console.log('Received event at buttonClicked with data: ', data);
-    return 'Acknowledged button click!';
+    return 'Acknowledged button click! : ' + data;
   }
 }
