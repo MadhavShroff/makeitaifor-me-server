@@ -15,11 +15,14 @@ const socket_io_1 = require("socket.io");
 let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
     handleMessage(client, payload) {
         console.log('received event at message with data: ', payload);
-        return 'Hello world!';
+        return `Received your message: ${payload}`;
     }
     buttonClicked(client, payload) {
         console.log('received event at buttonClicked with data: ', payload);
         return 'Acknowledged button click!';
+    }
+    handleConnection(client, ...args) {
+        console.log(`Client connected: ${client.id}`);
     }
 };
 __decorate([
