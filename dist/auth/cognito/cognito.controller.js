@@ -65,7 +65,7 @@ __decorate([
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
 exports.CognitoController = CognitoController = __decorate([
     (0, common_1.Controller)('auth/cognito'),
-    __metadata("design:paramtypes", [jwt_service_1.default,
+    __metadata("design:paramtypes", [jwt_service_1.JwtAuthService,
         config_1.ConfigService])
 ], CognitoController);
 //# sourceMappingURL=cognito.controller.js.map

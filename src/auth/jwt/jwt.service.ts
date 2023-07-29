@@ -5,7 +5,7 @@ import { User } from '../../types/user';
 import { JwtPayload } from './jwt.strategy';
 
 @Injectable()
-export default class JwtAuthService {
+export class JwtAuthService {
   constructor(private jwtService: JwtService) {}
 
   login(user: User) {
@@ -17,5 +17,12 @@ export default class JwtAuthService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  generateWebSocketToken(user: User) {
+    // Use only the necessary user data for the token
+    const payload = { username: user.username, id: user.id };
+
+    return this.jwtService.sign(payload);
   }
 }

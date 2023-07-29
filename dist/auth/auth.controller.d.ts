@@ -1,3 +1,8 @@
+import { JwtAuthService } from './jwt/jwt.service';
 export declare class AuthController {
-    exchangeCodeForUser(code: string): Promise<void>;
+    private jwtService;
+    constructor(jwtService: JwtAuthService);
+    getWebSocketToken(req: any): {
+        token: string;
+    };
 }

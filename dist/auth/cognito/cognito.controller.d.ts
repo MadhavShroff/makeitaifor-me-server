@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import JwtAuthService from '../jwt/jwt.service';
+import { JwtAuthService } from '../jwt/jwt.service';
 import { ConfigService } from '@nestjs/config';
 export declare class CognitoController {
     private jwtAuthService;

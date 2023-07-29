@@ -25,8 +25,8 @@ exports.JwtModule = JwtModule = __decorate([
                 }),
             }),
         ],
-        providers: [jwt_service_1.default, jwt_strategy_1.JwtAuthStrategy],
-        exports: [jwt_service_1.default],
+        providers: [jwt_service_1.JwtAuthService, jwt_strategy_1.JwtAuthStrategy],
+        exports: [jwt_service_1.JwtAuthService],
     })
 ], JwtModule);
 //# sourceMappingURL=jwt.module.js.map

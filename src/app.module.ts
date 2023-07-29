@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileuploadModule } from './fileupload/fileupload.module';
+import { LangChainGateway } from './lang-chain/lang-chain.gateway';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { FileuploadModule } from './fileupload/fileupload.module';
     FileuploadModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, LangChainGateway],
 })
 export class AppModule {}

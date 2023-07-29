@@ -15,6 +15,7 @@ const config_1 = require("@nestjs/config");
 const users_module_1 = require("./users/users.module");
 const mongoose_1 = require("@nestjs/mongoose");
 const fileupload_module_1 = require("./fileupload/fileupload.module");
+const lang_chain_gateway_1 = require("./lang-chain/lang-chain.gateway");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -37,7 +38,7 @@ exports.AppModule = AppModule = __decorate([
             fileupload_module_1.FileuploadModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, lang_chain_gateway_1.LangChainGateway],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

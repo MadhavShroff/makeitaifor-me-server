@@ -14,18 +14,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_guard_1 = require("./jwt/jwt.guard");
+const jwt_service_1 = require("./jwt/jwt.service");
 let AuthController = exports.AuthController = class AuthController {
-    async exchangeCodeForUser(code) {
+    constructor(jwtService) {
+        this.jwtService = jwtService;
+    }
+    getWebSocketToken(req) {
+        const token = this.jwtService.generateWebSocketToken(req.user);
+        return { token };
     }
 };
 __decorate([
-    (0, common_1.Post)('/exchange'),
-    __param(0, (0, common_1.Body)('code')),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('ws-token'),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "exchangeCodeForUser", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getWebSocketToken", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth')
+    (0, common_1.Controller)('auth'),
+    __metadata("design:paramtypes", [jwt_service_1.JwtAuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

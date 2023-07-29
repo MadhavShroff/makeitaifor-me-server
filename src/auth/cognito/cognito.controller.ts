@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import JwtAuthService from '../jwt/jwt.service';
+import { JwtAuthService } from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from '../jwt/jwt.guard';
