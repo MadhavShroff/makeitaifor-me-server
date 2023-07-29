@@ -66,7 +66,6 @@ __decorate([
 ], LangChainGateway.prototype, "buttonClicked", null);
 exports.LangChainGateway = LangChainGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
-        namespace: '/socket.io',
         cors: {
             origin: 'https://www.makeitaifor.me',
             methods: ['GET', 'POST'],

@@ -11,7 +11,6 @@ import {
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway({
-  namespace: '/socket.io',
   cors: {
     origin: 'https://www.makeitaifor.me',
     methods: ['GET', 'POST'],
