@@ -39,6 +39,13 @@ __decorate([
     __metadata("design:returntype", String)
 ], LangChainGateway.prototype, "buttonClicked", null);
 exports.LangChainGateway = LangChainGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)({ namespace: '/socket.io' })
+    (0, websockets_1.WebSocketGateway)({
+        namespace: '/socket.io',
+        cors: {
+            origin: 'https://www.makeitaifor.me',
+            methods: ['GET', 'POST'],
+            credentials: true,
+        },
+    })
 ], LangChainGateway);
 //# sourceMappingURL=lang-chain.gateway.js.map

@@ -5,7 +5,14 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-@WebSocketGateway({ namespace: '/socket.io' })
+@WebSocketGateway({
+  namespace: '/socket.io',
+  cors: {
+    origin: 'https://www.makeitaifor.me',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+})
 export class LangChainGateway {
   @WebSocketServer()
   server: Server;
