@@ -1,7 +1,14 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: '/socket.io' })
 export class LangChainGateway {
+  @WebSocketServer()
+  server: Server;
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
     console.log('received event at message with data: ', payload);

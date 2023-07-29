@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LangChainGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
+const socket_io_1 = require("socket.io");
 let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
     handleMessage(client, payload) {
         console.log('received event at message with data: ', payload);
@@ -21,6 +22,10 @@ let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
         return 'Acknowledged button click!';
     }
 };
+__decorate([
+    (0, websockets_1.WebSocketServer)(),
+    __metadata("design:type", socket_io_1.Server)
+], LangChainGateway.prototype, "server", void 0);
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
     __metadata("design:type", Function),
@@ -34,6 +39,6 @@ __decorate([
     __metadata("design:returntype", String)
 ], LangChainGateway.prototype, "buttonClicked", null);
 exports.LangChainGateway = LangChainGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)()
+    (0, websockets_1.WebSocketGateway)({ namespace: '/socket.io' })
 ], LangChainGateway);
 //# sourceMappingURL=lang-chain.gateway.js.map

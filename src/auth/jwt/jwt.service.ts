@@ -22,7 +22,6 @@ export class JwtAuthService {
   generateWebSocketToken(user: User) {
     // Use only the necessary user data for the token
     const payload = { username: user.username, id: user.id };
-
     return this.jwtService.sign(payload);
   }
 }
