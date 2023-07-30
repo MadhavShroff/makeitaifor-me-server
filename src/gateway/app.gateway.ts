@@ -10,7 +10,6 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
 import { User } from 'src/types/user';
 
@@ -27,27 +26,10 @@ export class AppGateway
   @WebSocketServer()
   server: Server;
 
-  // Inside AppGateway class
+  constructor(private langChainService: LangChainService) {}
 
-  // Remove the code inside the constructor
-  constructor(
-    private langChainService: LangChainService,
-    private jwtService: JwtAuthService,
-  ) {}
-
-  // Add the middleware inside afterInit method
-  afterInit(server: Server) {
+  afterInit(server: any) {
     console.log('Initialized Gateway!');
-    this.server.use(async (socket: Socket, next) => {
-      const token = socket.handshake.query.token as string;
-      try {
-        const payload = this.jwtService.verifyToken(token);
-        (socket.client as any).user = payload;
-        next();
-      } catch (err) {
-        next(new Error('Authentication error'));
-      }
-    });
   }
 
   handleConnection(client, ...args: any[]) {
