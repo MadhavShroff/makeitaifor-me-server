@@ -28,6 +28,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
     handleConnection(client) {
         console.log(`Client connected: ${client.id}`);
         const token = client.handshake.query.token;
+        console.log('Token: ', token);
         try {
             const payload = this.jwtService.verifyToken(token);
             client.user = payload;

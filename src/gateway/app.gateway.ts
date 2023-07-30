@@ -39,6 +39,7 @@ export class AppGateway
   handleConnection(@ConnectedSocket() client: Socket) {
     console.log(`Client connected: ${client.id}`);
     const token = client.handshake.query.token as string;
+    console.log('Token: ', token);
     try {
       const payload = this.jwtService.verifyToken(token);
       (client as any).user = payload;
