@@ -38,6 +38,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         return 'Acknowledged button click! : ' + data;
     }
     async generateText(data, client) {
+        console.log('Received event at tryButtonClicked with data: ', data);
         const result = await this.langChainService.generateText(data.content, client.user);
         return { event: 'textGenerated', data: result };
     }

@@ -61,6 +61,7 @@ export class AppGateway
     @MessageBody() data: { content: string },
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
+    console.log('Received event at tryButtonClicked with data: ', data);
     const result = await this.langChainService.generateText(
       data.content,
       client.user,
