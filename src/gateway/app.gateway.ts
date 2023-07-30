@@ -10,6 +10,7 @@ import {
   WsResponse,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
 import { User } from 'src/types/user';
 
@@ -26,18 +27,25 @@ export class AppGateway
   @WebSocketServer()
   server: Server;
 
-  constructor(private langChainService: LangChainService) {}
+  constructor(
+    private langChainService: LangChainService,
+    private jwtService: JwtAuthService,
+  ) {}
 
   afterInit(server: any) {
     console.log('Initialized Gateway!');
   }
 
-  handleConnection(client, ...args: any[]) {
+  handleConnection(@ConnectedSocket() client: Socket) {
     console.log(`Client connected: ${client.id}`);
-    // const user = args[0].user; // get the user data from the request
-    // console.log(`Client connected: ${JSON.stringify(user)}}`);
-    // attach the user data to the client for later use
-    // client.user = user;
+    const token = client.handshake.query.token as string;
+    try {
+      const payload = this.jwtService.verifyToken(token);
+      (client as any).user = payload;
+    } catch (err) {
+      console.error('Authentication error', err);
+      client.disconnect(true); // disconnect the client if token verification fails
+    }
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {

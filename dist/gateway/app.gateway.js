@@ -15,16 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
+const jwt_service_1 = require("../auth/jwt/jwt.service");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 let AppGateway = exports.AppGateway = class AppGateway {
-    constructor(langChainService) {
+    constructor(langChainService, jwtService) {
         this.langChainService = langChainService;
+        this.jwtService = jwtService;
     }
     afterInit(server) {
         console.log('Initialized Gateway!');
     }
-    handleConnection(client, ...args) {
+    handleConnection(client) {
         console.log(`Client connected: ${client.id}`);
+        const token = client.handshake.query.token;
+        try {
+            const payload = this.jwtService.verifyToken(token);
+            client.user = payload;
+        }
+        catch (err) {
+            console.error('Authentication error', err);
+            client.disconnect(true);
+        }
     }
     handleDisconnect(client) {
         console.log(`Client disconnected: ${client.id}`);
@@ -47,6 +58,12 @@ __decorate([
     (0, websockets_1.WebSocketServer)(),
     __metadata("design:type", socket_io_1.Server)
 ], AppGateway.prototype, "server", void 0);
+__decorate([
+    __param(0, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:returntype", void 0)
+], AppGateway.prototype, "handleConnection", null);
 __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
@@ -83,6 +100,7 @@ exports.AppGateway = AppGateway = __decorate([
             credentials: true,
         },
     }),
-    __metadata("design:paramtypes", [lang_chain_service_1.LangChainService])
+    __metadata("design:paramtypes", [lang_chain_service_1.LangChainService,
+        jwt_service_1.JwtAuthService])
 ], AppGateway);
 //# sourceMappingURL=app.gateway.js.map
