@@ -15,10 +15,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
+const jwt_service_1 = require("../auth/jwt/jwt.service");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 let AppGateway = exports.AppGateway = class AppGateway {
-    constructor(langChainService) {
+    constructor(langChainService, jwtService) {
         this.langChainService = langChainService;
+        this.jwtService = jwtService;
+        this.server.use(async (socket, next) => {
+            const token = socket.handshake.query.token;
+            try {
+                const payload = this.jwtService.verifyToken(token);
+                socket.client.user = payload;
+                next();
+            }
+            catch (err) {
+                next(new Error('Authentication error'));
+            }
+        });
     }
     afterInit(server) {
         console.log('Initialized Gateway!');
@@ -83,6 +96,7 @@ exports.AppGateway = AppGateway = __decorate([
             credentials: true,
         },
     }),
-    __metadata("design:paramtypes", [lang_chain_service_1.LangChainService])
+    __metadata("design:paramtypes", [lang_chain_service_1.LangChainService,
+        jwt_service_1.JwtAuthService])
 ], AppGateway);
 //# sourceMappingURL=app.gateway.js.map
