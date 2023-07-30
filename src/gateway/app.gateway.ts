@@ -27,10 +27,17 @@ export class AppGateway
   @WebSocketServer()
   server: Server;
 
+  // Inside AppGateway class
+
+  // Remove the code inside the constructor
   constructor(
     private langChainService: LangChainService,
     private jwtService: JwtAuthService,
-  ) {
+  ) {}
+
+  // Add the middleware inside afterInit method
+  afterInit(server: Server) {
+    console.log('Initialized Gateway!');
     this.server.use(async (socket: Socket, next) => {
       const token = socket.handshake.query.token as string;
       try {
@@ -41,10 +48,6 @@ export class AppGateway
         next(new Error('Authentication error'));
       }
     });
-  }
-
-  afterInit(server: any) {
-    console.log('Initialized Gateway!');
   }
 
   handleConnection(client, ...args: any[]) {

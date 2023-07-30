@@ -3,6 +3,7 @@ import { AuthController } from './auth.controller';
 import { CognitoModule } from './cognito/cognito.module';
 import { JwtModule } from './jwt/jwt.module';
 import { PassportModule } from '@nestjs/passport';
+import { JwtAuthService } from './jwt/jwt.service';
 
 @Module({
   controllers: [AuthController],

@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const jwt_service_1 = require("./jwt.service");
 const config_1 = require("@nestjs/config");
 const jwt_strategy_1 = require("./jwt.strategy");
+const jwt_service_1 = require("./jwt.service");
 let JwtModule = exports.JwtModule = class JwtModule {
 };
 exports.JwtModule = JwtModule = __decorate([
@@ -21,7 +21,7 @@ exports.JwtModule = JwtModule = __decorate([
                 inject: [config_1.ConfigService],
                 useFactory: async (configService) => ({
                     secret: configService.get('JWT_SECRET_KEY'),
-                    signOptions: { expiresIn: '10m' },
+                    signOptions: { expiresIn: '15m' },
                 }),
             }),
         ],

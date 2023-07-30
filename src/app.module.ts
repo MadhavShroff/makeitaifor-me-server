@@ -1,3 +1,4 @@
+// app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { FileuploadModule } from './fileupload/fileupload.module';
 import { AppGateway } from './gateway/app.gateway';
 import { LangChainService } from './lang-chain/lang-chain.service';
+import { JwtModule } from './auth/jwt/jwt.module';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { LangChainService } from './lang-chain/lang-chain.service';
     }),
     AuthModule,
     UsersModule,
+    JwtModule,
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('DATABASE_URL'),

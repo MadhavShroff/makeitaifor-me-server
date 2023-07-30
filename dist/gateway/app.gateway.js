@@ -21,6 +21,9 @@ let AppGateway = exports.AppGateway = class AppGateway {
     constructor(langChainService, jwtService) {
         this.langChainService = langChainService;
         this.jwtService = jwtService;
+    }
+    afterInit(server) {
+        console.log('Initialized Gateway!');
         this.server.use(async (socket, next) => {
             const token = socket.handshake.query.token;
             try {
@@ -32,9 +35,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
                 next(new Error('Authentication error'));
             }
         });
-    }
-    afterInit(server) {
-        console.log('Initialized Gateway!');
     }
     handleConnection(client, ...args) {
         console.log(`Client connected: ${client.id}`);

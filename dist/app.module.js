@@ -17,6 +17,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const fileupload_module_1 = require("./fileupload/fileupload.module");
 const app_gateway_1 = require("./gateway/app.gateway");
 const lang_chain_service_1 = require("./lang-chain/lang-chain.service");
+const jwt_module_1 = require("./auth/jwt/jwt.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             }),
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
+            jwt_module_1.JwtModule,
             mongoose_1.MongooseModule.forRootAsync({
                 useFactory: async (configService) => ({
                     uri: configService.get('DATABASE_URL'),

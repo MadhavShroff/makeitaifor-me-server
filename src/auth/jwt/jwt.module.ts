@@ -1,9 +1,9 @@
 // jwt.module.ts
 import { Module } from '@nestjs/common';
 import { JwtModule as NestJwtModule } from '@nestjs/jwt';
-import { JwtAuthService } from './jwt.service';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthStrategy } from './jwt.strategy';
+import { JwtAuthService } from './jwt.service';
 
 @Module({
   imports: [
@@ -11,11 +11,11 @@ import { JwtAuthStrategy } from './jwt.strategy';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET_KEY'),
-        signOptions: { expiresIn: '10m' }, // customize according to your needs
+        signOptions: { expiresIn: '15m' },
       }),
     }),
   ],
-  providers: [JwtAuthService, JwtAuthStrategy],
-  exports: [JwtAuthService], // If you want to use JwtAuthService in other modules
+  providers: [JwtAuthService, JwtAuthStrategy], // Ensure JwtService is provided here
+  exports: [JwtAuthService], // Ensure JwtService is exported as well
 })
 export class JwtModule {}

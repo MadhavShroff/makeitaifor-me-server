@@ -8,7 +8,7 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
     private jwtService;
     server: Server;
     constructor(langChainService: LangChainService, jwtService: JwtAuthService);
-    afterInit(server: any): void;
+    afterInit(server: Server): void;
     handleConnection(client: any, ...args: any[]): void;
     handleDisconnect(client: Socket): void;
     handleMessage(message: string): string;
