@@ -15,12 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
+const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 let AppGateway = exports.AppGateway = class AppGateway {
+    constructor(langChainService) {
+        this.langChainService = langChainService;
+    }
     afterInit(server) {
         console.log('Initialized Gateway!');
     }
-    handleConnection(client) {
-        console.log(`Client connected: ${client.id}`);
+    handleConnection(client, ...args) {
+        const user = args[0].user;
+        console.log(`Client connected: ${JSON.stringify(user)}}`);
+        client.user = user;
     }
     handleDisconnect(client) {
         console.log(`Client disconnected: ${client.id}`);
@@ -33,17 +39,15 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('Received event at buttonClicked with data: ', data);
         return 'Acknowledged button click! : ' + data;
     }
+    async generateText(data, client) {
+        const result = await this.langChainService.generateText(data.content, client.user);
+        return { event: 'textGenerated', data: result };
+    }
 };
 __decorate([
     (0, websockets_1.WebSocketServer)(),
     __metadata("design:type", socket_io_1.Server)
 ], AppGateway.prototype, "server", void 0);
-__decorate([
-    __param(0, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket]),
-    __metadata("design:returntype", void 0)
-], AppGateway.prototype, "handleConnection", null);
 __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
@@ -64,6 +68,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", String)
 ], AppGateway.prototype, "buttonClicked", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('tryButtonClicked'),
+    __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AppGateway.prototype, "generateText", null);
 exports.AppGateway = AppGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {
@@ -71,6 +83,7 @@ exports.AppGateway = AppGateway = __decorate([
             methods: ['GET', 'POST'],
             credentials: true,
         },
-    })
+    }),
+    __metadata("design:paramtypes", [lang_chain_service_1.LangChainService])
 ], AppGateway);
 //# sourceMappingURL=app.gateway.js.map
