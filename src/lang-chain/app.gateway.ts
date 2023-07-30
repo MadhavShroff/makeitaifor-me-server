@@ -17,7 +17,7 @@ import { Server, Socket } from 'socket.io';
     credentials: true,
   },
 })
-export class LangChainGateway
+export class AppGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   @WebSocketServer()

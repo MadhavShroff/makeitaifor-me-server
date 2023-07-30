@@ -12,10 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LangChainGateway = void 0;
+exports.AppGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
-let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
+let AppGateway = exports.AppGateway = class AppGateway {
     afterInit(server) {
         console.log('Initialized Gateway!');
     }
@@ -37,34 +37,34 @@ let LangChainGateway = exports.LangChainGateway = class LangChainGateway {
 __decorate([
     (0, websockets_1.WebSocketServer)(),
     __metadata("design:type", socket_io_1.Server)
-], LangChainGateway.prototype, "server", void 0);
+], AppGateway.prototype, "server", void 0);
 __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", void 0)
-], LangChainGateway.prototype, "handleConnection", null);
+], AppGateway.prototype, "handleConnection", null);
 __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", void 0)
-], LangChainGateway.prototype, "handleDisconnect", null);
+], AppGateway.prototype, "handleDisconnect", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", String)
-], LangChainGateway.prototype, "handleMessage", null);
+], AppGateway.prototype, "handleMessage", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('buttonClicked'),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", String)
-], LangChainGateway.prototype, "buttonClicked", null);
-exports.LangChainGateway = LangChainGateway = __decorate([
+], AppGateway.prototype, "buttonClicked", null);
+exports.AppGateway = AppGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {
             origin: 'https://www.makeitaifor.me',
@@ -72,5 +72,5 @@ exports.LangChainGateway = LangChainGateway = __decorate([
             credentials: true,
         },
     })
-], LangChainGateway);
-//# sourceMappingURL=lang-chain.gateway.js.map
+], AppGateway);
+//# sourceMappingURL=app.gateway.js.map
