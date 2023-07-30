@@ -6,8 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileuploadModule } from './fileupload/fileupload.module';
-import { AppGateway } from './lang-chain/app.gateway';
-import { LangChainService } from './services/lang-chain/lang-chain.service';
+import { AppGateway } from './gateway/app.gateway';
+import { LangChainService } from './lang-chain/lang-chain.service';
 
 @Module({
   imports: [
