@@ -33,10 +33,11 @@ export class AppGateway
   }
 
   handleConnection(client, ...args: any[]) {
-    const user = args[0].user; // get the user data from the request
-    console.log(`Client connected: ${JSON.stringify(user)}}`);
+    console.log(`Client connected: ${client.id}`);
+    // const user = args[0].user; // get the user data from the request
+    // console.log(`Client connected: ${JSON.stringify(user)}}`);
     // attach the user data to the client for later use
-    client.user = user;
+    // client.user = user;
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {

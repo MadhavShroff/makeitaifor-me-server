@@ -24,9 +24,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('Initialized Gateway!');
     }
     handleConnection(client, ...args) {
-        const user = args[0].user;
-        console.log(`Client connected: ${JSON.stringify(user)}}`);
-        client.user = user;
+        console.log(`Client connected: ${client.id}`);
     }
     handleDisconnect(client) {
         console.log(`Client disconnected: ${client.id}`);
