@@ -33,6 +33,9 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
     static baseUrl(domain, region) {
         return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
     }
+    static logoutUrl(domain, region, clientId, logoutUri) {
+        return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
+    }
     static authorizationUrl(domain, region) {
         return `${this.baseUrl(domain, region)}/authorize`;
     }
@@ -41,6 +44,11 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
     }
     static userInfoUrl(domain, region) {
         return `${this.baseUrl(domain, region)}/userInfo`;
+    }
+    async logout(clientId, logoutUri) {
+        const url = CognitoStrategy_1.logoutUrl(this.domain, this.region, clientId, logoutUri);
+        const response = await axios_1.default.get(url);
+        return response.status;
     }
     async validate(accessToken) {
         const userinfo = (await axios_1.default.get(CognitoStrategy_1.userInfoUrl(this.domain, this.region), {

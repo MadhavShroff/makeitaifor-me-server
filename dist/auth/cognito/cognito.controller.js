@@ -18,10 +18,12 @@ const jwt_service_1 = require("../jwt/jwt.service");
 const cognito_guard_1 = require("./cognito.guard");
 const config_1 = require("@nestjs/config");
 const jwt_guard_1 = require("../jwt/jwt.guard");
+const cognito_strategy_1 = require("./cognito.strategy");
 let CognitoController = exports.CognitoController = class CognitoController {
-    constructor(jwtAuthService, configService) {
+    constructor(jwtAuthService, configService, cognitoStrategy) {
         this.jwtAuthService = jwtAuthService;
         this.configService = configService;
+        this.cognitoStrategy = cognitoStrategy;
     }
     async cognitoAuth(_req) {
     }
@@ -35,7 +37,19 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
-        return res.redirect('https://makeitaifor.me/profile');
+        return res.redirect('https://makeitaifor.me/chat');
+    }
+    async logout(req, res) {
+        const clientId = 'your-client-id';
+        const logoutUri = 'http://localhost:3000/';
+        const status = await this.cognitoStrategy.logout(clientId, logoutUri);
+        if (status === 200) {
+            res.clearCookie('SESSIONID');
+            return res.sendStatus(200);
+        }
+        else {
+            return res.sendStatus(status);
+        }
     }
 };
 __decorate([
@@ -63,9 +77,18 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], CognitoController.prototype, "logout", null);
 exports.CognitoController = CognitoController = __decorate([
     (0, common_1.Controller)('auth/cognito'),
     __metadata("design:paramtypes", [jwt_service_1.JwtAuthService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        cognito_strategy_1.CognitoStrategy])
 ], CognitoController);
 //# sourceMappingURL=cognito.controller.js.map

@@ -7,9 +7,11 @@ export declare class CognitoStrategy extends CognitoStrategy_base {
     private region;
     constructor(configService: ConfigService, usersService: UsersService);
     static baseUrl(domain: string, region: string): string;
+    static logoutUrl(domain: string, region: string, clientId: string, logoutUri: string): string;
     static authorizationUrl(domain: string, region: string): string;
     static tokenUrl(domain: string, region: string): string;
     static userInfoUrl(domain: string, region: string): string;
+    logout(clientId: string, logoutUri: string): Promise<number>;
     validate(accessToken: string): Promise<import("../../users/users.schema").User>;
 }
 export {};
