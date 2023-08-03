@@ -37,7 +37,11 @@ export class AppGateway
   }
 
   handleConnection(@ConnectedSocket() client: Socket) {
-    console.log(`Client connected: ${client.id} + ${client.handshake.query}`);
+    console.log(
+      `Client connected: ${client.id} + ${JSON.stringify(
+        client.handshake.query,
+      )}`,
+    );
     const token = client.handshake.query.token as string;
     console.log('Token: ', token);
     try {

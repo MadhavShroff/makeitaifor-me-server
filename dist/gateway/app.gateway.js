@@ -26,7 +26,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('Initialized Gateway!');
     }
     handleConnection(client) {
-        console.log(`Client connected: ${client.id} + ${client.handshake.query}`);
+        console.log(`Client connected: ${client.id} + ${JSON.stringify(client.handshake.query)}`);
         const token = client.handshake.query.token;
         console.log('Token: ', token);
         try {
