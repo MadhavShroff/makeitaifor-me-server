@@ -37,7 +37,7 @@ export class AppGateway
   }
 
   handleConnection(@ConnectedSocket() client: Socket) {
-    console.log(`Client connected: ${client.id}`);
+    console.log(`Client connected: ${client.id} + ${client.handshake.query}`);
     const token = client.handshake.query.token as string;
     console.log('Token: ', token);
     try {
@@ -45,6 +45,8 @@ export class AppGateway
       (client as any).user = payload;
     } catch (err) {
       console.error('Authentication error', err);
+      // TODO: User is trying to start a chat but is not able to, since they are not authenticated.
+      // TODO: We should send a message to the client to let them know that they are not authenticated, and start a guest session.
       client.disconnect(true); // disconnect the client if token verification fails
     }
   }

@@ -1,15 +1,17 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthService } from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from '../jwt/jwt.guard';
+import { CognitoStrategy } from './cognito.strategy';
 
 @Controller('auth/cognito')
 export class CognitoController {
   constructor(
     private jwtAuthService: JwtAuthService,
     private configService: ConfigService,
+    private cognitoStrategy: CognitoStrategy,
   ) {}
 
   @Get()
@@ -38,6 +40,21 @@ export class CognitoController {
         secure: true,
       },
     );
-    return res.redirect('https://makeitaifor.me/profile');
+    return res.redirect('https://makeitaifor.me/chat');
+  }
+
+  @Post('logout')
+  async logout(@Req() req, @Res() res) {
+    const clientId = 'your-client-id'; // replace with your actual client ID
+    const logoutUri = 'http://localhost:3000/'; // replace with your actual logout URI
+
+    const status = await this.cognitoStrategy.logout(clientId, logoutUri);
+
+    if (status === 200) {
+      res.clearCookie('SESSIONID'); // replace 'SESSIONID' with your cookie name
+      return res.sendStatus(200);
+    } else {
+      return res.sendStatus(status);
+    }
   }
 }

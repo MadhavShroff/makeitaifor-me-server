@@ -36,6 +36,15 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
   }
 
+  static logoutUrl(
+    domain: string,
+    region: string,
+    clientId: string,
+    logoutUri: string,
+  ): string {
+    return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
+  }
+
   static authorizationUrl(domain: string, region: string): string {
     return `${this.baseUrl(domain, region)}/authorize`;
   }
@@ -46,6 +55,17 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
 
   static userInfoUrl(domain: string, region: string): string {
     return `${this.baseUrl(domain, region)}/userInfo`;
+  }
+
+  async logout(clientId: string, logoutUri: string) {
+    const url = CognitoStrategy.logoutUrl(
+      this.domain,
+      this.region,
+      clientId,
+      logoutUri,
+    );
+    const response = await axios.get(url);
+    return response.status;
   }
 
   async validate(accessToken: string) {
