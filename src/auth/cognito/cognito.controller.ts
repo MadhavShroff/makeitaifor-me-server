@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthService } from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
@@ -40,23 +40,16 @@ export class CognitoController {
         secure: true,
       },
     );
-    return res.redirect('https://makeitaifor.me/chat');
+    return res.redirect('https://makeitaifor.me/chat'); // Redirects to /chat on successful cognito login
   }
 
   @Get('/logout')
   async logout(@Req() req, @Res() res) {
-    const clientId = this.configService.get<string>('OAUTH_COGNITO_ID'); // replace with your actual client ID
-    const logoutUri = 'https://www.makeitaifor.me/'; // replace with your actual logout URI
-
-    const status = await this.cognitoStrategy.logout(clientId, logoutUri);
-
-    console.log('Logout status: ', status);
-
-    if (status === 200) {
-      res.clearCookie(this.configService.get<string>('SESSION_COOKIE_KEY')); // replace 'SESSIONID' with your cookie name
-      return res.sendStatus(200);
-    } else {
-      return res.sendStatus(status);
-    }
+    return await CognitoStrategy.logoutUrl(
+      this.configService.get<string>('OAUTH_COGNITO_DOMAIN'),
+      this.configService.get<string>('OAUTH_COGNITO_REGION'),
+      this.configService.get<string>('OAUTH_COGNITO_ID'),
+      'https://www.makeitaifor.me/', // Frontend redirects to this url to logout and clear cookies
+    );
   }
 }
