@@ -43,7 +43,7 @@ export class CognitoController {
     return res.redirect('https://makeitaifor.me/chat');
   }
 
-  @Post('logout')
+  @Get('/logout')
   async logout(@Req() req, @Res() res) {
     const clientId = this.configService.get<string>('OAUTH_COGNITO_ID'); // replace with your actual client ID
     const logoutUri = 'https://www.makeitaifor.me/'; // replace with your actual logout URI

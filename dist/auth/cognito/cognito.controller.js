@@ -79,7 +79,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
 __decorate([
-    (0, common_1.Post)('logout'),
+    (0, common_1.Get)('/logout'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
