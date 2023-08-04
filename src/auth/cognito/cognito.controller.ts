@@ -44,7 +44,6 @@ export class CognitoController {
   }
 
   @Post('logout')
-  @UseGuards(JwtAuthGuard)
   async logout(@Req() req, @Res() res) {
     const clientId = this.configService.get<string>('OAUTH_COGNITO_ID'); // replace with your actual client ID
     const logoutUri = 'https://www.makeitaifor.me/'; // replace with your actual logout URI

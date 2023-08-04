@@ -80,7 +80,6 @@ __decorate([
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
 __decorate([
     (0, common_1.Post)('logout'),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
