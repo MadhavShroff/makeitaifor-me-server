@@ -1,12 +1,12 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JwtService } from '@nestjs/jwt';
+import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { WsException } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 
 @Injectable()
 export class WsJwtAuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtAuthService) {}
 
   canActivate(
     context: ExecutionContext,
@@ -16,7 +16,7 @@ export class WsJwtAuthGuard implements CanActivate {
       ? client.handshake.query.token[0]
       : client.handshake.query.token;
     try {
-      const payload = this.jwtService.verify(token);
+      const payload = this.jwtService.verifyToken(token);
       client.user = payload;
       return true;
     } catch (e) {
