@@ -39,12 +39,13 @@ export class AppGateway
     console.log('Initialized Gateway!');
   }
 
-  handleConnection(@ConnectedSocket() client: Socket) {
+  handleConnection(@ConnectedSocket() client: Socket & { user: User }) {
     console.log(
-      `Client connected: ${client.id} + ${JSON.stringify(
+      `Client connected: ${client.user} + ${JSON.stringify(
         client.handshake.query,
       )}`,
     );
+    // TODO: update last visited metadata
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {

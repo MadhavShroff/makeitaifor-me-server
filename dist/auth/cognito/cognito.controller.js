@@ -40,12 +40,12 @@ let CognitoController = exports.CognitoController = class CognitoController {
         return res.redirect('https://makeitaifor.me/chat');
     }
     async logout(req, res) {
-        const clientId = 'your-client-id';
-        const logoutUri = 'http://localhost:3000/';
+        const clientId = this.configService.get('OAUTH_COGNITO_ID');
+        const logoutUri = 'https://www.makeitaifor.me/';
         const status = await this.cognitoStrategy.logout(clientId, logoutUri);
         console.log('Logout status: ', status);
         if (status === 200) {
-            res.clearCookie('SESSIONID');
+            res.clearCookie(this.configService.get('SESSION_COOKIE_KEY'));
             return res.sendStatus(200);
         }
         else {
@@ -80,6 +80,7 @@ __decorate([
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
 __decorate([
     (0, common_1.Post)('logout'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),

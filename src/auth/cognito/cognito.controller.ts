@@ -44,16 +44,17 @@ export class CognitoController {
   }
 
   @Post('logout')
+  @UseGuards(JwtAuthGuard)
   async logout(@Req() req, @Res() res) {
-    const clientId = 'your-client-id'; // replace with your actual client ID
-    const logoutUri = 'http://localhost:3000/'; // replace with your actual logout URI
+    const clientId = this.configService.get<string>('OAUTH_COGNITO_ID'); // replace with your actual client ID
+    const logoutUri = 'https://www.makeitaifor.me/'; // replace with your actual logout URI
 
     const status = await this.cognitoStrategy.logout(clientId, logoutUri);
 
     console.log('Logout status: ', status);
 
     if (status === 200) {
-      res.clearCookie('SESSIONID'); // replace 'SESSIONID' with your cookie name
+      res.clearCookie(this.configService.get<string>('SESSION_COOKIE_KEY')); // replace 'SESSIONID' with your cookie name
       return res.sendStatus(200);
     } else {
       return res.sendStatus(status);

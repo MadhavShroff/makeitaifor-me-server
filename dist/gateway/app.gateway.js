@@ -28,7 +28,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('Initialized Gateway!');
     }
     handleConnection(client) {
-        console.log(`Client connected: ${client.id} + ${JSON.stringify(client.handshake.query)}`);
+        console.log(`Client connected: ${client.user} + ${JSON.stringify(client.handshake.query)}`);
     }
     handleDisconnect(client) {
         console.log(`Client disconnected: ${client.id}`);
@@ -56,7 +56,7 @@ __decorate([
 __decorate([
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AppGateway.prototype, "handleConnection", null);
 __decorate([
