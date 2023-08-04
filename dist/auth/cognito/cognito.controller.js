@@ -43,6 +43,7 @@ let CognitoController = exports.CognitoController = class CognitoController {
         const clientId = 'your-client-id';
         const logoutUri = 'http://localhost:3000/';
         const status = await this.cognitoStrategy.logout(clientId, logoutUri);
+        console.log('Logout status: ', status);
         if (status === 200) {
             res.clearCookie('SESSIONID');
             return res.sendStatus(200);

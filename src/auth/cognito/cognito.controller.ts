@@ -50,6 +50,8 @@ export class CognitoController {
 
     const status = await this.cognitoStrategy.logout(clientId, logoutUri);
 
+    console.log('Logout status: ', status);
+
     if (status === 200) {
       res.clearCookie('SESSIONID'); // replace 'SESSIONID' with your cookie name
       return res.sendStatus(200);

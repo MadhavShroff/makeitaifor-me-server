@@ -13,40 +13,34 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
+const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const jwt_service_1 = require("../auth/jwt/jwt.service");
+const ws_jwt_guard_1 = require("./ws-jwt/ws-jwt.guard");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 let AppGateway = exports.AppGateway = class AppGateway {
     constructor(langChainService, jwtService) {
         this.langChainService = langChainService;
         this.jwtService = jwtService;
     }
-    afterInit(server) {
+    afterInit() {
         console.log('Initialized Gateway!');
     }
     handleConnection(client) {
         console.log(`Client connected: ${client.id} + ${JSON.stringify(client.handshake.query)}`);
-        const token = client.handshake.query.token;
-        console.log('Token: ', token);
-        try {
-            const payload = this.jwtService.verifyToken(token);
-            client.user = payload;
-        }
-        catch (err) {
-            console.error('Authentication error', err);
-            client.disconnect(true);
-        }
     }
     handleDisconnect(client) {
         console.log(`Client disconnected: ${client.id}`);
     }
-    handleMessage(message) {
+    handleMessage(message, client) {
         console.log('Received message: ', message);
+        console.log('User: ', client.user);
         return `Received at 'message', you sent: ${message}`;
     }
-    buttonClicked(data) {
+    buttonClicked(data, client) {
         console.log('Received event at buttonClicked with data: ', data);
+        console.log('User: ', client.user);
         return 'Acknowledged button click! : ' + data;
     }
     async generateText(data, client) {
@@ -74,15 +68,17 @@ __decorate([
 __decorate([
     (0, websockets_1.SubscribeMessage)('message'),
     __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", String)
 ], AppGateway.prototype, "handleMessage", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('buttonClicked'),
     __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", String)
 ], AppGateway.prototype, "buttonClicked", null);
 __decorate([
@@ -94,6 +90,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "generateText", null);
 exports.AppGateway = AppGateway = __decorate([
+    (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
     (0, websockets_1.WebSocketGateway)({
         cors: {
             origin: 'https://www.makeitaifor.me',

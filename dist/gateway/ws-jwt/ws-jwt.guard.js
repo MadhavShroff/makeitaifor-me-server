@@ -9,23 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LangChainService = void 0;
+exports.WsJwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const openai_1 = require("langchain/llms/openai");
-let LangChainService = exports.LangChainService = class LangChainService {
-    constructor() {
-        this.llm = new openai_1.OpenAI({
-            openAIApiKey: process.env.OPENAI_API_KEY,
-            temperature: 0.5,
-        });
+const jwt_1 = require("@nestjs/jwt");
+const websockets_1 = require("@nestjs/websockets");
+let WsJwtAuthGuard = exports.WsJwtAuthGuard = class WsJwtAuthGuard {
+    constructor(jwtService) {
+        this.jwtService = jwtService;
     }
-    async generateText(prompt, user) {
-        console.log('Generating text for ' + JSON.stringify(user));
-        return this.llm.predict(prompt);
+    canActivate(context) {
+        const client = context.switchToWs().getClient();
+        const token = Array.isArray(client.handshake.query.token)
+            ? client.handshake.query.token[0]
+            : client.handshake.query.token;
+        try {
+            const payload = this.jwtService.verify(token);
+            client.user = payload;
+            return true;
+        }
+        catch (e) {
+            throw new websockets_1.WsException('Unauthorized');
+        }
     }
 };
-exports.LangChainService = LangChainService = __decorate([
+exports.WsJwtAuthGuard = WsJwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
-], LangChainService);
-//# sourceMappingURL=lang-chain.service.js.map
+    __metadata("design:paramtypes", [jwt_1.JwtService])
+], WsJwtAuthGuard);
+//# sourceMappingURL=ws-jwt.guard.js.map

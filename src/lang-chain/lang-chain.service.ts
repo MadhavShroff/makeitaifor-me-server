@@ -14,6 +14,7 @@ export class LangChainService {
   }
 
   async generateText(prompt: string, user: User): Promise<string> {
+    console.log('Generating text for ' + JSON.stringify(user));
     return this.llm.predict(prompt);
     // TODO: save the result to the database
     // TODO: deduct the user's credits
