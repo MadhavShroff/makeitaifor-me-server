@@ -20,7 +20,7 @@ import { User } from 'src/types/user';
 @UseGuards(WsJwtAuthGuard)
 @WebSocketGateway({
   cors:
-    new ConfigService().get<string>('ENV') === 'dev'
+    new ConfigService().get<string>('ENV') === 'prod'
       ? {
           origin: ['https://www.makeitaifor.me'],
           methods: ['GET', 'POST'],

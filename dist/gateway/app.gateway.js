@@ -94,7 +94,7 @@ __decorate([
 exports.AppGateway = AppGateway = __decorate([
     (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
     (0, websockets_1.WebSocketGateway)({
-        cors: new config_1.ConfigService().get('ENV') === 'dev'
+        cors: new config_1.ConfigService().get('ENV') === 'prod'
             ? {
                 origin: ['https://www.makeitaifor.me'],
                 methods: ['GET', 'POST'],
