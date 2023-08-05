@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WsResponse } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/jwt/jwt.service';
@@ -6,8 +7,9 @@ import { User } from 'src/types/user';
 export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
     private langChainService;
     private jwtService;
+    private configService;
     server: Server;
-    constructor(langChainService: LangChainService, jwtService: JwtAuthService);
+    constructor(langChainService: LangChainService, jwtService: JwtAuthService, configService: ConfigService);
     afterInit(): void;
     handleConnection(client: Socket & {
         user: User;

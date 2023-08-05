@@ -37,10 +37,15 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
-        return res.redirect('https://makeitaifor.me/chat');
+        if (this.configService.get('ENV') === 'dev')
+            return res.redirect('http://localhost:3000/chat');
+        else
+            return res.redirect('https://makeitaifor.me/chat');
     }
-    async logout(req, res) {
-        return await cognito_strategy_1.CognitoStrategy.logoutUrl(this.configService.get('OAUTH_COGNITO_DOMAIN'), this.configService.get('OAUTH_COGNITO_REGION'), this.configService.get('OAUTH_COGNITO_ID'), 'https://www.makeitaifor.me/');
+    async logout() {
+        const logoutUrl = await cognito_strategy_1.CognitoStrategy.logoutUrl(this.configService.get('OAUTH_COGNITO_DOMAIN'), this.configService.get('OAUTH_COGNITO_REGION'), this.configService.get('OAUTH_COGNITO_ID'), 'https://www.makeitaifor.me/');
+        console.log('logoutUrl returned: ' + logoutUrl);
+        return logoutUrl;
     }
 };
 __decorate([
@@ -70,10 +75,8 @@ __decorate([
 ], CognitoController.prototype, "cognitoAuthRedirect", null);
 __decorate([
     (0, common_1.Get)('/logout'),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], CognitoController.prototype, "logout", null);
 exports.CognitoController = CognitoController = __decorate([

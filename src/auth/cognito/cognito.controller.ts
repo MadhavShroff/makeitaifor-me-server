@@ -40,16 +40,20 @@ export class CognitoController {
         secure: true,
       },
     );
-    return res.redirect('https://makeitaifor.me/chat'); // Redirects to /chat on successful cognito login
+    if (this.configService.get<string>('ENV') === 'dev')
+      return res.redirect('http://localhost:3000/chat');
+    else return res.redirect('https://makeitaifor.me/chat'); // Redirects to /chat on successful cognito login
   }
 
   @Get('/logout')
-  async logout(@Req() req, @Res() res) {
-    return await CognitoStrategy.logoutUrl(
+  async logout() {
+    const logoutUrl = await CognitoStrategy.logoutUrl(
       this.configService.get<string>('OAUTH_COGNITO_DOMAIN'),
       this.configService.get<string>('OAUTH_COGNITO_REGION'),
       this.configService.get<string>('OAUTH_COGNITO_ID'),
       'https://www.makeitaifor.me/', // Frontend redirects to this url to logout and clear cookies
     );
+    console.log('logoutUrl returned: ' + logoutUrl);
+    return logoutUrl;
   }
 }

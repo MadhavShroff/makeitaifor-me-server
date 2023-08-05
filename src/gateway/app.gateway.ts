@@ -1,4 +1,5 @@
 import { UseGuards } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   WebSocketGateway,
   OnGatewayConnection,
@@ -18,11 +19,17 @@ import { User } from 'src/types/user';
 
 @UseGuards(WsJwtAuthGuard)
 @WebSocketGateway({
-  cors: {
-    origin: 'https://www.makeitaifor.me',
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
+  cors:
+    new ConfigService().get<string>('ENV') === 'dev'
+      ? {
+          origin: ['https://www.makeitaifor.me'],
+          methods: ['GET', 'POST'],
+          credentials: true,
+        }
+      : {
+          origin: ['http://localhost:3000'],
+          methods: ['GET', 'POST'],
+        },
 })
 export class AppGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
@@ -33,6 +40,7 @@ export class AppGateway
   constructor(
     private langChainService: LangChainService,
     private jwtService: JwtAuthService,
+    private configService: ConfigService,
   ) {}
 
   afterInit() {

@@ -14,15 +14,17 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppGateway = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const jwt_service_1 = require("../auth/jwt/jwt.service");
 const ws_jwt_guard_1 = require("./ws-jwt/ws-jwt.guard");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 let AppGateway = exports.AppGateway = class AppGateway {
-    constructor(langChainService, jwtService) {
+    constructor(langChainService, jwtService, configService) {
         this.langChainService = langChainService;
         this.jwtService = jwtService;
+        this.configService = configService;
     }
     afterInit() {
         console.log('Initialized Gateway!');
@@ -92,13 +94,19 @@ __decorate([
 exports.AppGateway = AppGateway = __decorate([
     (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
     (0, websockets_1.WebSocketGateway)({
-        cors: {
-            origin: 'https://www.makeitaifor.me',
-            methods: ['GET', 'POST'],
-            credentials: true,
-        },
+        cors: new config_1.ConfigService().get('ENV') === 'dev'
+            ? {
+                origin: ['https://www.makeitaifor.me'],
+                methods: ['GET', 'POST'],
+                credentials: true,
+            }
+            : {
+                origin: ['http://localhost:3000'],
+                methods: ['GET', 'POST'],
+            },
     }),
     __metadata("design:paramtypes", [lang_chain_service_1.LangChainService,
-        jwt_service_1.JwtAuthService])
+        jwt_service_1.JwtAuthService,
+        config_1.ConfigService])
 ], AppGateway);
 //# sourceMappingURL=app.gateway.js.map
