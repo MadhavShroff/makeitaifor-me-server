@@ -21,7 +21,7 @@ const jwt_service_1 = require("../auth/jwt/jwt.service");
 const ws_jwt_guard_1 = require("./ws-jwt/ws-jwt.guard");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 const opts = {
-    cors: new config_1.ConfigService().get('APP_ENV') === 'prod'
+    cors: process.env.APP_ENV === 'prod'
         ? {
             origin: ['https://www.makeitaifor.me'],
             methods: ['GET', 'POST'],
