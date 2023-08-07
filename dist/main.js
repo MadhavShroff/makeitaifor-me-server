@@ -13,7 +13,9 @@ async function bootstrap() {
     });
     app.use(cookieParser());
     app.use(csurf({ cookie: true }));
-    await app.listen(3000);
+    process.env.APP_ENV === 'dev'
+        ? await app.listen(8000)
+        : await app.listen(3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

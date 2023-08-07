@@ -17,7 +17,7 @@ export class LangChainService {
     console.log('Generating text for ' + JSON.stringify(user));
     return this.llm.predict(prompt);
     // TODO: save the result to the database
-    // TODO: deduct the user's credits
+    // TODO: deduct the user's credits -> create DatabaseService with a set of static async methods
     // return result;
   }
 }

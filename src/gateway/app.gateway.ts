@@ -17,10 +17,9 @@ import { WsJwtAuthGuard } from 'src/gateway/ws-jwt/ws-jwt.guard';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
 import { User } from 'src/types/user';
 
-@UseGuards(WsJwtAuthGuard)
-@WebSocketGateway({
+const opts = {
   cors:
-    new ConfigService().get<string>('ENV') === 'prod'
+    new ConfigService().get<string>('APP_ENV') === 'prod'
       ? {
           origin: ['https://www.makeitaifor.me'],
           methods: ['GET', 'POST'],
@@ -30,7 +29,10 @@ import { User } from 'src/types/user';
           origin: ['http://localhost:3000'],
           methods: ['GET', 'POST'],
         },
-})
+};
+
+@UseGuards(WsJwtAuthGuard)
+@WebSocketGateway(opts)
 export class AppGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
@@ -44,6 +46,8 @@ export class AppGateway
   ) {}
 
   afterInit() {
+    // print webSocketGateway options
+    console.log('WebSocketGateway options: ' + JSON.stringify(opts));
     console.log('Initialized Gateway!');
   }
 

@@ -20,6 +20,18 @@ const socket_io_1 = require("socket.io");
 const jwt_service_1 = require("../auth/jwt/jwt.service");
 const ws_jwt_guard_1 = require("./ws-jwt/ws-jwt.guard");
 const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
+const opts = {
+    cors: new config_1.ConfigService().get('APP_ENV') === 'prod'
+        ? {
+            origin: ['https://www.makeitaifor.me'],
+            methods: ['GET', 'POST'],
+            credentials: true,
+        }
+        : {
+            origin: ['http://localhost:3000'],
+            methods: ['GET', 'POST'],
+        },
+};
 let AppGateway = exports.AppGateway = class AppGateway {
     constructor(langChainService, jwtService, configService) {
         this.langChainService = langChainService;
@@ -27,6 +39,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         this.configService = configService;
     }
     afterInit() {
+        console.log('WebSocketGateway options: ' + JSON.stringify(opts));
         console.log('Initialized Gateway!');
     }
     handleConnection(client) {
@@ -93,18 +106,7 @@ __decorate([
 ], AppGateway.prototype, "generateText", null);
 exports.AppGateway = AppGateway = __decorate([
     (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
-    (0, websockets_1.WebSocketGateway)({
-        cors: new config_1.ConfigService().get('ENV') === 'prod'
-            ? {
-                origin: ['https://www.makeitaifor.me'],
-                methods: ['GET', 'POST'],
-                credentials: true,
-            }
-            : {
-                origin: ['http://localhost:3000'],
-                methods: ['GET', 'POST'],
-            },
-    }),
+    (0, websockets_1.WebSocketGateway)(opts),
     __metadata("design:paramtypes", [lang_chain_service_1.LangChainService,
         jwt_service_1.JwtAuthService,
         config_1.ConfigService])
