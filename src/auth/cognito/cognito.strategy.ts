@@ -42,7 +42,7 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     clientId: string,
     logoutUri: string,
   ): string {
-    return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}&response_type=code`;
+    return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&redirect_uri=${logoutUri}&response_type=code`;
   }
 
   static authorizationUrl(domain: string, region: string): string {
