@@ -28,7 +28,7 @@ const opts = {
             credentials: true,
         }
         : {
-            origin: ['http://localhost:3000'],
+            origin: ['http://localhost:3001'],
             methods: ['GET', 'POST'],
         },
 };
