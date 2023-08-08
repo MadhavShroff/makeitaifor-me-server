@@ -34,7 +34,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
         return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
     }
     static logoutUrl(domain, region, clientId, logoutUri) {
-        return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}&redirect_uri=${logoutUri}&response_type=code`;
+        return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}&response_type=code`;
     }
     static authorizationUrl(domain, region) {
         return `${this.baseUrl(domain, region)}/authorize`;
