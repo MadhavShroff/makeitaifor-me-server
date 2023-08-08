@@ -10,5 +10,7 @@ export declare class CognitoController {
     cognitoAuth(_req: any): Promise<void>;
     cognitoAuthMe(req: Request): Promise<import("../../types/user").User>;
     cognitoAuthRedirect(req: Request, res: Response): Promise<void>;
-    logout(): Promise<string>;
+    logout(): Promise<{
+        logout_url: string;
+    }>;
 }

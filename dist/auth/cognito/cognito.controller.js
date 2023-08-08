@@ -45,7 +45,9 @@ let CognitoController = exports.CognitoController = class CognitoController {
     async logout() {
         const logoutUrl = await cognito_strategy_1.CognitoStrategy.logoutUrl(this.configService.get('OAUTH_COGNITO_DOMAIN'), this.configService.get('OAUTH_COGNITO_REGION'), this.configService.get('OAUTH_COGNITO_ID'), 'https://www.makeitaifor.me/');
         console.log('logoutUrl returned: ' + logoutUrl);
-        return logoutUrl;
+        return {
+            logout_url: logoutUrl,
+        };
     }
 };
 __decorate([

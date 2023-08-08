@@ -54,6 +54,8 @@ export class CognitoController {
       'https://www.makeitaifor.me/', // Frontend redirects to this url to logout and clear cookies
     );
     console.log('logoutUrl returned: ' + logoutUrl);
-    return logoutUrl;
+    return {
+      logout_url: logoutUrl,
+    };
   }
 }
