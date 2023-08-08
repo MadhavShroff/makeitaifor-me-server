@@ -10,6 +10,7 @@ import { UsersService } from '../../users/users.service';
 export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
   private domain: string;
   private region: string;
+  private clientId: string;
 
   constructor(
     configService: ConfigService,
@@ -30,19 +31,11 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     });
     this.domain = configService.get<string>('OAUTH_COGNITO_DOMAIN');
     this.region = configService.get<string>('OAUTH_COGNITO_REGION');
+    this.clientId = configService.get<string>('OAUTH_COGNITO_ID');
   }
 
   static baseUrl(domain: string, region: string): string {
     return `https://${domain}.auth.${region}.amazoncognito.com/oauth2`;
-  }
-
-  static logoutUrl(
-    domain: string,
-    region: string,
-    clientId: string,
-    logoutUri: string,
-  ): string {
-    return `https://${domain}.auth.${region}.amazoncognito.com/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
   }
 
   static authorizationUrl(domain: string, region: string): string {
@@ -55,17 +48,6 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
 
   static userInfoUrl(domain: string, region: string): string {
     return `${this.baseUrl(domain, region)}/userInfo`;
-  }
-
-  async logout(clientId: string, logoutUri: string) {
-    const url = CognitoStrategy.logoutUrl(
-      this.domain,
-      this.region,
-      clientId,
-      logoutUri,
-    );
-    const response = await axios.get(url);
-    return response.status;
   }
 
   async validate(accessToken: string) {
