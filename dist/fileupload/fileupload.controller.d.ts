@@ -11,4 +11,5 @@ export declare class FileUploadController {
     listFiles(req: any): Promise<{
         files: any[];
     }>;
+    fileUploaded(req: any): Promise<void>;
 }

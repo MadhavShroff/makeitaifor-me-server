@@ -54,4 +54,10 @@ export class FileUploadController {
     const files = await this.fileUploadService.listFiles(req.user);
     return { files };
   }
+
+  @Post('/s3-file-uploaded') // This is the route that the S3 bucket redirects to after a file is uploaded
+  @UseGuards(JwtAuthGuard)
+  async fileUploaded(@Req() req) {
+    console.log(req.body);
+  }
 }
