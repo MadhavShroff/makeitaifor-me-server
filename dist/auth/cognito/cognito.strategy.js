@@ -16,7 +16,7 @@ const passport_oauth2_1 = require("passport-oauth2");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const axios_1 = require("axios");
-const users_service_1 = require("../../users/users.service");
+const users_service_1 = require("../../mongo/users/users.service");
 let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class CognitoStrategy extends (0, passport_1.PassportStrategy)(passport_oauth2_1.Strategy, 'cognito') {
     constructor(configService, usersService) {
         super({

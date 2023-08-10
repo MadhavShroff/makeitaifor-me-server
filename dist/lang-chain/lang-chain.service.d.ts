@@ -1,6 +1,8 @@
+import { MongoService } from 'src/mongo/mongo.service';
 import { User } from 'src/types/user';
 export declare class LangChainService {
-    private llm;
-    constructor();
-    generateText(prompt: string, user: User): Promise<string>;
+    private readonly mongoService;
+    private chat;
+    constructor(mongoService: MongoService);
+    generateText(prompt: string, user: User, callback: (text: string, seq: number) => void): Promise<string>;
 }

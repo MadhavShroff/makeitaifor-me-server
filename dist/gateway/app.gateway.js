@@ -60,7 +60,13 @@ let AppGateway = exports.AppGateway = class AppGateway {
     }
     async generateText(data, client) {
         console.log('Received event at tryButtonClicked with data: ', data);
-        const result = await this.langChainService.generateText(data.content, client.user);
+        const result = await this.langChainService.generateText(data.content, client.user, (str, seq) => {
+            client.emit('textGeneratedChunk', {
+                event: 'textGeneratedChunk',
+                data: str,
+                seq: seq,
+            });
+        });
         return { event: 'textGenerated', data: result };
     }
 };

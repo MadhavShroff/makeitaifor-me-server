@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../mongo/users/users.service';
 
 @Injectable()
 export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {

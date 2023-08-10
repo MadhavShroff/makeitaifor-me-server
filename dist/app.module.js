@@ -12,12 +12,13 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const config_1 = require("@nestjs/config");
-const users_module_1 = require("./users/users.module");
-const mongoose_1 = require("@nestjs/mongoose");
+const users_module_1 = require("./mongo/users/users.module");
 const fileupload_module_1 = require("./fileupload/fileupload.module");
 const app_gateway_1 = require("./gateway/app.gateway");
 const lang_chain_service_1 = require("./lang-chain/lang-chain.service");
 const jwt_module_1 = require("./auth/jwt/jwt.module");
+const mongo_module_1 = require("./mongo/mongo.module");
+const lang_chain_module_1 = require("./lang-chain/lang-chain.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -30,15 +31,9 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
             jwt_module_1.JwtModule,
-            mongoose_1.MongooseModule.forRootAsync({
-                useFactory: async (configService) => ({
-                    uri: configService.get('DATABASE_URL'),
-                    useNewUrlParser: true,
-                    useUnifiedTopology: true,
-                }),
-                inject: [config_1.ConfigService],
-            }),
             fileupload_module_1.FileuploadModule,
+            mongo_module_1.MongoModule,
+            lang_chain_module_1.LangChainModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService],

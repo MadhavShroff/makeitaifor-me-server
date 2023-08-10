@@ -3,13 +3,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './mongo/users/users.module';
 import { FileuploadModule } from './fileupload/fileupload.module';
 import { AppGateway } from './gateway/app.gateway';
 import { LangChainService } from './lang-chain/lang-chain.service';
 import { JwtModule } from './auth/jwt/jwt.module';
+import { MongoModule } from './mongo/mongo.module';
+import { LangChainModule } from './lang-chain/lang-chain.module';
 
 @Module({
   imports: [
@@ -20,15 +21,9 @@ import { JwtModule } from './auth/jwt/jwt.module';
     AuthModule,
     UsersModule,
     JwtModule,
-    MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }),
-      inject: [ConfigService],
-    }),
     FileuploadModule,
+    MongoModule,
+    LangChainModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway, LangChainService],

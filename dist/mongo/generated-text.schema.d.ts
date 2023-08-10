@@ -22,18 +22,19 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Document } from 'mongoose';
-import { Provider } from '../types/user';
-export declare class User extends Document {
-    provider: Provider;
-    id: string;
-    email: string;
-    name: string;
-    created_at: Date;
-    updated_at: Date;
-}
-export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, Document<unknown, any, User> & Omit<User & {
-    _id: import("mongoose").Types.ObjectId;
-}, never>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, Document<unknown, {}, import("mongoose").FlatRecord<User>> & Omit<import("mongoose").FlatRecord<User> & {
+import { Schema } from 'mongoose';
+export declare const GeneratedTextSchema: Schema<any, import("mongoose").Model<any, any, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, {
+    timestamp: Date;
+    text?: string;
+    userId?: string;
+}, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
+    timestamp: Date;
+    text?: string;
+    userId?: string;
+}>> & Omit<import("mongoose").FlatRecord<{
+    timestamp: Date;
+    text?: string;
+    userId?: string;
+}> & {
     _id: import("mongoose").Types.ObjectId;
 }, never>>;

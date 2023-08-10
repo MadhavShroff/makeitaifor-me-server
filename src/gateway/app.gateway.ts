@@ -93,6 +93,13 @@ export class AppGateway
     const result = await this.langChainService.generateText(
       data.content,
       client.user,
+      (str: string, seq: number) => {
+        client.emit('textGeneratedChunk', {
+          event: 'textGeneratedChunk',
+          data: str,
+          seq: seq,
+        });
+      },
     );
     return { event: 'textGenerated', data: result };
   }

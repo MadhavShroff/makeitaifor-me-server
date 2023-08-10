@@ -11,21 +11,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LangChainService = void 0;
 const common_1 = require("@nestjs/common");
-const openai_1 = require("langchain/llms/openai");
+const openai_1 = require("langchain/chat_models/openai");
+const schema_1 = require("langchain/schema");
+const mongo_service_1 = require("../mongo/mongo.service");
 let LangChainService = exports.LangChainService = class LangChainService {
-    constructor() {
-        this.llm = new openai_1.OpenAI({
+    constructor(mongoService) {
+        this.mongoService = mongoService;
+        this.chat = new openai_1.ChatOpenAI({
             openAIApiKey: process.env.OPENAI_API_KEY,
             temperature: 0.5,
+            maxConcurrency: 5,
+            streaming: true,
         });
     }
-    async generateText(prompt, user) {
+    async generateText(prompt, user, callback) {
         console.log('Generating text for ' + JSON.stringify(user));
-        return this.llm.predict(prompt);
+        let fullText = '';
+        let seq = 0;
+        await this.chat.call([new schema_1.HumanMessage(prompt)], {
+            callbacks: [
+                {
+                    handleLLMNewToken(token) {
+                        callback(token, seq++);
+                        fullText += token;
+                    },
+                },
+            ],
+        });
+        fullText = fullText.trim();
+        const result = await this.mongoService.saveGeneratedText(fullText, user);
+        console.log('Text saved to MongoDB:', result);
+        return fullText;
     }
 };
 exports.LangChainService = LangChainService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [mongo_service_1.MongoService])
 ], LangChainService);
 //# sourceMappingURL=lang-chain.service.js.map
