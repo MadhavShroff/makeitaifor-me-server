@@ -55,8 +55,7 @@ export class FileUploadController {
     return { files };
   }
 
-  @Post('/s3-file-uploaded') // This is the route that the S3 bucket redirects to after a file is uploaded
-  @UseGuards(JwtAuthGuard)
+  @Get('/s3-file-uploaded/:uid') // This is the route that the S3 bucket redirects to after a file is uploaded
   async fileUploaded(@Req() req) {
     console.log(req.body);
   }

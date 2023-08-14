@@ -69,8 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "listFiles", null);
 __decorate([
-    (0, common_1.Post)('/s3-file-uploaded'),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('/s3-file-uploaded/:uid'),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
