@@ -5,6 +5,7 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -12,6 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from './fileupload.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { escape } from 'validator';
 
 @Controller('fileupload')
 export class FileUploadController {
@@ -55,8 +57,18 @@ export class FileUploadController {
     return { files };
   }
 
-  @Get('/s3-file-uploaded/:uid') // This is the route that the S3 bucket redirects to after a file is uploaded
-  async fileUploaded(@Req() req) {
-    console.log(req.body);
+  @Get('/s3-file-uploaded')
+  async fileUploaded(
+    @Query('userId') userId: string,
+    @Query('fileName') fileName: string,
+    @Res() res,
+  ) {
+    const sanitizedUserId = escape(userId);
+    const sanitizedFileName = escape(fileName);
+
+    console.log('Sanitized UserId:', sanitizedUserId);
+    console.log('Sanitized FileName:', sanitizedFileName);
+
+    return res.status(200).json({ status: 'acknowledged' });
   }
 }

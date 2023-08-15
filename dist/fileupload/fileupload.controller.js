@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const fileupload_service_1 = require("./fileupload.service");
 const jwt_guard_1 = require("../auth/jwt/jwt.guard");
+const validator_1 = require("validator");
 let FileUploadController = exports.FileUploadController = class FileUploadController {
     constructor(fileUploadService) {
         this.fileUploadService = fileUploadService;
@@ -36,8 +37,12 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const files = await this.fileUploadService.listFiles(req.user);
         return { files };
     }
-    async fileUploaded(req) {
-        console.log(req.body);
+    async fileUploaded(userId, fileName, res) {
+        const sanitizedUserId = (0, validator_1.escape)(userId);
+        const sanitizedFileName = (0, validator_1.escape)(fileName);
+        console.log('Sanitized UserId:', sanitizedUserId);
+        console.log('Sanitized FileName:', sanitizedFileName);
+        return res.status(200).json({ status: 'acknowledged' });
     }
 };
 __decorate([
@@ -69,10 +74,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "listFiles", null);
 __decorate([
-    (0, common_1.Get)('/s3-file-uploaded/:uid'),
-    __param(0, (0, common_1.Req)()),
+    (0, common_1.Get)('/s3-file-uploaded'),
+    __param(0, (0, common_1.Query)('userId')),
+    __param(1, (0, common_1.Query)('fileName')),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String, String, Object]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "fileUploaded", null);
 exports.FileUploadController = FileUploadController = __decorate([
