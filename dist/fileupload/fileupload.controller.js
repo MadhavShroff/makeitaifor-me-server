@@ -38,8 +38,8 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         return { files };
     }
     async fileUploaded(userId, fileName, res) {
-        const sanitizedUserId = (0, validator_1.escape)(userId);
-        const sanitizedFileName = (0, validator_1.escape)(fileName);
+        const sanitizedUserId = validator_1.default.escape(userId);
+        const sanitizedFileName = validator_1.default.escape(fileName);
         console.log('Sanitized UserId:', sanitizedUserId);
         console.log('Sanitized FileName:', sanitizedFileName);
         return res.status(200).json({ status: 'acknowledged' });

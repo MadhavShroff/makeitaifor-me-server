@@ -13,7 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from './fileupload.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
-import { escape } from 'validator';
+import validator from 'validator';
 
 @Controller('fileupload')
 export class FileUploadController {
@@ -63,8 +63,8 @@ export class FileUploadController {
     @Query('fileName') fileName: string,
     @Res() res,
   ) {
-    const sanitizedUserId = escape(userId);
-    const sanitizedFileName = escape(fileName);
+    const sanitizedUserId = validator.escape(userId);
+    const sanitizedFileName = validator.escape(fileName);
 
     console.log('Sanitized UserId:', sanitizedUserId);
     console.log('Sanitized FileName:', sanitizedFileName);

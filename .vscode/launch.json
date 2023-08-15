@@ -20,6 +20,21 @@
         }
       },
       {
+        "type": "aws-sam",
+        "request": "direct-invoke",
+        "name": "s3-callback:index.handler (nodejs18.x)",
+        "invokeTarget": {
+          "target": "code",
+          "projectRoot": "${workspaceFolder}/s3-callback",
+          "lambdaHandler": "index.handler"
+        },
+        "lambda": {
+          "runtime": "nodejs18.x",
+          "payload": {},
+          "environmentVariables": {}
+        }
+      },
+      {
         "type": "node",
         "request": "attach",
         "name": "Attach NestJS WS",
