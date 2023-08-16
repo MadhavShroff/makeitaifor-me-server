@@ -54,6 +54,14 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         };
         return this.s3.getSignedUrlPromise('putObject', params);
     }
+    async generateTemporaryDownloadUrl(objKey) {
+        const params = {
+            Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}`,
+            Key: objKey,
+            Expires: 60 * 60,
+        };
+        return this.s3.getSignedUrlPromise('getObject', params);
+    }
     async listFiles(user) {
         const params = {
             Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),

@@ -1,7 +1,11 @@
 import { FileUploadService } from './fileupload.service';
+import { MongoService } from 'src/mongo/mongo.service';
+import { ConfigService } from '@nestjs/config';
 export declare class FileUploadController {
     private fileUploadService;
-    constructor(fileUploadService: FileUploadService);
+    private mongoService;
+    private configService;
+    constructor(fileUploadService: FileUploadService, mongoService: MongoService, configService: ConfigService);
     uploadFile(file: any, req: any): Promise<{
         url: string;
     }>;
@@ -11,5 +15,9 @@ export declare class FileUploadController {
     listFiles(req: any): Promise<{
         files: any[];
     }>;
-    fileUploaded(userId: string, fileName: string, res: any): Promise<any>;
+    fileUploaded(objKey: string, res: any): Promise<any>;
+    processDocument(objKey: any): Promise<string>;
+    callMathpixApi(url: any): Promise<any>;
+    checkProcessingStatus(pdfId: any): Promise<string>;
+    getCompletedResult(pdfId: any): Promise<string>;
 }

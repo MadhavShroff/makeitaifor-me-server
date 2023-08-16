@@ -58,6 +58,15 @@ export class FileUploadService {
     return this.s3.getSignedUrlPromise('putObject', params);
   }
 
+  async generateTemporaryDownloadUrl(objKey: string): Promise<string> {
+    const params = {
+      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}`,
+      Key: objKey,
+      Expires: 60 * 60, // presigned URL expiration time in seconds
+    };
+    return this.s3.getSignedUrlPromise('getObject', params);
+  }
+
   async listFiles(user: any): Promise<any[]> {
     const params = {
       Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),

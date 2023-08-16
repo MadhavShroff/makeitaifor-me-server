@@ -18,9 +18,14 @@ const platform_express_1 = require("@nestjs/platform-express");
 const fileupload_service_1 = require("./fileupload.service");
 const jwt_guard_1 = require("../auth/jwt/jwt.guard");
 const validator_1 = require("validator");
+const mongo_service_1 = require("../mongo/mongo.service");
+const config_1 = require("@nestjs/config");
+const axios_1 = require("axios");
 let FileUploadController = exports.FileUploadController = class FileUploadController {
-    constructor(fileUploadService) {
+    constructor(fileUploadService, mongoService, configService) {
         this.fileUploadService = fileUploadService;
+        this.mongoService = mongoService;
+        this.configService = configService;
     }
     async uploadFile(file, req) {
         const { originalname, buffer, mimetype } = file;
@@ -37,12 +42,63 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const files = await this.fileUploadService.listFiles(req.user);
         return { files };
     }
-    async fileUploaded(userId, fileName, res) {
-        const sanitizedUserId = validator_1.default.escape(userId);
-        const sanitizedFileName = validator_1.default.escape(fileName);
-        console.log('Sanitized UserId:', sanitizedUserId);
-        console.log('Sanitized FileName:', sanitizedFileName);
-        return res.status(200).json({ status: 'acknowledged' });
+    async fileUploaded(objKey, res) {
+        const sanitizedObjKey = validator_1.default.escape(objKey);
+        console.log('Sanitized ObjKey:', sanitizedObjKey);
+        const parsedString = await this.processDocument(sanitizedObjKey);
+        console.log('Parsed string:', parsedString);
+        try {
+            await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey.substring(37), parsedString);
+            return res.status(200).json({ status: 'acknowledged' });
+        }
+        catch (error) {
+            console.error('Operation failed:', error);
+            return res
+                .status(500)
+                .json({ status: 'Internal Server Error', error: error });
+        }
+    }
+    async processDocument(objKey) {
+        const url = await this.fileUploadService.generateTemporaryDownloadUrl(objKey);
+        const pdf_id = await this.callMathpixApi(url);
+        let statusResponse;
+        do {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            statusResponse = await this.checkProcessingStatus(pdf_id);
+        } while (statusResponse.status !== 'completed' &&
+            statusResponse.status !== 'error');
+        return await this.getCompletedResult(pdf_id);
+    }
+    async callMathpixApi(url) {
+        const data = { url: url };
+        const headers = {
+            app_id: this.configService.get('MATHPIX_APP_ID'),
+            app_key: this.configService.get('MATHPIX_APP_KEY'),
+            'Content-type': 'application/json',
+        };
+        return axios_1.default
+            .post('https://api.mathpix.com/v3/pdf', data, { headers })
+            .then((response) => response.data.pdf_id);
+    }
+    async checkProcessingStatus(pdfId) {
+        return (0, axios_1.default)({
+            method: 'GET',
+            url: `https://api.mathpix.com/v3/pdf/${pdfId}`,
+            headers: {
+                app_id: this.configService.get('MATHPIX_APP_ID'),
+                app_key: this.configService.get('MATHPIX_APP_KEY'),
+            },
+        }).then((response) => response.data);
+    }
+    async getCompletedResult(pdfId) {
+        return (0, axios_1.default)({
+            method: 'GET',
+            url: `https://api.mathpix.com/v3/pdf/${pdfId}.mmd`,
+            headers: {
+                app_id: this.configService.get('MATHPIX_APP_ID'),
+                app_key: this.configService.get('MATHPIX_APP_KEY'),
+            },
+        }).then((response) => response.data);
     }
 };
 __decorate([
@@ -75,15 +131,16 @@ __decorate([
 ], FileUploadController.prototype, "listFiles", null);
 __decorate([
     (0, common_1.Get)('/s3-file-uploaded'),
-    __param(0, (0, common_1.Query)('userId')),
-    __param(1, (0, common_1.Query)('fileName')),
-    __param(2, (0, common_1.Res)()),
+    __param(0, (0, common_1.Query)('objKey')),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "fileUploaded", null);
 exports.FileUploadController = FileUploadController = __decorate([
     (0, common_1.Controller)('fileupload'),
-    __metadata("design:paramtypes", [fileupload_service_1.FileUploadService])
+    __metadata("design:paramtypes", [fileupload_service_1.FileUploadService,
+        mongo_service_1.MongoService,
+        config_1.ConfigService])
 ], FileUploadController);
 //# sourceMappingURL=fileupload.controller.js.map

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GeneratedTextSchema } from './generated-text.schema'; // example schema
+import { GeneratedTextSchema } from './generated-text.schema';
+import { ProcessedTextSchema } from './processed-text.schema';
 import { ConfigService } from '@nestjs/config';
 import { MongoService } from './mongo.service';
 
@@ -16,6 +17,7 @@ import { MongoService } from './mongo.service';
     }),
     MongooseModule.forFeature([
       { name: 'GeneratedText', schema: GeneratedTextSchema },
+      { name: 'ProcessedText', schema: ProcessedTextSchema },
     ]),
   ],
   providers: [MongoService],

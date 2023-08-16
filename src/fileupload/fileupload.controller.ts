@@ -14,10 +14,17 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from './fileupload.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import validator from 'validator';
+import { MongoService } from 'src/mongo/mongo.service';
+import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 
 @Controller('fileupload')
 export class FileUploadController {
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor(
+    private fileUploadService: FileUploadService,
+    private mongoService: MongoService,
+    private configService: ConfigService,
+  ) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -58,17 +65,75 @@ export class FileUploadController {
   }
 
   @Get('/s3-file-uploaded')
-  async fileUploaded(
-    @Query('userId') userId: string,
-    @Query('fileName') fileName: string,
-    @Res() res,
-  ) {
-    const sanitizedUserId = validator.escape(userId);
-    const sanitizedFileName = validator.escape(fileName);
+  async fileUploaded(@Query('objKey') objKey: string, @Res() res) {
+    const sanitizedObjKey = validator.escape(objKey);
+    console.log('Sanitized ObjKey:', sanitizedObjKey);
+    const parsedString = await this.processDocument(sanitizedObjKey);
+    console.log('Parsed string:', parsedString);
+    try {
+      await this.mongoService.saveProcessedText(
+        objKey.substring(0, 36),
+        objKey.substring(37),
+        parsedString,
+      );
+      return res.status(200).json({ status: 'acknowledged' });
+    } catch (error) {
+      console.error('Operation failed:', error);
+      return res
+        .status(500)
+        .json({ status: 'Internal Server Error', error: error });
+    }
+  }
 
-    console.log('Sanitized UserId:', sanitizedUserId);
-    console.log('Sanitized FileName:', sanitizedFileName);
+  async processDocument(objKey) {
+    const url = await this.fileUploadService.generateTemporaryDownloadUrl(
+      objKey,
+    );
+    const pdf_id = await this.callMathpixApi(url);
 
-    return res.status(200).json({ status: 'acknowledged' });
+    let statusResponse;
+    do {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      statusResponse = await this.checkProcessingStatus(pdf_id);
+    } while (
+      statusResponse.status !== 'completed' &&
+      statusResponse.status !== 'error'
+    );
+
+    return await this.getCompletedResult(pdf_id);
+  }
+
+  async callMathpixApi(url) {
+    const data = { url: url };
+    const headers = {
+      app_id: this.configService.get('MATHPIX_APP_ID'),
+      app_key: this.configService.get('MATHPIX_APP_KEY'),
+      'Content-type': 'application/json',
+    };
+    return axios
+      .post('https://api.mathpix.com/v3/pdf', data, { headers })
+      .then((response) => response.data.pdf_id);
+  }
+
+  async checkProcessingStatus(pdfId): Promise<string> {
+    return axios({
+      method: 'GET',
+      url: `https://api.mathpix.com/v3/pdf/${pdfId}`,
+      headers: {
+        app_id: this.configService.get('MATHPIX_APP_ID'),
+        app_key: this.configService.get('MATHPIX_APP_KEY'),
+      },
+    }).then((response) => response.data);
+  }
+
+  async getCompletedResult(pdfId): Promise<string> {
+    return axios({
+      method: 'GET',
+      url: `https://api.mathpix.com/v3/pdf/${pdfId}.mmd`,
+      headers: {
+        app_id: this.configService.get('MATHPIX_APP_ID'),
+        app_key: this.configService.get('MATHPIX_APP_KEY'),
+      },
+    }).then((response) => response.data);
   }
 }

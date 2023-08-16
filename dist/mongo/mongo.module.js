@@ -10,6 +10,7 @@ exports.MongoModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const generated_text_schema_1 = require("./generated-text.schema");
+const processed_text_schema_1 = require("./processed-text.schema");
 const config_1 = require("@nestjs/config");
 const mongo_service_1 = require("./mongo.service");
 let MongoModule = exports.MongoModule = class MongoModule {
@@ -27,6 +28,7 @@ exports.MongoModule = MongoModule = __decorate([
             }),
             mongoose_1.MongooseModule.forFeature([
                 { name: 'GeneratedText', schema: generated_text_schema_1.GeneratedTextSchema },
+                { name: 'ProcessedText', schema: processed_text_schema_1.ProcessedTextSchema },
             ]),
         ],
         providers: [mongo_service_1.MongoService],

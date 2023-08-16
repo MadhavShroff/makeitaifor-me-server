@@ -17,8 +17,9 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 let MongoService = exports.MongoService = class MongoService {
-    constructor(generatedTextModel) {
+    constructor(generatedTextModel, processedTextModel) {
         this.generatedTextModel = generatedTextModel;
+        this.processedTextModel = processedTextModel;
     }
     async saveGeneratedText(text, user) {
         const generatedText = new this.generatedTextModel({
@@ -27,10 +28,21 @@ let MongoService = exports.MongoService = class MongoService {
         });
         await generatedText.save();
     }
+    async saveProcessedText(userId, fileName, text) {
+        const generatedText = new this.processedTextModel({
+            userId: userId,
+            text: text,
+            fileName: fileName,
+            timestamp: new Date(),
+        });
+        await generatedText.save();
+    }
 };
 exports.MongoService = MongoService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)('GeneratedText')),
-    __metadata("design:paramtypes", [mongoose_2.Model])
+    __param(1, (0, mongoose_1.InjectModel)('ProcessedText')),
+    __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model])
 ], MongoService);
 //# sourceMappingURL=mongo.service.js.map

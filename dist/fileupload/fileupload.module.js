@@ -10,10 +10,12 @@ exports.FileuploadModule = void 0;
 const common_1 = require("@nestjs/common");
 const fileupload_service_1 = require("./fileupload.service");
 const fileupload_controller_1 = require("./fileupload.controller");
+const mongo_module_1 = require("../mongo/mongo.module");
 let FileuploadModule = exports.FileuploadModule = class FileuploadModule {
 };
 exports.FileuploadModule = FileuploadModule = __decorate([
     (0, common_1.Module)({
+        imports: [mongo_module_1.MongoModule],
         providers: [fileupload_service_1.FileUploadService],
         controllers: [fileupload_controller_1.FileUploadController],
     })
