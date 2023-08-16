@@ -66,9 +66,11 @@ export class FileUploadController {
 
   @Get('/s3-file-uploaded')
   async fileUploaded(@Query('objKey') objKey: string, @Res() res) {
-    const sanitizedObjKey = validator.escape(objKey);
-    console.log('Sanitized ObjKey:', sanitizedObjKey);
-    const parsedString = await this.processDocument(sanitizedObjKey);
+    if ((await this.validateObjKey(objKey)) === false) {
+      return res.status(400).json({ status: 'Bad Request' });
+    }
+    console.log('Sanitized ObjKey:', objKey);
+    const parsedString = await this.processDocument(objKey);
     console.log('Parsed string:', parsedString);
     try {
       await this.mongoService.saveProcessedText(
@@ -83,6 +85,17 @@ export class FileUploadController {
         .status(500)
         .json({ status: 'Internal Server Error', error: error });
     }
+  }
+
+  async validateObjKey(objKey: string): Promise<boolean> {
+    const sanitizedObjKey = validator.escape(objKey).split('&#x2F;');
+    const regex = /^[a-zA-Z0-9_\-\.]+\.[a-zA-Z0-9]{2,}$/;
+    if (
+      validator.isUUID(sanitizedObjKey[0], 4) &&
+      regex.test(sanitizedObjKey[1])
+    )
+      return true;
+    return false;
   }
 
   async processDocument(objKey) {

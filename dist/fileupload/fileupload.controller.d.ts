@@ -16,6 +16,7 @@ export declare class FileUploadController {
         files: any[];
     }>;
     fileUploaded(objKey: string, res: any): Promise<any>;
+    validateObjKey(objKey: string): Promise<boolean>;
     processDocument(objKey: any): Promise<string>;
     callMathpixApi(url: any): Promise<any>;
     checkProcessingStatus(pdfId: any): Promise<string>;

@@ -43,9 +43,11 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         return { files };
     }
     async fileUploaded(objKey, res) {
-        const sanitizedObjKey = validator_1.default.escape(objKey);
-        console.log('Sanitized ObjKey:', sanitizedObjKey);
-        const parsedString = await this.processDocument(sanitizedObjKey);
+        if ((await this.validateObjKey(objKey)) === false) {
+            return res.status(400).json({ status: 'Bad Request' });
+        }
+        console.log('Sanitized ObjKey:', objKey);
+        const parsedString = await this.processDocument(objKey);
         console.log('Parsed string:', parsedString);
         try {
             await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey.substring(37), parsedString);
@@ -57,6 +59,14 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
                 .status(500)
                 .json({ status: 'Internal Server Error', error: error });
         }
+    }
+    async validateObjKey(objKey) {
+        const sanitizedObjKey = validator_1.default.escape(objKey).split('&#x2F;');
+        const regex = /^[a-zA-Z0-9_\-\.]+\.[a-zA-Z0-9]{2,}$/;
+        if (validator_1.default.isUUID(sanitizedObjKey[0], 4) &&
+            regex.test(sanitizedObjKey[1]))
+            return true;
+        return false;
     }
     async processDocument(objKey) {
         const url = await this.fileUploadService.generateTemporaryDownloadUrl(objKey);
