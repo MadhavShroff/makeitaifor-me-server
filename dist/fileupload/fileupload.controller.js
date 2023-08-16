@@ -46,11 +46,11 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         if ((await this.validateObjKey(objKey)) === false) {
             return res.status(400).json({ status: 'Bad Request' });
         }
-        console.log('Sanitized ObjKey:', objKey);
+        console.log('S3 File uploaded: ' + JSON.stringify(objKey) + ' Now processing...');
         const parsedString = await this.processDocument(objKey);
-        console.log('Parsed string:', parsedString);
         try {
             await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey.substring(37), parsedString);
+            console.log('Saved to MongoDB');
             return res.status(200).json({ status: 'acknowledged' });
         }
         catch (error) {
@@ -70,6 +70,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
     }
     async processDocument(objKey) {
         const url = await this.fileUploadService.generateTemporaryDownloadUrl(objKey);
+        console.log('Temporary download url:', url);
         const pdf_id = await this.callMathpixApi(url);
         let statusResponse;
         do {
@@ -88,7 +89,8 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         };
         return axios_1.default
             .post('https://api.mathpix.com/v3/pdf', data, { headers })
-            .then((response) => response.data.pdf_id);
+            .then((response) => response.data.pdf_id)
+            .catch((error) => console.error(error));
     }
     async checkProcessingStatus(pdfId) {
         return (0, axios_1.default)({
