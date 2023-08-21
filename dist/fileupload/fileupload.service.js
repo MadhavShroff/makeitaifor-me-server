@@ -62,13 +62,13 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         };
         return this.s3.getSignedUrlPromise('getObject', params);
     }
-    async listFiles(user) {
+    async listFiles(userId) {
         const params = {
             Bucket: this.configService.get('AWS_S3_BUCKET_NAME'),
-            Prefix: `${user.id}/`,
+            Prefix: `${userId}/`,
         };
         return new Promise((resolve, reject) => {
-            this.s3.listObjects(params, (err, data) => {
+            this.s3.listObjectsV2(params, (err, data) => {
                 if (err) {
                     reject(err);
                 }

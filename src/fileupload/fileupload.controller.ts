@@ -2,6 +2,7 @@
 import {
   Controller,
   Get,
+  Param,
   Post,
   Query,
   Req,
@@ -57,16 +58,17 @@ export class FileUploadController {
     return { uploadUrl };
   }
 
-  @Get('list-files')
-  @UseGuards(JwtAuthGuard)
-  async listFiles(@Req() req): Promise<{ files: any[] }> {
-    const files = await this.fileUploadService.listFiles(req.user);
+  @Get('list-files/:userId')
+  // @UseGuards(JwtAuthGuard)
+  async listFiles(@Param('userId') userId: string): Promise<{ files: any[] }> {
+    const files = await this.fileUploadService.listFiles(userId);
     return { files };
   }
 
   @Get('/s3-file-uploaded')
   async fileUploaded(@Query('objKey') objKey: string, @Res() res) {
     if ((await this.validateObjKey(objKey)) === false) {
+      console.log('Invalid objKey received (BAD/CORRUPTED REQUEST): ' + objKey);
       return res.status(400).json({ status: 'Bad Request' });
     }
     console.log(

@@ -7,5 +7,5 @@ export declare class FileUploadService {
     uploadFile(buffer: Buffer, name: string, type: string, user: any): Promise<string>;
     generateUploadUrl(filename: string, mimetype: string, user: any): Promise<string>;
     generateTemporaryDownloadUrl(objKey: string): Promise<string>;
-    listFiles(user: any): Promise<any[]>;
+    listFiles(userId: string): Promise<any[]>;
 }

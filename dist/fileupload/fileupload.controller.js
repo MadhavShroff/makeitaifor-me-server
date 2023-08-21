@@ -38,12 +38,13 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const uploadUrl = await this.fileUploadService.generateUploadUrl(filename, mimetype, req.user);
         return { uploadUrl };
     }
-    async listFiles(req) {
-        const files = await this.fileUploadService.listFiles(req.user);
+    async listFiles(userId) {
+        const files = await this.fileUploadService.listFiles(userId);
         return { files };
     }
     async fileUploaded(objKey, res) {
         if ((await this.validateObjKey(objKey)) === false) {
+            console.log('Invalid objKey received (BAD/CORRUPTED REQUEST): ' + objKey);
             return res.status(400).json({ status: 'Bad Request' });
         }
         console.log('S3 File uploaded: ' + JSON.stringify(objKey) + ' Now processing...');
@@ -134,11 +135,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "generateUploadUrl", null);
 __decorate([
-    (0, common_1.Get)('list-files'),
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Req)()),
+    (0, common_1.Get)('list-files/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "listFiles", null);
 __decorate([

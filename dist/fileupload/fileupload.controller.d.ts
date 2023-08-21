@@ -12,7 +12,7 @@ export declare class FileUploadController {
     generateUploadUrl(filename: string, mimetype: string, req: any): Promise<{
         uploadUrl: string;
     }>;
-    listFiles(req: any): Promise<{
+    listFiles(userId: string): Promise<{
         files: any[];
     }>;
     fileUploaded(objKey: string, res: any): Promise<any>;
