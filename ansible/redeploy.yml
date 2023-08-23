@@ -3,10 +3,12 @@
   remote_user: ubuntu
   tasks:
     - name: "Pull changes"
-      ansible.builtin.git:
-        repo: 'https://github.com/MadhavShroff/makeitaifor-me-server'
+        ansible.builtin.git:
+        repo: 'git@github.com:MadhavShroff/makeitaifor-me-server.git' # SSH URL
         dest: /home/ubuntu/makeitaifor-me-server
+        key_file: /home/ubuntu/.ssh/id_rsa # Path to private key
       become: yes
+
 
     - name: "Run redeploy script"
       ansible.builtin.command: '/bin/bash /home/ubuntu/makeitaifor-me-server/redeploy.sh'
