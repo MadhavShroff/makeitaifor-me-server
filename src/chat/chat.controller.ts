@@ -22,15 +22,15 @@ export class ChatController {
   ) {}
 
   @Get('/getDocumentContent')
-  // @UseGuards(JwtAuthGuard) // You may want to uncomment this if authentication is needed
+  @UseGuards(JwtAuthGuard) // You may want to uncomment this if authentication is needed
   async getDocumentContent(
-    @Query('fileId') fileId: string,
+    @Query('fileId') ETag: string,
     @Query('userId') userId: string, // Extract userId from query params
     @Req() req,
   ): Promise<FileData | null> {
     try {
       // Fetching the processed text from the database
-      const text = await this.mongoService.getProcessedText(userId, fileId);
+      const text = await this.mongoService.getProcessedText(req.user.id, ETag);
 
       if (!text) {
         throw new HttpException('File not found', HttpStatus.NOT_FOUND);

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const jwt_guard_1 = require("../auth/jwt/jwt.guard");
 const fileupload_service_1 = require("../fileupload/fileupload.service");
 const mongo_service_1 = require("../mongo/mongo.service");
 let ChatController = exports.ChatController = class ChatController {
@@ -23,9 +24,9 @@ let ChatController = exports.ChatController = class ChatController {
         this.mongoService = mongoService;
         this.configService = configService;
     }
-    async getDocumentContent(fileId, userId, req) {
+    async getDocumentContent(ETag, userId, req) {
         try {
-            const text = await this.mongoService.getProcessedText(userId, fileId);
+            const text = await this.mongoService.getProcessedText(req.user.id, ETag);
             if (!text) {
                 throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
             }
@@ -38,6 +39,7 @@ let ChatController = exports.ChatController = class ChatController {
 };
 __decorate([
     (0, common_1.Get)('/getDocumentContent'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)('fileId')),
     __param(1, (0, common_1.Query)('userId')),
     __param(2, (0, common_1.Req)()),

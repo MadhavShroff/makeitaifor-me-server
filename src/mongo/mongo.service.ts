@@ -30,10 +30,10 @@ export class MongoService {
     await generatedText.save();
   }
 
-  async getProcessedText(userId: string, fileId: string) {
+  async getProcessedText(userId: string, ETag: string) {
     const processedText = await this.processedTextModel.findOne({
       userId: userId,
-      Etag: fileId,
+      Etag: ETag,
     });
     return processedText.text;
   }

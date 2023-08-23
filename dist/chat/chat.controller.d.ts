@@ -7,5 +7,5 @@ export declare class ChatController {
     private mongoService;
     private configService;
     constructor(fileUploadService: FileUploadService, mongoService: MongoService, configService: ConfigService);
-    getDocumentContent(fileId: string, userId: string, req: any): Promise<FileData | null>;
+    getDocumentContent(ETag: string, userId: string, req: any): Promise<FileData | null>;
 }
