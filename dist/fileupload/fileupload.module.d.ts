@@ -1,2 +1,2 @@
-export declare class FileuploadModule {
+export declare class FileUploadModule {
 }

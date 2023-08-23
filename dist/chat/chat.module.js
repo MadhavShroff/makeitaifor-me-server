@@ -6,19 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileUploadModule = void 0;
+exports.ChatModule = void 0;
 const common_1 = require("@nestjs/common");
-const fileupload_service_1 = require("./fileupload.service");
-const fileupload_controller_1 = require("./fileupload.controller");
+const chat_controller_1 = require("./chat.controller");
+const fileupload_module_1 = require("../fileupload/fileupload.module");
 const mongo_module_1 = require("../mongo/mongo.module");
-let FileUploadModule = exports.FileUploadModule = class FileUploadModule {
+let ChatModule = exports.ChatModule = class ChatModule {
 };
-exports.FileUploadModule = FileUploadModule = __decorate([
+exports.ChatModule = ChatModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongo_module_1.MongoModule],
-        providers: [fileupload_service_1.FileUploadService],
-        controllers: [fileupload_controller_1.FileUploadController],
-        exports: [fileupload_service_1.FileUploadService],
+        controllers: [chat_controller_1.ChatController],
+        imports: [fileupload_module_1.FileUploadModule, mongo_module_1.MongoModule],
     })
-], FileUploadModule);
-//# sourceMappingURL=fileupload.module.js.map
+], ChatModule);
+//# sourceMappingURL=chat.module.js.map

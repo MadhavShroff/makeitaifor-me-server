@@ -28,14 +28,21 @@ let MongoService = exports.MongoService = class MongoService {
         });
         await generatedText.save();
     }
-    async saveProcessedText(userId, fileName, text) {
+    async saveProcessedText(userId, fileId, text) {
         const generatedText = new this.processedTextModel({
             userId: userId,
             text: text,
-            fileName: fileName,
+            Etag: fileId,
             timestamp: new Date(),
         });
         await generatedText.save();
+    }
+    async getProcessedText(userId, fileId) {
+        const processedText = await this.processedTextModel.findOne({
+            userId: userId,
+            Etag: fileId,
+        });
+        return processedText.text;
     }
 };
 exports.MongoService = MongoService = __decorate([
