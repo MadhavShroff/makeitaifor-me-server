@@ -3,6 +3,6 @@ import { Schema } from 'mongoose';
 export const ProcessedTextSchema = new Schema({
   userId: String,
   text: String,
-  fileName: String,
+  Etag: String,
   timestamp: { type: Date, default: Date.now },
 });

@@ -7,5 +7,6 @@ import { MongoModule } from 'src/mongo/mongo.module';
   imports: [MongoModule],
   providers: [FileUploadService],
   controllers: [FileUploadController],
+  exports: [FileUploadService],
 })
-export class FileuploadModule {}
+export class FileUploadModule {}

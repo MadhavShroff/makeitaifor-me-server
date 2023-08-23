@@ -20,13 +20,21 @@ export class MongoService {
     await generatedText.save();
   }
 
-  async saveProcessedText(userId: string, fileName: string, text: string) {
+  async saveProcessedText(userId: string, fileId: string, text: string) {
     const generatedText = new this.processedTextModel({
       userId: userId,
       text: text,
-      fileName: fileName,
+      Etag: fileId,
       timestamp: new Date(),
     });
     await generatedText.save();
+  }
+
+  async getProcessedText(userId: string, fileId: string) {
+    const processedText = await this.processedTextModel.findOne({
+      userId: userId,
+      Etag: fileId,
+    });
+    return processedText.text;
   }
 }
