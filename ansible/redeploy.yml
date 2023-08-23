@@ -3,7 +3,7 @@
   remote_user: ubuntu
   tasks:
     - name: "Pull changes"
-        ansible.builtin.git:
+      ansible.builtin.git:
         repo: 'git@github.com:MadhavShroff/makeitaifor-me-server.git' # SSH URL
         dest: /home/ubuntu/makeitaifor-me-server
         key_file: /home/ubuntu/.ssh/id_rsa # Path to private key
