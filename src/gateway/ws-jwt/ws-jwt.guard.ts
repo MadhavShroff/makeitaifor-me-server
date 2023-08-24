@@ -12,29 +12,25 @@ export class WsJwtAuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const client: Socket & { user } = context.switchToWs().getClient();
-    console.log('Client query: ' + JSON.stringify(client.handshake.query));
-    if (client.handshake.query.guest === 'true') {
-      client.user = {
-        id: '915b7cd5-08c1-45c2-9709-7585af332ee4',
-        name: 'Guest',
-        username: 'guest',
-      };
-      console.log('Bypassing JWT check for guest user');
+
+    // if (process.env.APP_ENV === 'dev') {
+    //   client.user = {
+    //     id: '915b7cd5-08c1-45c2-9709-7585af332ee4',
+    //     name: 'Madhav Shroff',
+    //     username: 'libif87613@pixiil.com',
+    //   };
+    //   return true; // bypass the JWT check in development mode
+    // }
+
+    const token = Array.isArray(client.handshake.query.token)
+      ? client.handshake.query.token[0]
+      : client.handshake.query.token;
+    try {
+      const payload = this.jwtService.verifyToken(token);
+      client.user = payload;
       return true;
-    } else if (client.handshake.query.guest === 'false') {
-      const token = Array.isArray(client.handshake.query.token)
-        ? client.handshake.query.token[0]
-        : client.handshake.query.token;
-      try {
-        const payload = this.jwtService.verifyToken(token);
-        client.user = payload;
-        return true;
-      } catch (e) {
-        client.user = undefined;
-        throw new WsException('Unauthorized');
-      }
-    } else {
-      throw new WsException('Unauthorized, invalid guest query parameter');
+    } catch (e) {
+      throw new WsException('Unauthorized');
     }
   }
 }
