@@ -23,12 +23,14 @@ export class WsJwtAuthGuard implements CanActivate {
     //   return true; // bypass the JWT check in development mode
     // }
 
+    console.log('Client query: ' + JSON.stringify(client.handshake.query));
     if (client.handshake.query.guest === 'true') {
       client.user = {
         id: '915b7cd5-08c1-45c2-9709-7585af332ee4',
         name: 'Guest',
         username: 'guest',
       };
+      console.log('Bypassing JWT check for guest user');
       return true;
     } else if (client.handshake.query.guest === 'false') {
       const token = Array.isArray(client.handshake.query.token)

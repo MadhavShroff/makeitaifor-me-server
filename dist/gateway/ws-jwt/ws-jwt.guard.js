@@ -19,12 +19,14 @@ let WsJwtAuthGuard = exports.WsJwtAuthGuard = class WsJwtAuthGuard {
     }
     canActivate(context) {
         const client = context.switchToWs().getClient();
+        console.log('Client query: ' + JSON.stringify(client.handshake.query));
         if (client.handshake.query.guest === 'true') {
             client.user = {
                 id: '915b7cd5-08c1-45c2-9709-7585af332ee4',
                 name: 'Guest',
                 username: 'guest',
             };
+            console.log('Bypassing JWT check for guest user');
             return true;
         }
         else if (client.handshake.query.guest === 'false') {
