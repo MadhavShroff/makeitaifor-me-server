@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, Request, Res } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { JwtAuthService } from './jwt/jwt.service';
 
@@ -11,5 +11,15 @@ export class AuthController {
   getWebSocketToken(@Request() req) {
     const token = this.jwtService.generateWebSocketToken(req.user);
     return { token };
+  }
+  @Get('guest')
+  getGuestToken(@Res() res) {
+    const accessToken = this.jwtService.createGuestToken();
+    res.cookie('guest_token', accessToken, {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true,
+    });
+    res.json({ success: true });
   }
 }

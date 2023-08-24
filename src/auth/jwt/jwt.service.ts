@@ -17,6 +17,7 @@ export class JwtAuthService {
       username: user.email,
       name: user.name,
       id: user.id,
+      role: user.role,
     };
     return {
       accessToken: this.jwtService.sign(payload),
@@ -27,6 +28,11 @@ export class JwtAuthService {
     // Use only the necessary user data for the token
     const payload = { username: user.username, id: user.id };
     return this.jwtService.sign(payload);
+  }
+
+  createGuestToken(): string {
+    const guestPayload = { role: 'guest' };
+    return this.jwtService.sign(guestPayload);
   }
 
   verifyToken(token: string) {

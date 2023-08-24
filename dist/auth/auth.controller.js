@@ -24,6 +24,15 @@ let AuthController = exports.AuthController = class AuthController {
         const token = this.jwtService.generateWebSocketToken(req.user);
         return { token };
     }
+    getGuestToken(res) {
+        const accessToken = this.jwtService.createGuestToken();
+        res.cookie('guest_token', accessToken, {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: true,
+        });
+        res.json({ success: true });
+    }
 };
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -33,6 +42,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getWebSocketToken", null);
+__decorate([
+    (0, common_1.Get)('guest'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "getGuestToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [jwt_service_1.JwtAuthService])

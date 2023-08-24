@@ -12,17 +12,6 @@ export class WsJwtAuthGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const client: Socket & { user } = context.switchToWs().getClient();
-
-    // if (process.env.APP_ENV === 'dev') {
-    //   client.user = {
-    //     id: '915b7cd5-08c1-45c2-9709-7585af332ee4',
-    //     name: 'Madhav Shroff',
-    //     username: 'libif87613@pixiil.com',
-    //   };
-    //   console.log('Bypassing JWT check in development mode');
-    //   return true; // bypass the JWT check in development mode
-    // }
-
     console.log('Client query: ' + JSON.stringify(client.handshake.query));
     if (client.handshake.query.guest === 'true') {
       client.user = {

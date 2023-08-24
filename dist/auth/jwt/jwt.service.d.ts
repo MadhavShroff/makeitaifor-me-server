@@ -10,5 +10,6 @@ export declare class JwtAuthService {
         accessToken: string;
     };
     generateWebSocketToken(user: User): string;
+    createGuestToken(): string;
     verifyToken(token: string): JwtPayload;
 }

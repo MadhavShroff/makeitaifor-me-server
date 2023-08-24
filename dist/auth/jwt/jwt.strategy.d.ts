@@ -3,6 +3,7 @@ export type JwtPayload = {
     name: string;
     username: string;
     id: string;
+    role: string;
 };
 declare const JwtAuthStrategy_base: new (...args: any[]) => any;
 export declare class JwtAuthStrategy extends JwtAuthStrategy_base {

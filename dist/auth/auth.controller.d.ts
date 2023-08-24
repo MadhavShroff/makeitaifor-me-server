@@ -5,4 +5,5 @@ export declare class AuthController {
     getWebSocketToken(req: any): {
         token: string;
     };
+    getGuestToken(res: any): void;
 }
