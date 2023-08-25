@@ -1,7 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../types/user';
-import { JwtPayload } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
+import { JwtPayload, User } from 'src/types';
 export declare class JwtAuthService {
     private jwtService;
     private configService;
@@ -10,6 +9,5 @@ export declare class JwtAuthService {
         accessToken: string;
     };
     generateWebSocketToken(user: User): string;
-    createGuestToken(): string;
     verifyToken(token: string): JwtPayload;
 }

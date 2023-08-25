@@ -16,17 +16,21 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("./jwt/jwt.guard");
 const jwt_service_1 = require("./jwt/jwt.service");
+const types_1 = require("../types");
 let AuthController = exports.AuthController = class AuthController {
     constructor(jwtService) {
         this.jwtService = jwtService;
     }
     getWebSocketToken(req) {
-        const token = this.jwtService.generateWebSocketToken(req.user);
+        const token = this.jwtService.generateWebSocketToken({
+            role: 'authenticated user',
+            ...req.user,
+        });
         return { token };
     }
     getGuestToken(res) {
-        const accessToken = this.jwtService.createGuestToken();
-        res.cookie('guest_token', accessToken, {
+        const token = this.jwtService.generateWebSocketToken(types_1.GuestUser);
+        res.cookie('guest_token', token, {
             httpOnly: true,
             sameSite: 'lax',
             secure: true,

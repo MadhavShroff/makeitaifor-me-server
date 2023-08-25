@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { User } from 'src/types/user';
+import { User } from 'src/types';
 export declare class MongoService {
     private readonly generatedTextModel;
     private readonly processedTextModel;

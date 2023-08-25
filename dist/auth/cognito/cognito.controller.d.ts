@@ -8,7 +8,7 @@ export declare class CognitoController {
     private cognitoStrategy;
     constructor(jwtAuthService: JwtAuthService, configService: ConfigService, cognitoStrategy: CognitoStrategy);
     cognitoAuth(_req: any): Promise<void>;
-    cognitoAuthMe(req: Request): Promise<import("../../types/user").User>;
+    cognitoAuthMe(req: Request): Promise<import("../../types").User>;
     cognitoAuthRedirect(req: Request, res: Response): Promise<void>;
     cognitoAuthLogoutRedirect(res: Response): Promise<void>;
 }

@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { FileUploadService } from 'src/fileupload/fileupload.service';
 import { MongoService } from 'src/mongo/mongo.service';
-import { FileData } from 'src/types/chats';
+import { FileData } from 'src/types';
 export declare class ChatController {
     private fileUploadService;
     private mongoService;

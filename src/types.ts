@@ -1,3 +1,39 @@
+declare module 'express' {
+  export interface Request {
+    user?: User;
+  }
+}
+
+export type JwtPayload = {
+  name: string;
+  username: string;
+  id: string;
+  role: string;
+};
+
+export type Provider = 'google' | 'cognito';
+
+export const GuestId = '915b7cd5-08c1-45c2-9709-7585af332ee4';
+
+export class User {
+  id: string;
+  provider?: Provider;
+  email: string;
+  name: string;
+  username: string;
+  created_at?: Date;
+  updated_at?: Date;
+  role: string;
+}
+
+export const GuestUser: User = {
+  id: GuestId,
+  email: 'guest@makeitaifor.me',
+  name: 'Guest',
+  username: 'guest',
+  role: 'guest',
+};
+
 export type FileData = {
   meta: S3MetaData;
   parsedContent: string | null; // from pdf to mathpix markdown

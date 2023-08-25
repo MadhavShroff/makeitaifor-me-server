@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { HumanMessage, SystemMessage } from 'langchain/schema';
 import { MongoService } from 'src/mongo/mongo.service';
-import { User } from 'src/types/user';
+import { User } from 'src/types';
 
 @Injectable()
 export class LangChainService {

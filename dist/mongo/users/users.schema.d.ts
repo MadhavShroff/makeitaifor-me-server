@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Document } from 'mongoose';
-import { Provider } from '../../types/user';
+import { Provider } from 'src/types';
 export declare class User extends Document {
     provider: Provider;
     id: string;

@@ -1,9 +1,8 @@
 // jwt.service.ts
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../types/user';
-import { JwtPayload } from './jwt.strategy';
 import { ConfigService } from '@nestjs/config';
+import { GuestId, JwtPayload, User } from 'src/types';
 
 @Injectable()
 export class JwtAuthService {
@@ -25,14 +24,13 @@ export class JwtAuthService {
   }
 
   generateWebSocketToken(user: User) {
-    // Use only the necessary user data for the token
-    const payload = { username: user.username, id: user.id };
+    const payload: JwtPayload = {
+      username: user.username,
+      id: user.id,
+      role: user.role,
+      name: user.name,
+    };
     return this.jwtService.sign(payload);
-  }
-
-  createGuestToken(): string {
-    const guestPayload = { role: 'guest' };
-    return this.jwtService.sign(guestPayload);
   }
 
   verifyToken(token: string) {

@@ -15,7 +15,7 @@ import { Server, Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { WsJwtAuthGuard } from 'src/gateway/ws-jwt/ws-jwt.guard';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
-import { User } from 'src/types/user';
+import { User } from 'src/types';
 
 const opts = {
   cors:

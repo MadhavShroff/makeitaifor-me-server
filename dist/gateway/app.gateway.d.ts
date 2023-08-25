@@ -3,7 +3,7 @@ import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WsResponse } f
 import { Server, Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
-import { User } from 'src/types/user';
+import { User } from 'src/types';
 export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
     private langChainService;
     private jwtService;

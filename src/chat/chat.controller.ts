@@ -11,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { FileUploadService } from 'src/fileupload/fileupload.service';
 import { MongoService } from 'src/mongo/mongo.service';
-import { FileData } from 'src/types/chats';
+import { FileData } from 'src/types';
 
 @Controller('chats')
 export class ChatController {

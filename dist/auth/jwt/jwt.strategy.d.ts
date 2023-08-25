@@ -1,10 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-export type JwtPayload = {
-    name: string;
-    username: string;
-    id: string;
-    role: string;
-};
+import { JwtPayload } from 'src/types';
 declare const JwtAuthStrategy_base: new (...args: any[]) => any;
 export declare class JwtAuthStrategy extends JwtAuthStrategy_base {
     constructor(configService: ConfigService);

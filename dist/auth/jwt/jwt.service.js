@@ -30,12 +30,13 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         };
     }
     generateWebSocketToken(user) {
-        const payload = { username: user.username, id: user.id };
+        const payload = {
+            username: user.username,
+            id: user.id,
+            role: user.role,
+            name: user.name,
+        };
         return this.jwtService.sign(payload);
-    }
-    createGuestToken() {
-        const guestPayload = { role: 'guest' };
-        return this.jwtService.sign(guestPayload);
     }
     verifyToken(token) {
         try {
