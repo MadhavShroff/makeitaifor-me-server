@@ -48,6 +48,11 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
+        res.clearCookie('guest_token', {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: true,
+        });
         return res.redirect('https://makeitaifor.me/');
     }
 };
