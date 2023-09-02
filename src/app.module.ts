@@ -22,7 +22,12 @@ import * as dotenv from 'dotenv';
       isGlobal: true,
       load: [
         async () => {
-          dotenv.config({ path: '/home/ubuntu/makeitaifor-me-server/.env' });
+          dotenv.config({
+            path:
+              process.env.APP_ENV === 'production'
+                ? '/home/ubuntu/makeitaifor-me-server/.env'
+                : '.env',
+          });
           console.log('env:', process.env);
           return process.env;
         },
