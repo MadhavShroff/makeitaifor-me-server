@@ -36,12 +36,10 @@ exports.AppModule = AppModule = __decorate([
                             const secretsService = new secrets_1.SecretsManagerService();
                             const allSecretsString = await secretsService.getSecrets();
                             const allSecrets = JSON.parse(allSecretsString);
-                            console.log('allSecrets: ', allSecrets);
                             return allSecrets;
                         }
                         else {
                             dotenv.config({ path: '.env' });
-                            console.log('env:', process.env);
                             return process.env;
                         }
                     },

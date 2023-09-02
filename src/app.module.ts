@@ -26,11 +26,9 @@ import * as dotenv from 'dotenv';
             const secretsService = new SecretsManagerService();
             const allSecretsString = await secretsService.getSecrets();
             const allSecrets = JSON.parse(allSecretsString); // Parse the JSON string to an object
-            console.log('allSecrets: ', allSecrets);
             return allSecrets;
           } else {
             dotenv.config({ path: '.env' });
-            console.log('env:', process.env);
             return process.env;
           }
         },
