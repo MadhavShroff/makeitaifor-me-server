@@ -40,9 +40,9 @@ export class CognitoController {
         secure: true,
       },
     );
-    if (process.env.APP_ENV !== 'production')
-      return res.redirect('http://localhost:3000/chat');
-    else return res.redirect('https://makeitaifor.me/chat'); // Redirects to /chat on successful cognito login
+    if (process.env.APP_ENV === 'production')
+      return res.redirect('https://makeitaifor.me/chat');
+    else return res.redirect('http://localhost:3000/chat');
   }
 
   @Get('/logout-redirect')

@@ -37,10 +37,10 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
-        if (process.env.APP_ENV !== 'production')
-            return res.redirect('http://localhost:3000/chat');
-        else
+        if (process.env.APP_ENV === 'production')
             return res.redirect('https://makeitaifor.me/chat');
+        else
+            return res.redirect('http://localhost:3000/chat');
     }
     async cognitoAuthLogoutRedirect(res) {
         res.clearCookie(this.configService.get('SESSION_COOKIE_KEY'), {
