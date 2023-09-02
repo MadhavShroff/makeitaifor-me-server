@@ -19,7 +19,7 @@ import { User } from 'src/types';
 
 const opts = {
   cors:
-    process.env.APP_ENV === 'prod'
+    process.env.APP_ENV === 'production'
       ? {
           origin: ['https://www.makeitaifor.me'],
           methods: ['GET', 'POST'],
