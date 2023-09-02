@@ -15,7 +15,6 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
       }
       return token;
     };
-    console.log('secret: ', configService.get<string>('JWT_SECRET_KEY'));
     super({
       jwtFromRequest: extractJwtFromCookie,
       ignoreExpiration: false,

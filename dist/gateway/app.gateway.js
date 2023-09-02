@@ -39,8 +39,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
         this.configService = configService;
     }
     afterInit() {
-        console.log('WebSocketGateway options: ' + JSON.stringify(opts));
-        console.log('Initialized Gateway!');
     }
     handleConnection(client) {
     }

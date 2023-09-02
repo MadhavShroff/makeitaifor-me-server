@@ -47,8 +47,8 @@ export class AppGateway
 
   afterInit() {
     // print webSocketGateway options
-    console.log('WebSocketGateway options: ' + JSON.stringify(opts));
-    console.log('Initialized Gateway!');
+    // console.log('WebSocketGateway options: ' + JSON.stringify(opts));
+    // console.log('Initialized Gateway!');
   }
 
   handleConnection(@ConnectedSocket() client: Socket & { user: User }) {

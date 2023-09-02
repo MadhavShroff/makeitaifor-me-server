@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import * as csurf from 'csurf';
 import { ValidationPipe } from '@nestjs/common';
-import { SpelunkerModule } from 'nestjs-spelunker';
+// import { SpelunkerModule } from 'nestjs-spelunker';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
