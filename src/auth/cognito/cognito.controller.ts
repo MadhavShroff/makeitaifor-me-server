@@ -40,6 +40,8 @@ export class CognitoController {
         secure: true,
       },
     );
+    console.log(process.env.APP_ENV);
+    console.log(process.env.APP_ENV === 'production');
     if (process.env.APP_ENV === 'production')
       return res.redirect('https://makeitaifor.me/chat');
     else return res.redirect('http://localhost:3000/chat');
