@@ -52,16 +52,16 @@ export class AppGateway
   }
 
   handleConnection(@ConnectedSocket() client: Socket & { user: User }) {
-    // console.log(
-    //   `Client connected: ${client.user} + ${JSON.stringify(
-    //     client.handshake.query,
-    //   )}`,
-    // );
+    console.log(
+      `Client connected: ${client.user} + ${JSON.stringify(
+        client.handshake.query,
+      )}`,
+    );
     // TODO: update last visited metadata
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {
-    // console.log(`Client disconnected: ${client.id}`);
+    console.log(`Client disconnected: ${client.id}`);
   }
 
   @SubscribeMessage('message')

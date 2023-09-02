@@ -43,8 +43,10 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('Initialized Gateway!');
     }
     handleConnection(client) {
+        console.log(`Client connected: ${client.user} + ${JSON.stringify(client.handshake.query)}`);
     }
     handleDisconnect(client) {
+        console.log(`Client disconnected: ${client.id}`);
     }
     handleMessage(message, client) {
         console.log('Received message: ', message);
