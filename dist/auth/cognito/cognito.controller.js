@@ -37,7 +37,7 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
-        if (this.configService.get('ENV') === 'dev')
+        if (process.env.APP_ENV !== 'production')
             return res.redirect('http://localhost:3000/chat');
         else
             return res.redirect('https://makeitaifor.me/chat');

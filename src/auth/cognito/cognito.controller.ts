@@ -40,7 +40,7 @@ export class CognitoController {
         secure: true,
       },
     );
-    if (this.configService.get<string>('ENV') === 'dev')
+    if (process.env.APP_ENV !== 'production')
       return res.redirect('http://localhost:3000/chat');
     else return res.redirect('https://makeitaifor.me/chat'); // Redirects to /chat on successful cognito login
   }
