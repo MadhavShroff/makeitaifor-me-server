@@ -30,7 +30,7 @@ let WsJwtAuthGuard = exports.WsJwtAuthGuard = class WsJwtAuthGuard {
         const token = Array.isArray(client.handshake.query.token)
             ? client.handshake.query.token[0]
             : client.handshake.query.token;
-        console.log(token);
+        console.log('Token received at WSAuthGuard: ', token);
         try {
             const payload = this.jwtService.verifyToken(token);
             client.user = payload;

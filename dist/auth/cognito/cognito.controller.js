@@ -37,8 +37,6 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'none',
             secure: true,
         });
-        console.log(process.env.APP_ENV);
-        console.log(process.env.APP_ENV === 'production');
         if (process.env.APP_ENV === 'production')
             return res.redirect('https://makeitaifor.me/chat');
         else

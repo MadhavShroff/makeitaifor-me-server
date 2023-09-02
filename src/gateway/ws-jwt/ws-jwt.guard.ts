@@ -26,7 +26,7 @@ export class WsJwtAuthGuard implements CanActivate {
       ? client.handshake.query.token[0]
       : client.handshake.query.token;
 
-    console.log(token);
+    console.log('Token received at WSAuthGuard: ', token);
     try {
       const payload = this.jwtService.verifyToken(token);
       client.user = payload;
