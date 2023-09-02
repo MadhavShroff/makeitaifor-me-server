@@ -30,6 +30,7 @@ import * as dotenv from 'dotenv';
             return allSecrets;
           } else {
             dotenv.config({ path: '.env' });
+            console.log('env:', process.env);
             return process.env;
           }
         },

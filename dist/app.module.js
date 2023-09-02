@@ -41,6 +41,7 @@ exports.AppModule = AppModule = __decorate([
                         }
                         else {
                             dotenv.config({ path: '.env' });
+                            console.log('env:', process.env);
                             return process.env;
                         }
                     },
