@@ -12,6 +12,7 @@ import { JwtModule } from './auth/jwt/jwt.module';
 import { MongoModule } from './mongo/mongo.module';
 import { LangChainModule } from './lang-chain/lang-chain.module';
 import { ChatModule } from './chat/chat.module';
+import { SecretsManagerService } from './utils/secrets';
 import * as dotenv from 'dotenv';
 
 @Global()
@@ -22,6 +23,7 @@ import * as dotenv from 'dotenv';
       load: [
         async () => {
           dotenv.config({ path: '.env' });
+          console.log('env:', process.env);
           return process.env;
         },
       ],
@@ -35,7 +37,7 @@ import * as dotenv from 'dotenv';
     ChatModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway, LangChainService],
+  providers: [AppService, AppGateway, LangChainService, SecretsManagerService],
 })
 export class AppModule {}
 
