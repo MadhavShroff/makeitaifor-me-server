@@ -34,8 +34,9 @@ exports.AppModule = AppModule = __decorate([
                     async () => {
                         if (process.env.APP_ENV === 'production') {
                             const secretsService = new secrets_1.SecretsManagerService();
-                            const allSecretsString = await secretsService.getSecret('my_single_aws_secret_name');
+                            const allSecretsString = await secretsService.getSecrets();
                             const allSecrets = JSON.parse(allSecretsString);
+                            console.log('allSecrets: ', allSecrets);
                             return allSecrets;
                         }
                         else {

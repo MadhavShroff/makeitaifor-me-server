@@ -24,10 +24,9 @@ import * as dotenv from 'dotenv';
         async () => {
           if (process.env.APP_ENV === 'production') {
             const secretsService = new SecretsManagerService();
-            const allSecretsString = await secretsService.getSecret(
-              'my_single_aws_secret_name',
-            );
+            const allSecretsString = await secretsService.getSecrets();
             const allSecrets = JSON.parse(allSecretsString); // Parse the JSON string to an object
+            console.log('allSecrets: ', allSecrets);
             return allSecrets;
           } else {
             dotenv.config({ path: '.env' });

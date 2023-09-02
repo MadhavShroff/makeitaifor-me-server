@@ -19,7 +19,7 @@ let SecretsManagerService = exports.SecretsManagerService = class SecretsManager
             region: 'us-east-2',
         });
     }
-    async getSecret(secretName) {
+    async getSecrets() {
         let response;
         try {
             response = await this.client.send(new client_secrets_manager_1.GetSecretValueCommand({
