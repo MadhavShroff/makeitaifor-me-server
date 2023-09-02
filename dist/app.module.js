@@ -20,25 +20,41 @@ const jwt_module_1 = require("./auth/jwt/jwt.module");
 const mongo_module_1 = require("./mongo/mongo.module");
 const lang_chain_module_1 = require("./lang-chain/lang-chain.module");
 const chat_module_1 = require("./chat/chat.module");
+const secrets_1 = require("./utils/secrets");
+const dotenv = require("dotenv");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: '.env',
+                load: [
+                    async () => {
+                        if (process.env.APP_ENV === 'production') {
+                            const secretsService = new secrets_1.SecretsManagerService();
+                            const allSecretsString = await secretsService.getSecret('my_single_aws_secret_name');
+                            const allSecrets = JSON.parse(allSecretsString);
+                            return allSecrets;
+                        }
+                        else {
+                            dotenv.config({ path: '.env' });
+                            return process.env;
+                        }
+                    },
+                ],
             }),
+            jwt_module_1.JwtModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
-            jwt_module_1.JwtModule,
             fileupload_module_1.FileUploadModule,
             mongo_module_1.MongoModule,
             lang_chain_module_1.LangChainModule,
             chat_module_1.ChatModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService],
+        providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService, secrets_1.SecretsManagerService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

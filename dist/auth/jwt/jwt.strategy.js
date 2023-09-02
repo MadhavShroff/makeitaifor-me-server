@@ -23,7 +23,6 @@ let JwtAuthStrategy = exports.JwtAuthStrategy = class JwtAuthStrategy extends (0
             }
             return token;
         };
-        console.log(configService.get('JWT_SECRET_KEY'));
         super({
             jwtFromRequest: extractJwtFromCookie,
             ignoreExpiration: false,
