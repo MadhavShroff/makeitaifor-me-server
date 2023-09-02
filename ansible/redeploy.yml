@@ -8,6 +8,7 @@
         dest: /home/ubuntu/makeitaifor-me-server
         key_file: /home/ubuntu/.ssh/id_rsa # Path to private key
         accept_hostkey: true
+        force: yes
       become: yes
 
     - name: "Run redeploy script"
