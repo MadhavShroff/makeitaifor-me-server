@@ -12,7 +12,6 @@ import { JwtModule } from './auth/jwt/jwt.module';
 import { MongoModule } from './mongo/mongo.module';
 import { LangChainModule } from './lang-chain/lang-chain.module';
 import { ChatModule } from './chat/chat.module';
-import { SecretsManagerService } from './utils/secrets';
 import * as dotenv from 'dotenv';
 
 @Global()
@@ -22,15 +21,8 @@ import * as dotenv from 'dotenv';
       isGlobal: true,
       load: [
         async () => {
-          if (process.env.APP_ENV === 'production') {
-            const secretsService = new SecretsManagerService();
-            const allSecretsString = await secretsService.getSecrets();
-            const allSecrets = JSON.parse(allSecretsString); // Parse the JSON string to an object
-            return allSecrets;
-          } else {
-            dotenv.config({ path: '.env' });
-            return process.env;
-          }
+          dotenv.config({ path: '.env' });
+          return process.env;
         },
       ],
     }),
@@ -43,7 +35,7 @@ import * as dotenv from 'dotenv';
     ChatModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway, LangChainService, SecretsManagerService],
+  providers: [AppService, AppGateway, LangChainService],
 })
 export class AppModule {}
 
