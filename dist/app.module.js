@@ -20,7 +20,6 @@ const jwt_module_1 = require("./auth/jwt/jwt.module");
 const mongo_module_1 = require("./mongo/mongo.module");
 const lang_chain_module_1 = require("./lang-chain/lang-chain.module");
 const chat_module_1 = require("./chat/chat.module");
-const secrets_1 = require("./utils/secrets");
 const dotenv = require("dotenv");
 let AppModule = exports.AppModule = class AppModule {
 };
@@ -37,7 +36,6 @@ exports.AppModule = AppModule = __decorate([
                                 ? '/home/ubuntu/makeitaifor-me-server/.env'
                                 : '.env',
                         });
-                        console.log('env:', process.env);
                         return process.env;
                     },
                 ],
@@ -51,7 +49,7 @@ exports.AppModule = AppModule = __decorate([
             chat_module_1.ChatModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService, secrets_1.SecretsManagerService],
+        providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
