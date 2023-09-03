@@ -7,15 +7,17 @@ import { GuestUser } from 'src/types';
 export class AuthController {
   constructor(private jwtService: JwtAuthService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('ws-token')
+  @UseGuards(JwtAuthGuard)
   getWebSocketToken(@Request() req) {
     const token = this.jwtService.generateWebSocketToken({
       role: 'authenticated user',
       ...req.user,
     });
+    console.log('Token generated at AuthController: ', token);
     return { token };
   }
+
   @Get('guest')
   getGuestToken(@Res() res) {
     const token = this.jwtService.generateWebSocketToken(GuestUser);

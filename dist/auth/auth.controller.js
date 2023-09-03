@@ -26,6 +26,7 @@ let AuthController = exports.AuthController = class AuthController {
             role: 'authenticated user',
             ...req.user,
         });
+        console.log('Token generated at AuthController: ', token);
         return { token };
     }
     getGuestToken(res) {
@@ -39,8 +40,8 @@ let AuthController = exports.AuthController = class AuthController {
     }
 };
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)('ws-token'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
