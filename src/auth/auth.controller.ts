@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards, Request, Res } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { JwtAuthService } from './jwt/jwt.service';
 import { GuestUser } from 'src/types';
+import { JwtGuestAuthGuard } from './jwt/jwt-guest.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +20,7 @@ export class AuthController {
   }
 
   @Get('guest')
+  @UseGuards(JwtGuestAuthGuard)
   getGuestToken(@Res() res) {
     const token = this.jwtService.generateWebSocketToken(GuestUser);
     res.cookie('guest_token', token, {
