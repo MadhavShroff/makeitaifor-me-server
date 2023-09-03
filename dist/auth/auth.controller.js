@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("./jwt/jwt.guard");
 const jwt_service_1 = require("./jwt/jwt.service");
 const types_1 = require("../types");
-const jwt_guest_guard_1 = require("./jwt/jwt-guest.guard");
 let AuthController = exports.AuthController = class AuthController {
     constructor(jwtService) {
         this.jwtService = jwtService;
@@ -50,7 +49,6 @@ __decorate([
 ], AuthController.prototype, "getWebSocketToken", null);
 __decorate([
     (0, common_1.Get)('guest'),
-    (0, common_1.UseGuards)(jwt_guest_guard_1.JwtGuestAuthGuard),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

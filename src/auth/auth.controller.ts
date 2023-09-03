@@ -20,7 +20,6 @@ export class AuthController {
   }
 
   @Get('guest')
-  @UseGuards(JwtGuestAuthGuard)
   getGuestToken(@Res() res) {
     const token = this.jwtService.generateWebSocketToken(GuestUser);
     res.cookie('guest_token', token, {
