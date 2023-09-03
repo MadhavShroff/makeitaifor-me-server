@@ -28,7 +28,6 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
         }
         catch (error) {
             console.log('Error during JWT authentication:', error.message);
-            throw new common_1.UnauthorizedException('Invalid token');
         }
         try {
             const token = request.cookies['guest_token'];

@@ -20,7 +20,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       }
     } catch (error) {
       console.log('Error during JWT authentication:', error.message);
-      throw new UnauthorizedException('Invalid token');
     }
 
     // If JWT authentication fails, try guest token
