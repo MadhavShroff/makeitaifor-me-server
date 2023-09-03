@@ -20,41 +20,27 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
     }
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
-        console.log('Starting authentication process.');
         try {
-            console.log('Trying normal JWT authentication.');
             const superResult = await super.canActivate(context);
             if (superResult) {
-                console.log('Normal JWT authentication successful.');
                 return true;
-            }
-            else {
-                console.log('Normal JWT authentication failed.');
             }
         }
         catch (error) {
             console.log('Error during normal JWT authentication:', error);
         }
         try {
-            console.log('Trying guest JWT authentication.');
             const token = request.cookies['guest_token'];
-            console.log('Guest token extracted:', token);
             const payload = this.jwtAuthService.verifyToken(token);
-            console.log('Guest token payload:', payload);
             if (payload.role === 'guest') {
-                console.log('Guest JWT authentication successful.');
                 request.user = payload;
                 return true;
-            }
-            else {
-                console.log("Guest JWT authentication failed. Role is not 'guest'.");
             }
         }
         catch (error) {
             console.log('Error during guest JWT authentication:', error);
             throw new common_1.UnauthorizedException('Invalid token');
         }
-        console.log('Both authentication methods failed. Throwing UnauthorizedException.');
         return false;
     }
 };
