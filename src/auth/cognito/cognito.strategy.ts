@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 
 import { UsersService } from '../../mongo/users/users.service';
+import { ChatsService } from 'src/mongo/chats/chats.service';
 
 @Injectable()
 export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
@@ -15,6 +16,7 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
   constructor(
     configService: ConfigService,
     private readonly usersService: UsersService,
+    private readonly chatsService: ChatsService,
   ) {
     super({
       authorizationURL: CognitoStrategy.authorizationUrl(
@@ -62,12 +64,15 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
 
     let user = await this.usersService.findOne({ id: userinfo.sub });
     if (!user) {
+      const tempChat = await this.chatsService.createTempChat();
+      console.log('tempChat: ', tempChat);
       user = await this.usersService.create({
         provider: 'cognito',
         id: userinfo.sub,
         name: userinfo.name,
         email: userinfo.email,
         username: userinfo.username,
+        chats: [tempChat._id],
       });
     }
     return user;

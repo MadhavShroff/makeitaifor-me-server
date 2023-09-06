@@ -18,12 +18,10 @@ const jwt_service_1 = require("../jwt/jwt.service");
 const cognito_guard_1 = require("./cognito.guard");
 const config_1 = require("@nestjs/config");
 const jwt_guard_1 = require("../jwt/jwt.guard");
-const cognito_strategy_1 = require("./cognito.strategy");
 let CognitoController = exports.CognitoController = class CognitoController {
-    constructor(jwtAuthService, configService, cognitoStrategy) {
+    constructor(jwtAuthService, configService) {
         this.jwtAuthService = jwtAuthService;
         this.configService = configService;
-        this.cognitoStrategy = cognitoStrategy;
     }
     async cognitoAuth(_req) {
     }
@@ -91,7 +89,6 @@ __decorate([
 exports.CognitoController = CognitoController = __decorate([
     (0, common_1.Controller)('auth/cognito'),
     __metadata("design:paramtypes", [jwt_service_1.JwtAuthService,
-        config_1.ConfigService,
-        cognito_strategy_1.CognitoStrategy])
+        config_1.ConfigService])
 ], CognitoController);
 //# sourceMappingURL=cognito.controller.js.map

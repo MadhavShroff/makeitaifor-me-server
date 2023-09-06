@@ -22,7 +22,7 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Provider } from 'src/types';
 export declare class User extends Document {
     provider: Provider;
@@ -31,9 +31,10 @@ export declare class User extends Document {
     name: string;
     created_at: Date;
     updated_at: Date;
+    chats: Types.ObjectId[];
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, Document<unknown, any, User> & Omit<User & {
-    _id: import("mongoose").Types.ObjectId;
+    _id: Types.ObjectId;
 }, never>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, Document<unknown, {}, import("mongoose").FlatRecord<User>> & Omit<import("mongoose").FlatRecord<User> & {
-    _id: import("mongoose").Types.ObjectId;
+    _id: Types.ObjectId;
 }, never>>;

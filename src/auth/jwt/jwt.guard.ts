@@ -19,7 +19,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      console.log('Error during JWT authentication:', error.message);
+      (() => doNothing())();
     }
 
     // If JWT authentication fails, try guest token
@@ -31,9 +31,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      console.log('Error during guest JWT authentication:', error.message);
       throw new UnauthorizedException('Invalid token');
     }
     return false;
   }
+}
+
+function doNothing() {
+  return;
 }

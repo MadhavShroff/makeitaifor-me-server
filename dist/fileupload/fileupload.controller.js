@@ -32,6 +32,18 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const url = await this.fileUploadService.uploadFile(buffer, originalname, mimetype, { user: req.user });
         return { url };
     }
+    async getDocumentContent(ETag, userId, req) {
+        try {
+            const text = await this.mongoService.getProcessedText(req.user.id, ETag);
+            if (!text) {
+                throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
+            }
+            return text;
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status || common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     async generateUploadUrl(filename, mimetype, req) {
         console.log('Generating Temporary upload url for: ', filename, mimetype);
         console.log(req.user);
@@ -124,6 +136,16 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "uploadFile", null);
+__decorate([
+    (0, common_1.Get)('/getDocumentContent'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Query)('fileId')),
+    __param(1, (0, common_1.Query)('userId')),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:returntype", Promise)
+], FileUploadController.prototype, "getDocumentContent", null);
 __decorate([
     (0, common_1.Get)('generate-presigned-url'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),

@@ -45,6 +45,10 @@ __decorate([
     (0, mongoose_1.Prop)({ default: Date.now }),
     __metadata("design:type", Date)
 ], User.prototype, "updated_at", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.Types.ObjectId, ref: 'Chat' }], default: [] }),
+    __metadata("design:type", Array)
+], User.prototype, "chats", void 0);
 exports.User = User = __decorate([
     (0, graphql_1.ObjectType)(),
     (0, mongoose_1.Schema)()

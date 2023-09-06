@@ -27,7 +27,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            console.log('Error during JWT authentication:', error.message);
+            (() => doNothing())();
         }
         try {
             const token = request.cookies['guest_token'];
@@ -38,7 +38,6 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            console.log('Error during guest JWT authentication:', error.message);
             throw new common_1.UnauthorizedException('Invalid token');
         }
         return false;
@@ -48,4 +47,7 @@ exports.JwtAuthGuard = JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_service_1.JwtAuthService])
 ], JwtAuthGuard);
+function doNothing() {
+    return;
+}
 //# sourceMappingURL=jwt.guard.js.map

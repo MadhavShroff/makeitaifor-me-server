@@ -19,8 +19,8 @@ const lang_chain_service_1 = require("./lang-chain/lang-chain.service");
 const jwt_module_1 = require("./auth/jwt/jwt.module");
 const mongo_module_1 = require("./mongo/mongo.module");
 const lang_chain_module_1 = require("./lang-chain/lang-chain.module");
-const chat_module_1 = require("./chat/chat.module");
 const dotenv = require("dotenv");
+const chats_module_1 = require("./mongo/chats/chats.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -46,7 +46,7 @@ exports.AppModule = AppModule = __decorate([
             fileupload_module_1.FileUploadModule,
             mongo_module_1.MongoModule,
             lang_chain_module_1.LangChainModule,
-            chat_module_1.ChatModule,
+            chats_module_1.ChatsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, app_gateway_1.AppGateway, lang_chain_service_1.LangChainService],

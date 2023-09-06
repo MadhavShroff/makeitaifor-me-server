@@ -26,7 +26,6 @@ let AuthController = exports.AuthController = class AuthController {
             role: 'authenticated user',
             ...req.user,
         });
-        console.log('Token generated at AuthController: ', token);
         return { token };
     }
     getGuestToken(res) {

@@ -11,8 +11,9 @@ import { LangChainService } from './lang-chain/lang-chain.service';
 import { JwtModule } from './auth/jwt/jwt.module';
 import { MongoModule } from './mongo/mongo.module';
 import { LangChainModule } from './lang-chain/lang-chain.module';
-import { ChatModule } from './chat/chat.module';
 import * as dotenv from 'dotenv';
+import { ChatsService } from './mongo/chats/chats.service';
+import { ChatsModule } from './mongo/chats/chats.module';
 
 @Global()
 @Module({
@@ -37,7 +38,7 @@ import * as dotenv from 'dotenv';
     FileUploadModule,
     MongoModule,
     LangChainModule,
-    ChatModule,
+    ChatsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway, LangChainService],

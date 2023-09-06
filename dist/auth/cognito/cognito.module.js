@@ -12,11 +12,12 @@ const users_module_1 = require("../../mongo/users/users.module");
 const jwt_module_1 = require("../jwt/jwt.module");
 const cognito_controller_1 = require("./cognito.controller");
 const cognito_strategy_1 = require("./cognito.strategy");
+const chats_module_1 = require("../../mongo/chats/chats.module");
 let CognitoModule = exports.CognitoModule = class CognitoModule {
 };
 exports.CognitoModule = CognitoModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, jwt_module_1.JwtModule],
+        imports: [users_module_1.UsersModule, jwt_module_1.JwtModule, chats_module_1.ChatsModule],
         controllers: [cognito_controller_1.CognitoController],
         providers: [cognito_strategy_1.CognitoStrategy],
     })

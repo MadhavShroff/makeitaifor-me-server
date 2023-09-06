@@ -1,5 +1,5 @@
 import { MongoService } from 'src/mongo/mongo.service';
-import { User } from 'src/types';
+import { User } from 'src/mongo/users/users.schema';
 export declare class LangChainService {
     private readonly mongoService;
     private chat;

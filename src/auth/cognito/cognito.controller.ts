@@ -4,14 +4,12 @@ import { JwtAuthService } from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from '../jwt/jwt.guard';
-import { CognitoStrategy } from './cognito.strategy';
 
 @Controller('auth/cognito')
 export class CognitoController {
   constructor(
     private jwtAuthService: JwtAuthService,
     private configService: ConfigService,
-    private cognitoStrategy: CognitoStrategy,
   ) {}
 
   @Get()
@@ -59,4 +57,6 @@ export class CognitoController {
     });
     return res.redirect('https://makeitaifor.me/'); // Redirects to /chat on successful cognito logout
   }
+
+  // TODO: Callback route to handle when a new user signs up: Create a new empty chat for them
 }

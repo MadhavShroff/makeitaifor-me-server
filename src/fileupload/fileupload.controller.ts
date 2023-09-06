@@ -2,6 +2,8 @@
 import {
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -18,6 +20,7 @@ import validator from 'validator';
 import { MongoService } from 'src/mongo/mongo.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
+import { FileData } from 'src/types';
 
 @Controller('fileupload')
 export class FileUploadController {
@@ -39,6 +42,31 @@ export class FileUploadController {
       { user: req.user },
     );
     return { url };
+  }
+
+  @Get('/getDocumentContent')
+  @UseGuards(JwtAuthGuard)
+  async getDocumentContent(
+    @Query('fileId') ETag: string,
+    @Query('userId') userId: string, // Extract userId from query params
+    @Req() req,
+  ): Promise<FileData | null> {
+    try {
+      // Fetching the processed text from the database
+      const text = await this.mongoService.getProcessedText(req.user.id, ETag);
+
+      if (!text) {
+        throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+      }
+
+      return text;
+    } catch (error) {
+      // Handling error based on the nature of the error
+      throw new HttpException(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get('generate-presigned-url')

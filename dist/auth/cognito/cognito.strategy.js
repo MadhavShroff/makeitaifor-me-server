@@ -17,8 +17,9 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const axios_1 = require("axios");
 const users_service_1 = require("../../mongo/users/users.service");
+const chats_service_1 = require("../../mongo/chats/chats.service");
 let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class CognitoStrategy extends (0, passport_1.PassportStrategy)(passport_oauth2_1.Strategy, 'cognito') {
-    constructor(configService, usersService) {
+    constructor(configService, usersService, chatsService) {
         super({
             authorizationURL: CognitoStrategy_1.authorizationUrl(configService.get('OAUTH_COGNITO_DOMAIN'), configService.get('OAUTH_COGNITO_REGION')),
             tokenURL: CognitoStrategy_1.tokenUrl(configService.get('OAUTH_COGNITO_DOMAIN'), configService.get('OAUTH_COGNITO_REGION')),
@@ -27,6 +28,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
             callbackURL: configService.get('OAUTH_COGNITO_REDIRECT_URL'),
         });
         this.usersService = usersService;
+        this.chatsService = chatsService;
         this.domain = configService.get('OAUTH_COGNITO_DOMAIN');
         this.region = configService.get('OAUTH_COGNITO_REGION');
         this.clientId = configService.get('OAUTH_COGNITO_ID');
@@ -49,12 +51,15 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
         })).data;
         let user = await this.usersService.findOne({ id: userinfo.sub });
         if (!user) {
+            const tempChat = await this.chatsService.createTempChat();
+            console.log('tempChat: ', tempChat);
             user = await this.usersService.create({
                 provider: 'cognito',
                 id: userinfo.sub,
                 name: userinfo.name,
                 email: userinfo.email,
                 username: userinfo.username,
+                chats: [tempChat._id],
             });
         }
         return user;
@@ -63,6 +68,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
 exports.CognitoStrategy = CognitoStrategy = CognitoStrategy_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [config_1.ConfigService,
-        users_service_1.UsersService])
+        users_service_1.UsersService,
+        chats_service_1.ChatsService])
 ], CognitoStrategy);
 //# sourceMappingURL=cognito.strategy.js.map

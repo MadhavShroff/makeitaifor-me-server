@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Provider } from 'src/types';
+import { Chat } from '../chats/chat.schema';
 
 @ObjectType()
 @Schema()
@@ -29,6 +30,9 @@ export class User extends Document {
   @Field()
   @Prop({ default: Date.now })
   updated_at: Date;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Chat' }], default: [] })
+  chats: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
