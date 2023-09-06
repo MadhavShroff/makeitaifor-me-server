@@ -58,6 +58,17 @@ export class ChatsService {
     return await chat.save();
   }
 
+  async getChatsMetadata(userId: string): Promise<User> {
+    const user = await this.userModel
+      .findOne({ id: userId })
+      .populate('chats')
+      .exec();
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    return user;
+  }
+
   // async updateMessage(
   //   chatId: Types.ObjectId,
   //   messageId: Types.ObjectId,

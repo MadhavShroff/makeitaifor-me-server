@@ -54,6 +54,16 @@ let ChatsService = exports.ChatsService = class ChatsService {
         chat.updatedAt = new Date();
         return await chat.save();
     }
+    async getChatsMetadata(userId) {
+        const user = await this.userModel
+            .findOne({ id: userId })
+            .populate('chats')
+            .exec();
+        if (!user) {
+            throw new common_1.NotFoundException(`User with ID ${userId} not found`);
+        }
+        return user;
+    }
 };
 exports.ChatsService = ChatsService = __decorate([
     (0, common_1.Injectable)(),
