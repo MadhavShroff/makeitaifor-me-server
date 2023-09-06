@@ -28,7 +28,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
         return await newChat.save();
     }
     async createChat(obj) {
-        const newChat = new this.chatModel({});
+        const newChat = new this.chatModel(obj == undefined ? {} : obj);
         return await newChat.save();
     }
     async addChatToUser(userId, chatId) {

@@ -16,8 +16,8 @@ export class ChatsService {
     return await newChat.save();
   }
 
-  async createChat(obj): Promise<Chat> {
-    const newChat = new this.chatModel({});
+  async createChat(obj: undefined | any): Promise<Chat> {
+    const newChat = new this.chatModel(obj == undefined ? {} : obj);
     return await newChat.save();
   }
 

@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Provider } from 'src/types';
-import { Chat } from '../chats/chat.schema';
 
 @ObjectType()
 @Schema()

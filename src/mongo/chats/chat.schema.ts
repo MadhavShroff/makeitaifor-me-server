@@ -43,9 +43,6 @@ export const MessageSchema = SchemaFactory.createForClass(Message);
 
 @Schema()
 export class Chat extends Document {
-  @Prop({ type: Types.ObjectId, required: true })
-  chatId: Types.ObjectId;
-
   @Prop({ type: [MessageSchema], default: [] })
   messages: Message[];
 

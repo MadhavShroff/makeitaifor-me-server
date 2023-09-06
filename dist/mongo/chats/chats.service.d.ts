@@ -6,7 +6,7 @@ export declare class ChatsService {
     private readonly userModel;
     constructor(chatModel: Model<Chat>, userModel: Model<User>);
     createTempChat(): Promise<Chat>;
-    createChat(obj: any): Promise<Chat>;
+    createChat(obj: undefined | any): Promise<Chat>;
     addChatToUser(userId: string, chatId: Types.ObjectId): Promise<User>;
     findChatByChatId(chatId: Types.ObjectId): Promise<Chat>;
     appendMessage(chatId: Types.ObjectId, message: MessageVersion): Promise<Chat>;

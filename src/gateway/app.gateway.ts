@@ -108,31 +108,6 @@ export class AppGateway
     return { event: 'textGenerated', data: result };
   }
 
-  @SubscribeMessage('startNewChat')
-  async startNewChat(
-    @MessageBody() data: { firstQuery: string },
-    @ConnectedSocket() client: Socket & { user: User },
-  ): Promise<WsResponse<string>> {
-    console.log('Received event at startNewChat with data: ', data);
-    const chat = await this.chatsService.createChat(client.user.id); // Create a new empty chat object
-    // Create the first message version
-    const firstMessageVersion = {
-      text: data.firstQuery,
-      type: 'text', // Adjust type as needed
-      isActive: true,
-      createdAt: new Date(),
-      versionNumber: 1,
-    };
-
-    // Append the first message to the chat
-    await this.chatsService.appendMessage(
-      chat._id,
-      firstMessageVersion as MessageVersion,
-    );
-
-    return { event: 'newChatStarted', data: 'New chat has been started!' };
-  }
-
   @SubscribeMessage('startEmptyChat')
   async startEmptyChat(
     @ConnectedSocket() client: Socket & { user: User },
@@ -147,7 +122,7 @@ export class AppGateway
       client.user.id,
       (
         await this.chatsService.createTempChat()
-      ).chatId,
+      )._id,
     ); // Create a new empty chat object
     console.log('Updated User Object: ', user);
     return {

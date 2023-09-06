@@ -68,22 +68,9 @@ let AppGateway = exports.AppGateway = class AppGateway {
         });
         return { event: 'textGenerated', data: result };
     }
-    async startNewChat(data, client) {
-        console.log('Received event at startNewChat with data: ', data);
-        const chat = await this.chatsService.createChat(client.user.id);
-        const firstMessageVersion = {
-            text: data.firstQuery,
-            type: 'text',
-            isActive: true,
-            createdAt: new Date(),
-            versionNumber: 1,
-        };
-        await this.chatsService.appendMessage(chat._id, firstMessageVersion);
-        return { event: 'newChatStarted', data: 'New chat has been started!' };
-    }
     async startEmptyChat(client) {
         console.log('Received event at startEmptyChat');
-        const user = await this.chatsService.addChatToUser(client.user.id, (await this.chatsService.createTempChat()).chatId);
+        const user = await this.chatsService.addChatToUser(client.user.id, (await this.chatsService.createTempChat())._id);
         console.log('Updated User Object: ', user);
         return {
             event: 'emptyChatStarted',
@@ -168,14 +155,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "generateText", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('startNewChat'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppGateway.prototype, "startNewChat", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('startEmptyChat'),
     __param(0, (0, websockets_1.ConnectedSocket)()),

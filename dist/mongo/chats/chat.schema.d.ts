@@ -45,7 +45,6 @@ export declare const MessageSchema: import("mongoose").Schema<Message, import("m
     _id: Types.ObjectId;
 }, never>>;
 export declare class Chat extends Document {
-    chatId: Types.ObjectId;
     messages: Message[];
     createdAt: Date;
     updatedAt: Date;

@@ -62,10 +62,6 @@ exports.MessageSchema = mongoose_1.SchemaFactory.createForClass(Message);
 let Chat = exports.Chat = class Chat extends mongoose_2.Document {
 };
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, required: true }),
-    __metadata("design:type", mongoose_2.Types.ObjectId)
-], Chat.prototype, "chatId", void 0);
-__decorate([
     (0, mongoose_1.Prop)({ type: [exports.MessageSchema], default: [] }),
     __metadata("design:type", Array)
 ], Chat.prototype, "messages", void 0);
