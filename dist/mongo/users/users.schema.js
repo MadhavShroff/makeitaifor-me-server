@@ -32,6 +32,11 @@ __decorate([
 ], User.prototype, "email", void 0);
 __decorate([
     (0, graphql_1.Field)(),
+    (0, mongoose_1.Prop)({ required: true, index: true, unique: true }),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
@@ -49,6 +54,10 @@ __decorate([
     (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.Types.ObjectId, ref: 'Chat' }], default: [] }),
     __metadata("design:type", Array)
 ], User.prototype, "chats", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ default: 'guest' }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
 exports.User = User = __decorate([
     (0, graphql_1.ObjectType)(),
     (0, mongoose_1.Schema)()

@@ -28,10 +28,12 @@ export declare class User extends Document {
     provider: Provider;
     id: string;
     email: string;
+    username: string;
     name: string;
     created_at: Date;
     updated_at: Date;
     chats: Types.ObjectId[];
+    role: string;
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, Document<unknown, any, User> & Omit<User & {
     _id: Types.ObjectId;

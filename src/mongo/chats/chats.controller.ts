@@ -1,15 +1,11 @@
 // fileupload.controller.ts
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
-import { MongoService } from 'src/mongo/mongo.service';
 import { ChatsService } from './chats.service';
 
-@Controller('mongo')
-export class MongoController {
-  constructor(
-    private mongoService: MongoService,
-    private chatsService: ChatsService,
-  ) {}
+@Controller('chats')
+export class ChatsController {
+  constructor(private chatsService: ChatsService) {}
 
   @Get('getChatsMetadata')
   @UseGuards(JwtAuthGuard)

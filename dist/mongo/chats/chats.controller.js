@@ -12,14 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MongoController = void 0;
+exports.ChatsController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("../../auth/jwt/jwt.guard");
-const mongo_service_1 = require("../mongo.service");
 const chats_service_1 = require("./chats.service");
-let MongoController = exports.MongoController = class MongoController {
-    constructor(mongoService, chatsService) {
-        this.mongoService = mongoService;
+let ChatsController = exports.ChatsController = class ChatsController {
+    constructor(chatsService) {
         this.chatsService = chatsService;
     }
     async getChatsMetadata(req) {
@@ -35,10 +33,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], MongoController.prototype, "getChatsMetadata", null);
-exports.MongoController = MongoController = __decorate([
-    (0, common_1.Controller)('mongo'),
-    __metadata("design:paramtypes", [mongo_service_1.MongoService,
-        chats_service_1.ChatsService])
-], MongoController);
+], ChatsController.prototype, "getChatsMetadata", null);
+exports.ChatsController = ChatsController = __decorate([
+    (0, common_1.Controller)('chats'),
+    __metadata("design:paramtypes", [chats_service_1.ChatsService])
+], ChatsController);
 //# sourceMappingURL=chats.controller.js.map

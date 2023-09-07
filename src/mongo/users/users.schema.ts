@@ -19,6 +19,10 @@ export class User extends Document {
   email: string;
 
   @Field()
+  @Prop({ required: true, index: true, unique: true })
+  username: string;
+
+  @Field()
   @Prop({ required: true })
   name: string;
 
@@ -32,6 +36,9 @@ export class User extends Document {
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Chat' }], default: [] })
   chats: Types.ObjectId[];
+
+  @Prop({ default: 'guest' })
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

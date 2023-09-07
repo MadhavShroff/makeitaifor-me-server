@@ -13,6 +13,7 @@ const chat_schema_1 = require("./chat.schema");
 const chats_service_1 = require("./chats.service");
 const chats_resolver_1 = require("./chats.resolver");
 const users_schema_1 = require("../users/users.schema");
+const chats_controller_1 = require("./chats.controller");
 let ChatsModule = exports.ChatsModule = class ChatsModule {
 };
 exports.ChatsModule = ChatsModule = __decorate([
@@ -27,6 +28,7 @@ exports.ChatsModule = ChatsModule = __decorate([
         ],
         providers: [chats_service_1.ChatsService, chats_resolver_1.ChatsResolver],
         exports: [chats_service_1.ChatsService],
+        controllers: [chats_controller_1.ChatsController],
     })
 ], ChatsModule);
 //# sourceMappingURL=chats.module.js.map
