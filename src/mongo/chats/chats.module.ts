@@ -10,8 +10,6 @@ import {
 } from './chat.schema';
 import { ChatsService } from './chats.service';
 import { ChatsResolver } from './chats.resolver';
-import { UsersModule } from '../users/users.module';
-import { UsersService } from '../users/users.service';
 import { User, UserSchema } from '../users/users.schema';
 import { ChatsController } from './chats.controller';
 

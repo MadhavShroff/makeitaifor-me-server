@@ -1,5 +1,5 @@
 // fileupload.controller.ts
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { ChatsService } from './chats.service';
 
