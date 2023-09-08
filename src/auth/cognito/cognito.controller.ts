@@ -36,6 +36,7 @@ export class CognitoController {
       role: req.user.role,
       chats: [],
     } as User);
+    console.log('accessToken', accessToken);
     res.clearCookie('guest_token', {
       httpOnly: true,
       sameSite: 'lax',
