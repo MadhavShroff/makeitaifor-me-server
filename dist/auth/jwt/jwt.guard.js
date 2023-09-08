@@ -27,7 +27,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            (() => doNothing())();
+            console.log(error);
         }
         try {
             const token = request.cookies['guest_token'];
@@ -47,7 +47,4 @@ exports.JwtAuthGuard = JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_service_1.JwtAuthService])
 ], JwtAuthGuard);
-function doNothing() {
-    return;
-}
 //# sourceMappingURL=jwt.guard.js.map

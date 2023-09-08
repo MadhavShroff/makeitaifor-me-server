@@ -7,7 +7,7 @@ import { ChatsService } from './chats.service';
 export class ChatsController {
   constructor(private chatsService: ChatsService) {}
 
-  @Get('getChatsMetadata')
+  @Get('/getChatsMetadata')
   @UseGuards(JwtAuthGuard)
   async getChatsMetadata(@Req() req) {
     const populatedUser = await this.chatsService.getChatsMetadata(req.user.id);

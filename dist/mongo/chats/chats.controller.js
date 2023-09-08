@@ -27,7 +27,7 @@ let ChatsController = exports.ChatsController = class ChatsController {
     }
 };
 __decorate([
-    (0, common_1.Get)('getChatsMetadata'),
+    (0, common_1.Get)('/getChatsMetadata'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),

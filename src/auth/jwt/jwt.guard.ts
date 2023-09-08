@@ -19,7 +19,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      (() => doNothing())();
+      console.log(error);
     }
 
     // If JWT authentication fails, try guest token
@@ -35,8 +35,4 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
     return false;
   }
-}
-
-function doNothing() {
-  return;
 }
