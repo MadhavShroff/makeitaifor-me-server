@@ -21,7 +21,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         try {
-            console.log('JWT Token:', request.headers.authorization);
+            console.log('JWT Token:', request.cookies);
             const superResult = await super.canActivate(context);
             if (superResult) {
                 return true;

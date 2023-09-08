@@ -13,7 +13,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const request = context.switchToHttp().getRequest();
     // Try normal JWT authentication first
     try {
-      console.log('JWT Token:', request.headers.authorization);
+      console.log('JWT Token:', request.cookies);
       const superResult = await super.canActivate(context);
       // If JWT authentication succeeds, proceed
       if (superResult) {
