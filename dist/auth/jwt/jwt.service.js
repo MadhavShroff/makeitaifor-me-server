@@ -19,6 +19,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         this.configService = configService;
     }
     login(user) {
+        console.log('user', user);
         const payload = {
             username: user.username,
             name: user.name,
@@ -30,6 +31,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         };
     }
     generateWebSocketToken(user) {
+        console.log('user', user);
         const payload = {
             username: user.username,
             userId: user.id,
