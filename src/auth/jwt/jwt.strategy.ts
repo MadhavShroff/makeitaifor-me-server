@@ -4,10 +4,14 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtPayload } from 'src/types';
+import { UsersService } from 'src/mongo/users/users.service';
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    private usersService: UsersService,
+  ) {
     const extractJwtFromCookie = (req) => {
       let token = null;
       if (req && req.cookies) {
@@ -23,6 +27,7 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: JwtPayload) {
-    return { id: payload.id, username: payload.username, name: payload.name };
+    const user = await this.usersService.findOne({ userId: payload.userId });
+    return user;
   }
 }

@@ -14,8 +14,9 @@ const passport_jwt_1 = require("passport-jwt");
 const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const users_service_1 = require("../../mongo/users/users.service");
 let JwtAuthStrategy = exports.JwtAuthStrategy = class JwtAuthStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt') {
-    constructor(configService) {
+    constructor(configService, usersService) {
         const extractJwtFromCookie = (req) => {
             let token = null;
             if (req && req.cookies) {
@@ -28,13 +29,16 @@ let JwtAuthStrategy = exports.JwtAuthStrategy = class JwtAuthStrategy extends (0
             ignoreExpiration: false,
             secretOrKey: configService.get('JWT_SECRET_KEY'),
         });
+        this.usersService = usersService;
     }
     async validate(payload) {
-        return { id: payload.id, username: payload.username, name: payload.name };
+        const user = await this.usersService.findOne({ userId: payload.userId });
+        return user;
     }
 };
 exports.JwtAuthStrategy = JwtAuthStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [config_1.ConfigService])
+    __metadata("design:paramtypes", [config_1.ConfigService,
+        users_service_1.UsersService])
 ], JwtAuthStrategy);
 //# sourceMappingURL=jwt.strategy.js.map

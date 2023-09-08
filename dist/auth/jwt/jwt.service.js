@@ -22,7 +22,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         const payload = {
             username: user.username,
             name: user.name,
-            id: user.userId,
+            userId: user.userId,
             role: user.role,
         };
         return {
@@ -32,7 +32,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
     generateWebSocketToken(user) {
         const payload = {
             username: user.username,
-            id: user.id,
+            userId: user.id,
             role: user.role,
             name: user.name,
         };

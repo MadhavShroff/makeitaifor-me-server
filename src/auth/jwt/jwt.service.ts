@@ -16,7 +16,7 @@ export class JwtAuthService {
     const payload: JwtPayload = {
       username: user.username,
       name: user.name,
-      id: user.userId,
+      userId: user.userId,
       role: user.role,
     };
     return {
@@ -27,7 +27,7 @@ export class JwtAuthService {
   generateWebSocketToken(user: User) {
     const payload: JwtPayload = {
       username: user.username,
-      id: user.id,
+      userId: user.id,
       role: user.role,
       name: user.name,
     };

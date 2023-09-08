@@ -7,9 +7,9 @@ declare module 'express' {
 }
 
 export type JwtPayload = {
-  name: string;
-  username: string;
-  id: string;
+  name: string; // cognito name
+  username: string; // cognito username
+  userId: string; // cognito sub
   role: string;
 };
 

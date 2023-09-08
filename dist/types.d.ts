@@ -7,7 +7,7 @@ declare module 'express' {
 export type JwtPayload = {
     name: string;
     username: string;
-    id: string;
+    userId: string;
     role: string;
 };
 export type Provider = 'google' | 'cognito';
