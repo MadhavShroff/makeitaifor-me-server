@@ -49,6 +49,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
         const userinfo = (await axios_1.default.get(CognitoStrategy_1.userInfoUrl(this.domain, this.region), {
             headers: { Authorization: `Bearer ${accessToken}` },
         })).data;
+        console.log('userinfo: ', userinfo);
         let user = await this.usersService.findOne({ userId: userinfo.sub });
         if (!user) {
             const tempChat = await this.chatsService.createTempChat();
