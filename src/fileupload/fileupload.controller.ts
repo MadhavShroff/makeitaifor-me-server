@@ -87,7 +87,7 @@ export class FileUploadController {
   }
 
   @Get('list-files/:userId')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async listFiles(@Param('userId') userId: string): Promise<{ files: any[] }> {
     const files = await this.fileUploadService.listFiles(userId);
     return { files };

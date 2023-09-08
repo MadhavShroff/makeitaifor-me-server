@@ -158,6 +158,7 @@ __decorate([
 ], FileUploadController.prototype, "generateUploadUrl", null);
 __decorate([
     (0, common_1.Get)('list-files/:userId'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
