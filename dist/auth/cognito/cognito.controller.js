@@ -29,6 +29,7 @@ let CognitoController = exports.CognitoController = class CognitoController {
         return req.user;
     }
     async cognitoAuthRedirect(req, res) {
+        console.log('req.user at redirect:', req.user);
         const { accessToken } = this.jwtAuthService.login({
             userId: req.user.id,
             name: req.user.name,
