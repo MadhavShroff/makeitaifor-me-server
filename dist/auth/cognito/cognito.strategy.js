@@ -51,7 +51,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
         })).data;
         console.log('userinfo: ', userinfo);
         let user = await this.usersService.findOne({ userId: userinfo.sub });
-        console.log('user: ', user);
+        console.log('user exists: ', user);
         if (user == null) {
             const tempChat = await this.chatsService.createTempChat();
             console.log('tempChat: ', tempChat);
@@ -64,6 +64,7 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
                 chats: [tempChat._id],
                 role: 'authenticated user',
             });
+            console.log('created user: ', user);
         }
         return user;
     }
