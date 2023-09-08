@@ -35,12 +35,15 @@ export class JwtAuthService {
   }
 
   verifyToken(token: string) {
+    console.log('token', token);
     try {
       const payload = this.jwtService.verify<JwtPayload>(token, {
         secret: this.configService.get<string>('JWT_SECRET_KEY'),
       });
+      console.log('payload', payload);
       return payload; // if verification succeeds, it returns the payload
     } catch (error) {
+      console.log('error', error);
       throw new Error('Invalid token'); // if verification fails, it throws an error
     }
   }

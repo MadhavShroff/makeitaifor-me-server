@@ -39,13 +39,16 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         return this.jwtService.sign(payload);
     }
     verifyToken(token) {
+        console.log('token', token);
         try {
             const payload = this.jwtService.verify(token, {
                 secret: this.configService.get('JWT_SECRET_KEY'),
             });
+            console.log('payload', payload);
             return payload;
         }
         catch (error) {
+            console.log('error', error);
             throw new Error('Invalid token');
         }
     }
