@@ -89,7 +89,7 @@ export class AppGateway
   }
 
   @SubscribeMessage('tryButtonClicked')
-  async generateText(
+  async tryButtonClicked(
     @MessageBody() data: { content: string },
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
@@ -106,6 +106,75 @@ export class AppGateway
       },
     );
     return { event: 'textGenerated', data: result };
+  }
+
+  @SubscribeMessage('generateText')
+  async generateText(
+    @MessageBody() data: { query: string; ext: string },
+    @ConnectedSocket() client: Socket & { user: User },
+  ): Promise<WsResponse<string>> {
+    console.log('Received event at tryButtonClicked with data: ', data);
+    const result = await this.langChainService.generateText(
+      data.query,
+      client.user,
+      (str: string, seq: number) => {
+        client.emit('textGeneratedChunk-' + data.ext, {
+          event: 'textGeneratedChunk',
+          data: str,
+          seq: seq,
+        });
+      },
+    );
+    return { event: 'textGenerated-' + data.ext, data: result };
+  }
+
+  @SubscribeMessage('messageSubmitted')
+  async messageSubmitted(
+    @MessageBody() data: { content: string; chatId: string },
+    @ConnectedSocket() client: Socket & { user: User },
+  ) {
+    const newQueryMessage = await this.chatsService.createMessage({
+      text: data.content,
+      type: 'user',
+      isActive: true,
+      createdAt: new Date(),
+      versionNumber: 1,
+    } as MessageVersion);
+
+    const newResponseMessage = await this.chatsService.createMessage({
+      text: ' ',
+      type: 'ai',
+      isActive: true,
+      createdAt: new Date(),
+      versionNumber: 1,
+    } as MessageVersion);
+
+    await Promise.all([
+      this.chatsService.appendMessageToChat(
+        newQueryMessage._id,
+        new Types.ObjectId(data.chatId),
+      ),
+      this.chatsService.appendMessageToChat(
+        newResponseMessage._id,
+        new Types.ObjectId(data.chatId),
+      ),
+    ]).then((values) => {
+      console.log('values: ', values);
+      client.emit(
+        'addedQueryToChat-' + data.chatId,
+        JSON.stringify({
+          event: 'addedQueryAndResponseToChat-' + data.chatId,
+          message: newQueryMessage.$clone(),
+        }),
+      );
+      client.emit(
+        'addedResponseToChat-' + data.chatId,
+        JSON.stringify({
+          event: 'addedQueryAndResponseToChat-' + data.chatId,
+          message: newResponseMessage.$clone(),
+        }),
+      );
+    });
   }
 
   @SubscribeMessage('startEmptyChat')
@@ -131,71 +200,6 @@ export class AppGateway
         status: 'success',
         updatedUser: user,
       },
-    };
-  }
-
-  @SubscribeMessage('chatSubmitted')
-  async chatSubmitted(
-    @MessageBody() data: { chatId: string; content: string },
-    @ConnectedSocket() client: Socket & { user: User },
-  ): Promise<WsResponse<string>> {
-    console.log('Received event at chatSubmitted', data);
-    const firstMessageVersion = {
-      text: data.content,
-      type: 'user', // Adjust type as needed
-      isActive: true,
-      createdAt: new Date(),
-      versionNumber: 1,
-    };
-
-    // Append the first message to the chat
-    await this.chatsService.appendMessage(
-      new Types.ObjectId(data.chatId),
-      firstMessageVersion as MessageVersion,
-    );
-
-    return {
-      event: 'chatSubmitted',
-      data: `Chat ID: New message: ${data.content} received at ${data.chatId} has been saved!`,
-    };
-  }
-
-  // This subscription appends a query message to an existing chat
-  @SubscribeMessage('appendQueryToChat')
-  async appendQueryToChat(
-    @MessageBody()
-    data: {
-      query: string;
-      userId: Types.ObjectId;
-      chatId: Types.ObjectId;
-      predecessor?: Types.ObjectId;
-    },
-    @ConnectedSocket() client: Socket & { user: User },
-  ): Promise<WsResponse<string>> {
-    // Assuming data.userId matches with client.user.id for security reasons
-    if (data.userId.toString() !== client.user.id) {
-      return { event: 'error', data: 'User ID mismatch!' };
-    }
-
-    const queryVersion = {
-      text: data.query,
-      type: 'query',
-      isActive: true,
-      createdAt: new Date(),
-      versionNumber: 1, // This should be incremented based on existing versions but for simplicity, set as 1
-    };
-
-    const updatedChat = await this.chatsService.appendMessage(
-      data.chatId,
-      queryVersion as MessageVersion,
-    );
-    if (data.predecessor) {
-      // Handle predecessor linking logic here, if needed
-    }
-
-    return {
-      event: 'queryAppended',
-      data: `Query has been appended to chat ID: ${updatedChat._id}`,
     };
   }
 }

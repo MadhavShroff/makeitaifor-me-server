@@ -12,7 +12,7 @@ export class User extends Document {
 
   @Field()
   @Prop({ required: true, index: true, unique: true })
-  id: string;
+  userId: string;
 
   @Field()
   @Prop({ required: true, index: true, unique: true })

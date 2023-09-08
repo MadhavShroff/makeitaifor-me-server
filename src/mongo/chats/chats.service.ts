@@ -9,16 +9,42 @@ export class ChatsService {
   constructor(
     @InjectModel(Chat.name) private readonly chatModel: Model<Chat>,
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(Message.name) private readonly messageModel: Model<Message>,
+    @InjectModel(MessageVersion.name)
+    private readonly messageVersionModel: Model<MessageVersion>,
   ) {}
 
   async createTempChat(): Promise<Chat> {
-    const newChat = new this.chatModel({});
+    const newChat = new this.chatModel({
+      title: 'New Chat',
+      messages: [],
+    });
     return await newChat.save();
   }
 
-  async createChat(obj: undefined | any): Promise<Chat> {
-    const newChat = new this.chatModel(obj == undefined ? {} : obj);
+  async createChat(obj?: any): Promise<Chat> {
+    const newChat = new this.chatModel(
+      obj == undefined
+        ? {
+            title: 'New Chat',
+            messages: [],
+          }
+        : obj,
+    );
     return await newChat.save();
+  }
+
+  async createMessage(obj?: any): Promise<Message> {
+    const newMessageVersion = new this.messageVersionModel(
+      obj == undefined ? {} : obj,
+    );
+    await newMessageVersion.save();
+    const newMessage = new this.messageModel({
+      versions: [newMessageVersion],
+    });
+    const res = await newMessage.save();
+    console.log(res);
+    return res;
   }
 
   /**
@@ -32,35 +58,52 @@ export class ChatsService {
     return null;
   }
 
+  /**
+   * Finds a chat by its ID
+   * @param chatId
+   * @returns the chat object
+   */
   async findChatByChatId(chatId: Types.ObjectId): Promise<Chat> {
     const chat = await this.chatModel.findById(chatId).exec();
     if (!chat) return null;
     else return chat;
   }
 
-  async appendMessage(
+  /**
+   * Appends a message objectId to Chat[chatId].messages
+   * @param messageId
+   * @param chatId
+   */
+  async appendMessageToChat(
+    messageId: Types.ObjectId,
     chatId: Types.ObjectId,
-    message: MessageVersion,
   ): Promise<Chat> {
-    const chat = await this.findChatByChatId(chatId);
-    if (chat == null) {
+    const result = await this.chatModel.updateOne(
+      { _id: chatId },
+      {
+        $push: { messages: messageId },
+        $set: { updatedAt: new Date(), title: 'New Chat' },
+      },
+    );
+
+    if (result.matchedCount === 0) {
+      console.error(`Failed to find chat with ID ${chatId}`);
       throw new NotFoundException(`Chat with ID ${chatId} not found`);
     }
 
-    const newMessage = {
-      versions: [message],
-      previousMessage: null,
-    } as Partial<Message>;
+    if (result.modifiedCount === 0) {
+      console.warn(
+        `No documents were modified during the update operation for chat ID ${chatId}`,
+      );
+    }
 
-    chat.messages.push(newMessage as Message);
-    chat.updatedAt = new Date();
-
-    return await chat.save();
+    console.log(`After Append: Message appended to chat with ID ${chatId}`);
+    return await this.findChatByChatId(chatId);
   }
 
   async getChatsMetadata(userId: string): Promise<User> {
     const user = await this.userModel
-      .findOne({ id: userId })
+      .findOne({ userId })
       .populate('chats')
       .exec();
     if (!user) {

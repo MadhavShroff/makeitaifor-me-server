@@ -14,7 +14,7 @@ export class MongoService {
 
   async saveGeneratedText(text: string, user: User) {
     const generatedText = new this.generatedTextModel({
-      userId: user.id,
+      userId: user.userId,
       text: text,
     });
     await generatedText.save();

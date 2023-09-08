@@ -26,7 +26,7 @@ import { Document, Types } from 'mongoose';
 import { Provider } from 'src/types';
 export declare class User extends Document {
     provider: Provider;
-    id: string;
+    userId: string;
     email: string;
     username: string;
     name: string;

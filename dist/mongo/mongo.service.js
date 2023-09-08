@@ -23,7 +23,7 @@ let MongoService = exports.MongoService = class MongoService {
     }
     async saveGeneratedText(text, user) {
         const generatedText = new this.generatedTextModel({
-            userId: user.id,
+            userId: user.userId,
             text: text,
         });
         await generatedText.save();

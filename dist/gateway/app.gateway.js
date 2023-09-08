@@ -57,7 +57,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('User: ', client.user);
         return 'Acknowledged button click! : ' + data;
     }
-    async generateText(data, client) {
+    async tryButtonClicked(data, client) {
         console.log('Received event at tryButtonClicked with data: ', data);
         const result = await this.langChainService.generateText(data.content, client.user, (str, seq) => {
             client.emit('textGeneratedChunk', {
@@ -67,6 +67,47 @@ let AppGateway = exports.AppGateway = class AppGateway {
             });
         });
         return { event: 'textGenerated', data: result };
+    }
+    async generateText(data, client) {
+        console.log('Received event at tryButtonClicked with data: ', data);
+        const result = await this.langChainService.generateText(data.query, client.user, (str, seq) => {
+            client.emit('textGeneratedChunk-' + data.ext, {
+                event: 'textGeneratedChunk',
+                data: str,
+                seq: seq,
+            });
+        });
+        return { event: 'textGenerated-' + data.ext, data: result };
+    }
+    async messageSubmitted(data, client) {
+        const newQueryMessage = await this.chatsService.createMessage({
+            text: data.content,
+            type: 'user',
+            isActive: true,
+            createdAt: new Date(),
+            versionNumber: 1,
+        });
+        const newResponseMessage = await this.chatsService.createMessage({
+            text: ' ',
+            type: 'ai',
+            isActive: true,
+            createdAt: new Date(),
+            versionNumber: 1,
+        });
+        await Promise.all([
+            this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
+            this.chatsService.appendMessageToChat(newResponseMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
+        ]).then((values) => {
+            console.log('values: ', values);
+            client.emit('addedQueryToChat-' + data.chatId, JSON.stringify({
+                event: 'addedQueryAndResponseToChat-' + data.chatId,
+                message: newQueryMessage.$clone(),
+            }));
+            client.emit('addedResponseToChat-' + data.chatId, JSON.stringify({
+                event: 'addedQueryAndResponseToChat-' + data.chatId,
+                message: newResponseMessage.$clone(),
+            }));
+        });
     }
     async startEmptyChat(client) {
         console.log('Received event at startEmptyChat');
@@ -78,40 +119,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
                 status: 'success',
                 updatedUser: user,
             },
-        };
-    }
-    async chatSubmitted(data, client) {
-        console.log('Received event at chatSubmitted', data);
-        const firstMessageVersion = {
-            text: data.content,
-            type: 'user',
-            isActive: true,
-            createdAt: new Date(),
-            versionNumber: 1,
-        };
-        await this.chatsService.appendMessage(new mongoose_1.Types.ObjectId(data.chatId), firstMessageVersion);
-        return {
-            event: 'chatSubmitted',
-            data: `Chat ID: New message: ${data.content} received at ${data.chatId} has been saved!`,
-        };
-    }
-    async appendQueryToChat(data, client) {
-        if (data.userId.toString() !== client.user.id) {
-            return { event: 'error', data: 'User ID mismatch!' };
-        }
-        const queryVersion = {
-            text: data.query,
-            type: 'query',
-            isActive: true,
-            createdAt: new Date(),
-            versionNumber: 1,
-        };
-        const updatedChat = await this.chatsService.appendMessage(data.chatId, queryVersion);
-        if (data.predecessor) {
-        }
-        return {
-            event: 'queryAppended',
-            data: `Query has been appended to chat ID: ${updatedChat._id}`,
         };
     }
 };
@@ -154,7 +161,23 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
+], AppGateway.prototype, "tryButtonClicked", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('generateText'),
+    __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "generateText", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('messageSubmitted'),
+    __param(0, (0, websockets_1.MessageBody)()),
+    __param(1, (0, websockets_1.ConnectedSocket)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AppGateway.prototype, "messageSubmitted", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('startEmptyChat'),
     __param(0, (0, websockets_1.ConnectedSocket)()),
@@ -162,22 +185,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "startEmptyChat", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('chatSubmitted'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppGateway.prototype, "chatSubmitted", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('appendQueryToChat'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppGateway.prototype, "appendQueryToChat", null);
 exports.AppGateway = AppGateway = __decorate([
     (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
     (0, websockets_1.WebSocketGateway)(opts),

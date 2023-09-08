@@ -1,6 +1,5 @@
 import { ConfigService } from '@nestjs/config';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, WsResponse } from '@nestjs/websockets';
-import { Types } from 'mongoose';
 import { Server, Socket } from 'socket.io';
 import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 import { LangChainService } from 'src/lang-chain/lang-chain.service';
@@ -24,29 +23,27 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
     buttonClicked(data: any, client: Socket & {
         user: User;
     }): string;
-    generateText(data: {
+    tryButtonClicked(data: {
         content: string;
     }, client: Socket & {
         user: User;
     }): Promise<WsResponse<string>>;
+    generateText(data: {
+        query: string;
+        ext: string;
+    }, client: Socket & {
+        user: User;
+    }): Promise<WsResponse<string>>;
+    messageSubmitted(data: {
+        content: string;
+        chatId: string;
+    }, client: Socket & {
+        user: User;
+    }): Promise<void>;
     startEmptyChat(client: Socket & {
         user: User;
     }): Promise<WsResponse<{
         status: string;
         updatedUser: User;
     }>>;
-    chatSubmitted(data: {
-        chatId: string;
-        content: string;
-    }, client: Socket & {
-        user: User;
-    }): Promise<WsResponse<string>>;
-    appendQueryToChat(data: {
-        query: string;
-        userId: Types.ObjectId;
-        chatId: Types.ObjectId;
-        predecessor?: Types.ObjectId;
-    }, client: Socket & {
-        user: User;
-    }): Promise<WsResponse<string>>;
 }

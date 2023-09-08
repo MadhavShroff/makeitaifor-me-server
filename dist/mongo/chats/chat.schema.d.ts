@@ -36,7 +36,7 @@ export declare const MessageVersionSchema: import("mongoose").Schema<MessageVers
     _id: Types.ObjectId;
 }, never>>;
 export declare class Message extends Document {
-    versions: MessageVersion[];
+    versions: Types.ObjectId[];
     previousMessage: Types.ObjectId;
 }
 export declare const MessageSchema: import("mongoose").Schema<Message, import("mongoose").Model<Message, any, any, any, Document<unknown, any, Message> & Omit<Message & {
@@ -45,7 +45,8 @@ export declare const MessageSchema: import("mongoose").Schema<Message, import("m
     _id: Types.ObjectId;
 }, never>>;
 export declare class Chat extends Document {
-    messages: Message[];
+    messages: Types.ObjectId[];
+    title: string;
     createdAt: Date;
     updatedAt: Date;
 }

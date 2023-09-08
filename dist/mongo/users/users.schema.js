@@ -24,7 +24,7 @@ __decorate([
     (0, graphql_1.Field)(),
     (0, mongoose_1.Prop)({ required: true, index: true, unique: true }),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], User.prototype, "userId", void 0);
 __decorate([
     (0, graphql_1.Field)(),
     (0, mongoose_1.Prop)({ required: true, index: true, unique: true }),
