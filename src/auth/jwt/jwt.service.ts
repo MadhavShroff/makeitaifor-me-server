@@ -20,6 +20,7 @@ export class JwtAuthService {
       userId: user.userId,
       role: user.role,
     };
+    console.log('payload', payload);
     return {
       accessToken: this.jwtService.sign(payload),
     };

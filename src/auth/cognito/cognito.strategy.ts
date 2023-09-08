@@ -53,6 +53,8 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     return `${this.baseUrl(domain, region)}/userInfo`;
   }
 
+  // TODO: Change funtion to validate user, and return user from mongo, throw UnauthorizedException if user not found
+  // Add a Cognito -> onSignup callback to handle creating new user in mongo, remove that logic from here
   async validate(accessToken: string) {
     // Here the `id_token` is also received: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
     // But it's not supported by passport-oauth2, only `access_token` is received

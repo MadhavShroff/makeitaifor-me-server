@@ -42,6 +42,7 @@ let CognitoController = exports.CognitoController = class CognitoController {
             sameSite: 'lax',
             secure: true,
         });
+        console.log(this.configService.get('SESSION_COOKIE_KEY'));
         res.cookie(this.configService.get('SESSION_COOKIE_KEY'), accessToken, {
             httpOnly: true,
             sameSite: 'none',

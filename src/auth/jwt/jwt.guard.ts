@@ -10,7 +10,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    console.log(context);
     // Try normal JWT authentication first
     try {
       const superResult = await super.canActivate(context);
@@ -21,7 +21,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     } catch (error) {
       console.log('JWT auth failed:', error.message, error);
     }
-
+    const request = context.switchToHttp().getRequest();
     // If JWT authentication fails, try guest token
     try {
       const token = request.cookies['guest_token'];

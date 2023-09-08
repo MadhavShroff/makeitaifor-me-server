@@ -19,7 +19,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
         this.jwtAuthService = jwtAuthService;
     }
     async canActivate(context) {
-        const request = context.switchToHttp().getRequest();
+        console.log(context);
         try {
             const superResult = await super.canActivate(context);
             if (superResult) {
@@ -29,6 +29,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
         catch (error) {
             console.log('JWT auth failed:', error.message, error);
         }
+        const request = context.switchToHttp().getRequest();
         try {
             const token = request.cookies['guest_token'];
             const payload = this.jwtAuthService.verifyToken(token);

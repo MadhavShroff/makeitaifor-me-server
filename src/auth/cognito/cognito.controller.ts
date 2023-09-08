@@ -42,6 +42,7 @@ export class CognitoController {
       sameSite: 'lax',
       secure: true,
     });
+    console.log(this.configService.get<string>('SESSION_COOKIE_KEY'));
     res.cookie(
       this.configService.get<string>('SESSION_COOKIE_KEY'),
       accessToken,
