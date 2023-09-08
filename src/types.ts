@@ -1,3 +1,5 @@
+import { User } from './mongo/users/users.schema';
+
 declare module 'express' {
   export interface Request {
     user?: User;
@@ -15,24 +17,17 @@ export type Provider = 'google' | 'cognito';
 
 export const GuestId = '915b7cd5-08c1-45c2-9709-7585af332ee4';
 
-export class User {
-  id: string;
-  provider?: Provider;
-  email: string;
-  name: string;
-  username: string;
-  created_at?: Date;
-  updated_at?: Date;
-  role: string;
-}
-
 export const GuestUser: User = {
-  id: GuestId,
+  userId: GuestId,
   email: 'guest@makeitaifor.me',
   name: 'Guest',
   username: 'guest',
   role: 'guest',
-};
+  provider: 'cognito',
+  created_at: new Date(),
+  updated_at: new Date(),
+  chats: [],
+} as User;
 
 export type FileData = {
   meta: S3MetaData;

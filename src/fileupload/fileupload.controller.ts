@@ -134,7 +134,6 @@ export class FileUploadController {
     const url = await this.fileUploadService.generateTemporaryDownloadUrl(
       objKey,
     );
-    console.log('Temporary download url:', url);
     const pdf_id = await this.callMathpixApi(url);
 
     let statusResponse;
