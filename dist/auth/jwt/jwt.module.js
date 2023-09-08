@@ -12,6 +12,7 @@ const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const jwt_strategy_1 = require("./jwt.strategy");
 const jwt_service_1 = require("./jwt.service");
+const users_module_1 = require("../../mongo/users/users.module");
 let JwtModule = exports.JwtModule = class JwtModule {
 };
 exports.JwtModule = JwtModule = __decorate([
@@ -24,6 +25,7 @@ exports.JwtModule = JwtModule = __decorate([
                     signOptions: { expiresIn: '2 days' },
                 }),
             }),
+            users_module_1.UsersModule,
         ],
         providers: [jwt_service_1.JwtAuthService, jwt_strategy_1.JwtAuthStrategy],
         exports: [jwt_service_1.JwtAuthService],
