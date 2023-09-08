@@ -2,7 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayload, User } from 'src/types';
+import { JwtPayload } from 'src/types';
+import { User } from '../../mongo/users/users.schema';
 
 @Injectable()
 export class JwtAuthService {
@@ -15,7 +16,7 @@ export class JwtAuthService {
     const payload: JwtPayload = {
       username: user.email,
       name: user.name,
-      id: user.id,
+      id: user.userId,
       role: user.role,
     };
     return {

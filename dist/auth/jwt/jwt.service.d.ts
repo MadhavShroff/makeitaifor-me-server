@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayload, User } from 'src/types';
+import { JwtPayload } from 'src/types';
+import { User } from '../../mongo/users/users.schema';
 export declare class JwtAuthService {
     private jwtService;
     private configService;

@@ -22,7 +22,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         const payload = {
             username: user.email,
             name: user.name,
-            id: user.id,
+            id: user.userId,
             role: user.role,
         };
         return {

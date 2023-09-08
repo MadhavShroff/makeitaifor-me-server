@@ -29,7 +29,18 @@ let CognitoController = exports.CognitoController = class CognitoController {
         return req.user;
     }
     async cognitoAuthRedirect(req, res) {
-        const { accessToken } = this.jwtAuthService.login(req.user);
+        const { accessToken } = this.jwtAuthService.login({
+            userId: req.user.id,
+            name: req.user.name,
+            username: req.user.username,
+            role: req.user.role,
+            chats: [],
+        });
+        res.clearCookie('guest_token', {
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: true,
+        });
         res.cookie(this.configService.get('SESSION_COOKIE_KEY'), accessToken, {
             httpOnly: true,
             sameSite: 'none',

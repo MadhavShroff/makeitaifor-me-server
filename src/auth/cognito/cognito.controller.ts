@@ -4,6 +4,7 @@ import { JwtAuthService } from '../jwt/jwt.service';
 import { CognitoOauthGuard } from './cognito.guard';
 import { ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from '../jwt/jwt.guard';
+import { User } from 'src/mongo/users/users.schema';
 
 @Controller('auth/cognito')
 export class CognitoController {
@@ -28,7 +29,18 @@ export class CognitoController {
   @Get('/redirect')
   @UseGuards(CognitoOauthGuard)
   async cognitoAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const { accessToken } = this.jwtAuthService.login(req.user);
+    const { accessToken } = this.jwtAuthService.login({
+      userId: req.user.id,
+      name: req.user.name,
+      username: req.user.username,
+      role: req.user.role,
+      chats: [],
+    } as User);
+    res.clearCookie('guest_token', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true,
+    });
     res.cookie(
       this.configService.get<string>('SESSION_COOKIE_KEY'),
       accessToken,
