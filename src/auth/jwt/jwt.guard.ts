@@ -18,7 +18,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      console.log('JWT auth failed:', error.message, error);
+      // console.log('JWT auth failed:', error.message);
     }
     const request = context.switchToHttp().getRequest();
     // If JWT authentication fails, try guest token
@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      throw new UnauthorizedException('Invalid token');
+      throw new UnauthorizedException('Invalid token, authentication failed');
     }
     return false;
   }

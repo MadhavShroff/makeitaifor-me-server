@@ -26,7 +26,6 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            console.log('JWT auth failed:', error.message, error);
         }
         const request = context.switchToHttp().getRequest();
         try {
@@ -38,7 +37,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Invalid token');
+            throw new common_1.UnauthorizedException('Invalid token, authentication failed');
         }
         return false;
     }

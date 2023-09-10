@@ -62,8 +62,10 @@ export class LangChainService {
     fullText = fullText.trim();
 
     // Once finished, save the fullText in MongoDB
-    await this.mongoService.saveGeneratedText(fullText, user);
-    console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
+    if(user.role != 'guest') {
+      await this.mongoService.saveGeneratedText(fullText, user);
+      console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
+    }
 
     return fullText;
   }
