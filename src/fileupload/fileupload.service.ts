@@ -26,7 +26,7 @@ export class FileUploadService {
     readableStream.push(null);
 
     const params = {
-      Bucket: user.id, // replace with your bucket name
+      Bucket: user.userId, // replace with your bucket name
       Key: name,
       Body: readableStream,
       ACL: 'public-read', // files will be publicly readable
@@ -50,7 +50,7 @@ export class FileUploadService {
     user: any,
   ): Promise<string> {
     const params = {
-      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
+      Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.userId}`,
       Key: filename,
       ContentType: mimetype,
       Expires: 60 * 60, // presigned URL expiration time in seconds

@@ -28,7 +28,7 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
         readableStream.push(buffer);
         readableStream.push(null);
         const params = {
-            Bucket: user.id,
+            Bucket: user.userId,
             Key: name,
             Body: readableStream,
             ACL: 'public-read',
@@ -47,7 +47,7 @@ let FileUploadService = exports.FileUploadService = class FileUploadService {
     }
     async generateUploadUrl(filename, mimetype, user) {
         const params = {
-            Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.id}`,
+            Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}/${user.userId}`,
             Key: filename,
             ContentType: mimetype,
             Expires: 60 * 60,

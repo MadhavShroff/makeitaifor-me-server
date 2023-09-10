@@ -35,7 +35,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         console.log('user', user);
         const payload = {
             username: user.username,
-            userId: user.id,
+            userId: user.userId,
             role: user.role,
             name: user.name,
         };

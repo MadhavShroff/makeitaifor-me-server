@@ -53,7 +53,10 @@ export class FileUploadController {
   ): Promise<FileData | null> {
     try {
       // Fetching the processed text from the database
-      const text = await this.mongoService.getProcessedText(req.user.id, ETag);
+      const text = await this.mongoService.getProcessedText(
+        req.user.userId,
+        ETag,
+      );
 
       if (!text) {
         throw new HttpException('File not found', HttpStatus.NOT_FOUND);

@@ -20,18 +20,19 @@ let ChatsController = exports.ChatsController = class ChatsController {
     constructor(chatsService) {
         this.chatsService = chatsService;
     }
-    async getChatsMetadata(req) {
-        const populatedUser = await this.chatsService.getChatsMetadata(req.user.id);
+    async getChatsMetadata(req, userId) {
+        const populatedUser = await this.chatsService.getChatsMetadata(userId);
         console.log(populatedUser);
         return populatedUser;
     }
 };
 __decorate([
-    (0, common_1.Get)('/getChatsMetadata'),
+    (0, common_1.Get)('/getChatsMetadata/:userId'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], ChatsController.prototype, "getChatsMetadata", null);
 exports.ChatsController = ChatsController = __decorate([
