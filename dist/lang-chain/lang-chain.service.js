@@ -51,10 +51,8 @@ let LangChainService = exports.LangChainService = class LangChainService {
                 }],
         });
         fullText = fullText.trim();
-        if (user.role != 'guest') {
-            await this.mongoService.saveGeneratedText(fullText, user);
-            console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
-        }
+        await this.mongoService.saveGeneratedText(fullText, user);
+        console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
         return fullText;
     }
 };

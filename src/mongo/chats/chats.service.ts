@@ -78,6 +78,7 @@ export class ChatsService {
     messageId: Types.ObjectId,
     chatId: Types.ObjectId,
   ): Promise<Chat> {
+    console.log(`Before Append: Message appended to chat with ID ${chatId}`);
     const result = await this.chatModel.updateOne(
       { _id: chatId },
       {
@@ -85,6 +86,8 @@ export class ChatsService {
         $set: { updatedAt: new Date(), title: 'New Chat' },
       },
     );
+
+    console.log(result);
 
     if (result.matchedCount === 0) {
       console.error(`Failed to find chat with ID ${chatId}`);
