@@ -119,7 +119,7 @@ export class ChatsService {
       })
       .exec();
     // Does not scale well, but woeks for now
-    console.log('User found at getChatsMetadata: ', user);
+    console.log('User found at getChatsMetadata: ', JSON.stringify(user));
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
