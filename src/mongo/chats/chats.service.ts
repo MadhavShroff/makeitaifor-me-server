@@ -105,15 +105,7 @@ export class ChatsService {
   async getChatsMetadata(userId: string): Promise<User> {
     const user = await this.userModel
       .findOne({ userId })
-      .populate({
-        path: 'chats',
-        populate: {
-          path: 'messages',
-          populate: {
-            path: 'versions',
-          },
-        },
-      })
+      .populate('chats')
       .exec();
     // Does not scale well, but woeks for now
     console.log('User found at getChatsMetadata: ', JSON.stringify(user));

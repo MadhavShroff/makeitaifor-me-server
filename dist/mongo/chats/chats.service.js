@@ -80,15 +80,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async getChatsMetadata(userId) {
         const user = await this.userModel
             .findOne({ userId })
-            .populate({
-            path: 'chats',
-            populate: {
-                path: 'messages',
-                populate: {
-                    path: 'versions',
-                },
-            },
-        })
+            .populate('chats')
             .exec();
         console.log('User found at getChatsMetadata: ', JSON.stringify(user));
         if (!user) {
