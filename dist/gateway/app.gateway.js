@@ -104,6 +104,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
                             type: 'user',
                             isActive: true,
                             createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
                             versionNumber: 1,
                             _id: 123,
                             __v: 0,
@@ -122,15 +123,17 @@ let AppGateway = exports.AppGateway = class AppGateway {
                             type: 'ai',
                             isActive: true,
                             createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
                             versionNumber: 1,
-                            _id: 123,
+                            _id: 234,
                             __v: 0,
                         },
                     ],
-                    _id: 'abc',
+                    _id: 'def',
                     __v: 0,
                 },
             }));
+            return;
         }
         await Promise.all([
             this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),

@@ -82,6 +82,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
         const user = await this.userModel
             .findOne({ userId })
             .populate('chats')
+            .populate('chats.messages')
             .exec();
         if (!user) {
             throw new common_1.NotFoundException(`User with ID ${userId} not found`);

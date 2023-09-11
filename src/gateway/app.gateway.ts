@@ -149,6 +149,7 @@ export class AppGateway
       versionNumber: 1,
     } as MessageVersion);
 
+    // TODO: remove this hacky code
     if (data.chatId === '123') {
       client.emit(
         'addedQueryToChat-' + data.chatId,
@@ -161,6 +162,7 @@ export class AppGateway
                 type: 'user',
                 isActive: true,
                 createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
                 versionNumber: 1,
                 _id: 123,
                 __v: 0,
@@ -182,16 +184,18 @@ export class AppGateway
                 type: 'ai',
                 isActive: true,
                 createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
                 versionNumber: 1,
-                _id: 123,
+                _id: 234,
                 __v: 0,
               },
             ],
-            _id: 'abc',
+            _id: 'def',
             __v: 0,
           },
         }),
       );
+      return;
     }
 
     await Promise.all([

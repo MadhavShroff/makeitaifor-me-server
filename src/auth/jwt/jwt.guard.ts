@@ -30,7 +30,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
-      throw new UnauthorizedException('Invalid token, authentication failed');
+      throw new UnauthorizedException('Invalid token, authentication faile');
     }
     return false;
   }

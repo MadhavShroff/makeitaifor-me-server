@@ -37,7 +37,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
-            throw new common_1.UnauthorizedException('Invalid token, authentication failed');
+            throw new common_1.UnauthorizedException('Invalid token, authentication faile');
         }
         return false;
     }
