@@ -37,6 +37,11 @@ __decorate([
 ], MessageVersion.prototype, "createdAt", void 0);
 __decorate([
     (0, graphql_1.Field)(),
+    (0, mongoose_1.Prop)({ default: Date.now }),
+    __metadata("design:type", Date)
+], MessageVersion.prototype, "updatedAt", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
     (0, mongoose_1.Prop)({ type: Number, required: true }),
     __metadata("design:type", Number)
 ], MessageVersion.prototype, "versionNumber", void 0);

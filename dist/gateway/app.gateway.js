@@ -80,20 +80,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
         return { event: 'textGenerated-' + data.ext, data: result };
     }
     async messageSubmitted(data, client) {
-        const newQueryMessage = await this.chatsService.createMessage({
-            text: data.content,
-            type: 'user',
-            isActive: true,
-            createdAt: new Date(),
-            versionNumber: 1,
-        });
-        const newResponseMessage = await this.chatsService.createMessage({
-            text: ' ',
-            type: 'ai',
-            isActive: true,
-            createdAt: new Date(),
-            versionNumber: 1,
-        });
         if (data.chatId === '123') {
             client.emit('addedQueryToChat-' + data.chatId, JSON.stringify({
                 event: 'addedQueryAndResponseToChat-' + data.chatId,
@@ -135,6 +121,18 @@ let AppGateway = exports.AppGateway = class AppGateway {
             }));
             return;
         }
+        const newQueryMessage = await this.chatsService.createMessage({
+            text: data.content,
+            type: 'user',
+            isActive: true,
+            versionNumber: 1,
+        });
+        const newResponseMessage = await this.chatsService.createMessage({
+            text: ' ',
+            type: 'ai',
+            isActive: true,
+            versionNumber: 1,
+        });
         await Promise.all([
             this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
             this.chatsService.appendMessageToChat(newResponseMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),

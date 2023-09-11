@@ -9,7 +9,7 @@ export declare class ChatsService {
     constructor(chatModel: Model<Chat>, userModel: Model<User>, messageModel: Model<Message>, messageVersionModel: Model<MessageVersion>);
     createTempChat(): Promise<Chat>;
     createChat(obj?: any): Promise<Chat>;
-    createMessage(obj?: any): Promise<Message>;
+    createMessage(obj: MessageVersion): Promise<Message>;
     addChatToUser(userId: string, chatId: Types.ObjectId): Promise<User>;
     findChatByChatId(chatId: Types.ObjectId): Promise<Chat>;
     appendMessageToChat(messageId: Types.ObjectId, chatId: Types.ObjectId): Promise<Chat>;

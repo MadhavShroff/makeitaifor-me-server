@@ -23,6 +23,10 @@ export class MessageVersion extends Document {
   createdAt: Date;
 
   @Field()
+  @Prop({ default: Date.now })
+  updatedAt: Date;
+
+  @Field()
   @Prop({ type: Number, required: true })
   versionNumber: number;
 }

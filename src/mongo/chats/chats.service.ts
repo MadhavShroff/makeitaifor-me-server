@@ -34,7 +34,7 @@ export class ChatsService {
     return await newChat.save();
   }
 
-  async createMessage(obj?: any): Promise<Message> {
+  async createMessage(obj: MessageVersion): Promise<Message> {
     const newMessageVersion = new this.messageVersionModel(
       obj == undefined ? {} : obj,
     );

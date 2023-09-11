@@ -133,22 +133,6 @@ export class AppGateway
     @MessageBody() data: { content: string; chatId: string },
     @ConnectedSocket() client: Socket & { user: User },
   ) {
-    const newQueryMessage = await this.chatsService.createMessage({
-      text: data.content,
-      type: 'user',
-      isActive: true,
-      createdAt: new Date(),
-      versionNumber: 1,
-    } as MessageVersion);
-
-    const newResponseMessage = await this.chatsService.createMessage({
-      text: ' ',
-      type: 'ai',
-      isActive: true,
-      createdAt: new Date(),
-      versionNumber: 1,
-    } as MessageVersion);
-
     // TODO: remove this hacky code
     if (data.chatId === '123') {
       client.emit(
@@ -197,6 +181,19 @@ export class AppGateway
       );
       return;
     }
+    const newQueryMessage = await this.chatsService.createMessage({
+      text: data.content,
+      type: 'user',
+      isActive: true,
+      versionNumber: 1,
+    } as MessageVersion);
+
+    const newResponseMessage = await this.chatsService.createMessage({
+      text: ' ',
+      type: 'ai',
+      isActive: true,
+      versionNumber: 1,
+    } as MessageVersion);
 
     await Promise.all([
       this.chatsService.appendMessageToChat(
