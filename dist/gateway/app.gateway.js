@@ -94,9 +94,12 @@ let AppGateway = exports.AppGateway = class AppGateway {
             createdAt: new Date(),
             versionNumber: 1,
         });
+        const chatIdGuestOrNot = data.chatId === '123'
+            ? new mongoose_1.Types.ObjectId(123)
+            : new mongoose_1.Types.ObjectId(data.chatId);
         await Promise.all([
-            this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
-            this.chatsService.appendMessageToChat(newResponseMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
+            this.chatsService.appendMessageToChat(newQueryMessage._id, chatIdGuestOrNot),
+            this.chatsService.appendMessageToChat(newResponseMessage._id, chatIdGuestOrNot),
         ]).then((values) => {
             console.log('values: ', values);
             client.emit('addedQueryToChat-' + data.chatId, JSON.stringify({

@@ -149,14 +149,19 @@ export class AppGateway
       versionNumber: 1,
     } as MessageVersion);
 
+    const chatIdGuestOrNot =
+      data.chatId === '123'
+        ? new Types.ObjectId(123)
+        : new Types.ObjectId(data.chatId);
+    // TODO : replace this hacky code
     await Promise.all([
       this.chatsService.appendMessageToChat(
         newQueryMessage._id,
-        new Types.ObjectId(data.chatId),
+        chatIdGuestOrNot,
       ),
       this.chatsService.appendMessageToChat(
         newResponseMessage._id,
-        new Types.ObjectId(data.chatId),
+        chatIdGuestOrNot,
       ),
     ]).then((values) => {
       console.log('values: ', values);
