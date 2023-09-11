@@ -43,9 +43,10 @@ let ChatsService = exports.ChatsService = class ChatsService {
     }
     async createMessage(obj) {
         const newMessageVersion = new this.messageVersionModel(obj == undefined ? {} : obj);
-        await newMessageVersion.save();
+        const mv = await newMessageVersion.save();
+        console.log('New Message Version: ', mv);
         const newMessage = new this.messageModel({
-            versions: [newMessageVersion],
+            versions: [mv._id],
         });
         const res = await newMessage.save();
         console.log(res);
@@ -62,7 +63,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
             return chat;
     }
     async appendMessageToChat(messageId, chatId) {
-        console.log(`Before Append: Message appended to chat with ID ${chatId}`);
         const result = await this.chatModel.updateOne({ _id: chatId }, {
             $push: { messages: messageId },
             $set: { updatedAt: new Date(), title: 'New Chat' },
@@ -75,7 +75,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
         if (result.modifiedCount === 0) {
             console.warn(`No documents were modified during the update operation for chat ID ${chatId}`);
         }
-        console.log(`After Append: Message appended to chat with ID ${chatId}`);
         return await this.findChatByChatId(chatId);
     }
     async getChatsMetadata(userId) {
@@ -94,6 +93,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
             },
         })
             .exec();
+        console.log('User found at getChatsMetadata: ', user);
         if (!user) {
             throw new common_1.NotFoundException(`User with ID ${userId} not found`);
         }

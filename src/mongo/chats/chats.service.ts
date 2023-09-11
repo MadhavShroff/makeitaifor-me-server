@@ -38,9 +38,10 @@ export class ChatsService {
     const newMessageVersion = new this.messageVersionModel(
       obj == undefined ? {} : obj,
     );
-    await newMessageVersion.save();
+    const mv = await newMessageVersion.save();
+    console.log('New Message Version: ', mv);
     const newMessage = new this.messageModel({
-      versions: [newMessageVersion],
+      versions: [mv._id],
     });
     const res = await newMessage.save();
     console.log(res);
@@ -78,7 +79,6 @@ export class ChatsService {
     messageId: Types.ObjectId,
     chatId: Types.ObjectId,
   ): Promise<Chat> {
-    console.log(`Before Append: Message appended to chat with ID ${chatId}`);
     const result = await this.chatModel.updateOne(
       { _id: chatId },
       {
@@ -99,8 +99,6 @@ export class ChatsService {
         `No documents were modified during the update operation for chat ID ${chatId}`,
       );
     }
-
-    console.log(`After Append: Message appended to chat with ID ${chatId}`);
     return await this.findChatByChatId(chatId);
   }
 
@@ -121,6 +119,7 @@ export class ChatsService {
       })
       .exec();
     // Does not scale well, but woeks for now
+    console.log('User found at getChatsMetadata: ', user);
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
