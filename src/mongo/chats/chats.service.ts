@@ -107,9 +107,20 @@ export class ChatsService {
   async getChatsMetadata(userId: string): Promise<User> {
     const user = await this.userModel
       .findOne({ userId })
-      .populate('chats')
-      .populate('chats.messages')
+      .populate({
+        path: 'chats',
+        model: 'Chat',
+        populate: {
+          path: 'messages',
+          model: 'Message',
+          populate: {
+            path: 'versions',
+            model: 'MessageVersion',
+          },
+        },
+      })
       .exec();
+    // Does not scale well, but woeks for now
     if (!user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }

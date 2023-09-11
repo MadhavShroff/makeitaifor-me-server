@@ -81,8 +81,18 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async getChatsMetadata(userId) {
         const user = await this.userModel
             .findOne({ userId })
-            .populate('chats')
-            .populate('chats.messages')
+            .populate({
+            path: 'chats',
+            model: 'Chat',
+            populate: {
+                path: 'messages',
+                model: 'Message',
+                populate: {
+                    path: 'versions',
+                    model: 'MessageVersion',
+                },
+            },
+        })
             .exec();
         if (!user) {
             throw new common_1.NotFoundException(`User with ID ${userId} not found`);
