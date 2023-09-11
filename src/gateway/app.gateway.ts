@@ -149,19 +149,59 @@ export class AppGateway
       versionNumber: 1,
     } as MessageVersion);
 
-    const chatIdGuestOrNot =
-      data.chatId === '123'
-        ? new Types.ObjectId(123)
-        : new Types.ObjectId(data.chatId);
-    // TODO : replace this hacky code
+    if (data.chatId === '123') {
+      client.emit(
+        'addedQueryToChat-' + data.chatId,
+        JSON.stringify({
+          event: 'addedQueryAndResponseToChat-' + data.chatId,
+          message: {
+            versions: [
+              {
+                text: data.content,
+                type: 'user',
+                isActive: true,
+                createdAt: new Date().toISOString(),
+                versionNumber: 1,
+                _id: 123,
+                __v: 0,
+              },
+            ],
+            _id: 'abc',
+            __v: 0,
+          },
+        }),
+      );
+      client.emit(
+        'addedResponseToChat-' + data.chatId,
+        JSON.stringify({
+          event: 'addedQueryAndResponseToChat-' + data.chatId,
+          message: {
+            versions: [
+              {
+                text: ' ',
+                type: 'ai',
+                isActive: true,
+                createdAt: new Date().toISOString(),
+                versionNumber: 1,
+                _id: 123,
+                __v: 0,
+              },
+            ],
+            _id: 'abc',
+            __v: 0,
+          },
+        }),
+      );
+    }
+
     await Promise.all([
       this.chatsService.appendMessageToChat(
         newQueryMessage._id,
-        chatIdGuestOrNot,
+        new Types.ObjectId(data.chatId),
       ),
       this.chatsService.appendMessageToChat(
         newResponseMessage._id,
-        chatIdGuestOrNot,
+        new Types.ObjectId(data.chatId),
       ),
     ]).then((values) => {
       console.log('values: ', values);
