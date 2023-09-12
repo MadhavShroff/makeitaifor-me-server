@@ -23,14 +23,15 @@ let MongoService = exports.MongoService = class MongoService {
         this.messageVersionModel = messageVersionModel;
     }
     async saveGeneratedText(text, versionId) {
-        this.messageVersionModel
-            .updateOne({
-            filter: { _id: versionId },
-            update: { generatedText: text },
-        })
-            .then((res) => {
-            console.log(res);
-        });
+        const result = await this.messageVersionModel.updateOne({ _id: versionId }, { $set: { text: text, updatedAt: new Date() } });
+        console.log('Saved Generated Text: ', result);
+        if (result.matchedCount === 0) {
+            console.error(`Failed to find message version with ID ${versionId}`);
+            throw new common_1.NotFoundException(`Chat with ID ${versionId} not found`);
+        }
+        if (result.modifiedCount === 0) {
+            console.warn(`No documents were modified during the update operation for chat ID ${versionId}`);
+        }
     }
     async saveProcessedText(userId, fileId, text) {
         const generatedText = new this.processedTextModel({

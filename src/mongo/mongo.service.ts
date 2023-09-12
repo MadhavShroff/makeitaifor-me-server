@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../mongo/users/users.schema';
@@ -15,14 +15,22 @@ export class MongoService {
   ) {}
 
   async saveGeneratedText(text: string, versionId: string) {
-    this.messageVersionModel
-      .updateOne({
-        filter: { _id: versionId },
-        update: { generatedText: text },
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    const result = await this.messageVersionModel.updateOne(
+      { _id: versionId },
+      { $set: { text: text, updatedAt: new Date() } },
+    );
+    console.log('Saved Generated Text: ', result);
+
+    if (result.matchedCount === 0) {
+      console.error(`Failed to find message version with ID ${versionId}`);
+      throw new NotFoundException(`Chat with ID ${versionId} not found`);
+    }
+
+    if (result.modifiedCount === 0) {
+      console.warn(
+        `No documents were modified during the update operation for chat ID ${versionId}`,
+      );
+    }
   }
 
   async saveProcessedText(userId: string, fileId: string, text: string) {
