@@ -53,11 +53,37 @@ export class ChatsService {
    *
    * @param userId The ID of the user
    * @param chatId The ID of the chat that is to be added to a user with userId
-   * @returns the updated user object, with a new chat added to the chats array
+   * @returns the updated chats array of the user
    */
-  async addChatToUser(userId: string, chatId: Types.ObjectId): Promise<User> {
-    // Complete this function...
-    return null;
+  async addChatToUser(
+    userId: string,
+    chatId: Types.ObjectId,
+  ): Promise<Types.ObjectId[]> {
+    const result = await this.userModel
+      .updateOne(
+        { userId: userId, chats: { $ne: chatId } },
+        { $push: { chats: chatId } },
+      )
+      .exec();
+
+    if (result.matchedCount === 0) {
+      throw new NotFoundException(
+        `User with ID ${userId} not found or chat already added`,
+      );
+    }
+
+    if (result.modifiedCount === 0) {
+      console.warn(
+        `No documents were modified during the update operation for user ID ${userId}`,
+      );
+    }
+
+    const user = await this.userModel.findOne({ userId: userId }).exec();
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    return user.chats;
   }
 
   /**

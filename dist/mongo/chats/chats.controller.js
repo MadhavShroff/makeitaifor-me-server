@@ -30,7 +30,11 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return messagesData;
     }
     async createNewChat(req) {
-        console.log(req.user);
+        const newChat = await this.chatsService.createNewChat();
+        const chats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);
+        console.log(chats);
+        console.log(newChat);
+        return chats;
     }
 };
 __decorate([
