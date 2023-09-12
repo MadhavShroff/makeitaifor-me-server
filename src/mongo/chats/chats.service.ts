@@ -102,6 +102,10 @@ export class ChatsService {
     return await this.findChatByChatId(chatId);
   }
 
+  async getMessagesData(messages: Types.ObjectId[]): Promise<Message[]> {
+    return this.messageModel.find({ _id: { $in: messages } }).exec();
+  }
+
   async getChatsMetadata(userId: string): Promise<User> {
     const user = await this.userModel
       .findOne({ userId })

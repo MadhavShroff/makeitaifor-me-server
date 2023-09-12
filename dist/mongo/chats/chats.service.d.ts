@@ -13,5 +13,6 @@ export declare class ChatsService {
     addChatToUser(userId: string, chatId: Types.ObjectId): Promise<User>;
     findChatByChatId(chatId: Types.ObjectId): Promise<Chat>;
     appendMessageToChat(messageId: Types.ObjectId, chatId: Types.ObjectId): Promise<Chat>;
+    getMessagesData(messages: Types.ObjectId[]): Promise<Message[]>;
     getChatsMetadata(userId: string): Promise<User>;
 }
