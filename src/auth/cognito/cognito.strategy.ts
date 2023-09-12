@@ -70,15 +70,15 @@ export class CognitoStrategy extends PassportStrategy(Strategy, 'cognito') {
     let user = await this.usersService.findOne({ userId: userinfo.sub });
     console.log('user exists: ', user);
     if (user == null) {
-      const tempChat = await this.chatsService.createTempChat();
-      console.log('tempChat: ', tempChat);
+      const newChat = await this.chatsService.createNewChat();
+      console.log('newChat: ', newChat);
       user = await this.usersService.create({
         provider: 'cognito',
         userId: userinfo.sub,
         name: userinfo.name,
         email: userinfo.email,
         username: userinfo.username,
-        chats: [tempChat._id],
+        chats: [newChat._id],
         role: 'authenticated user',
       } as User);
       console.log('created user: ', user);

@@ -125,7 +125,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         await Promise.all([
             this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
             this.chatsService.appendMessageToChat(newResponseMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
-        ]).then((values) => {
+        ]).then(() => {
             client.emit('addedQueryToChat-' + data.chatId, JSON.stringify({
                 event: 'addedQueryAndResponseToChat-' + data.chatId,
                 message: newQueryMessage.$clone(),
@@ -138,7 +138,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
     }
     async startEmptyChat(client) {
         console.log('Received event at startEmptyChat');
-        const user = await this.chatsService.addChatToUser(client.user.id, (await this.chatsService.createTempChat())._id);
+        const user = await this.chatsService.addChatToUser(client.user.id, (await this.chatsService.createNewChat())._id);
         console.log('Updated User Object: ', user);
         return {
             event: 'emptyChatStarted',

@@ -26,10 +26,11 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return populatedUser;
     }
     async getMessagesData(req) {
-        console.log('Requested messages:', req.body.messageIds);
         const messagesData = await this.chatsService.getMessagesData(req.body.messageIds);
-        console.log('Requested messageData:', messagesData);
         return messagesData;
+    }
+    async createNewChat(req) {
+        console.log(req.user);
     }
 };
 __decorate([
@@ -49,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ChatsController.prototype, "getMessagesData", null);
+__decorate([
+    (0, common_1.Post)('/createNewChat'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "createNewChat", null);
 exports.ChatsController = ChatsController = __decorate([
     (0, common_1.Controller)('chats'),
     __metadata("design:paramtypes", [chats_service_1.ChatsService])

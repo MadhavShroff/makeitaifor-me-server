@@ -33,7 +33,6 @@ let JwtAuthStrategy = exports.JwtAuthStrategy = class JwtAuthStrategy extends (0
     }
     async validate(payload) {
         const user = await this.usersService.findOne({ userId: payload.userId });
-        console.log('user found at validate()', user);
         return user;
     }
 };

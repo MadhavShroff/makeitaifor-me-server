@@ -14,7 +14,7 @@ export class ChatsService {
     private readonly messageVersionModel: Model<MessageVersion>,
   ) {}
 
-  async createTempChat(): Promise<Chat> {
+  async createNewChat(): Promise<Chat> {
     const newChat = new this.chatModel({
       title: 'New Chat',
       messages: [],

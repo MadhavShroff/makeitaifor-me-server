@@ -185,7 +185,7 @@ export class AppGateway
         newResponseMessage._id,
         new Types.ObjectId(data.chatId),
       ),
-    ]).then((values) => {
+    ]).then(() => {
       client.emit(
         'addedQueryToChat-' + data.chatId,
         JSON.stringify({
@@ -216,7 +216,7 @@ export class AppGateway
     const user = await this.chatsService.addChatToUser(
       client.user.id,
       (
-        await this.chatsService.createTempChat()
+        await this.chatsService.createNewChat()
       )._id,
     ); // Create a new empty chat object
     console.log('Updated User Object: ', user);

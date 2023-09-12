@@ -20,11 +20,16 @@ export class ChatsController {
   @Post('/getMessagesData')
   @UseGuards(JwtAuthGuard)
   async getMessagesData(@Req() req) {
-    console.log('Requested messages:', req.body.messageIds);
     const messagesData = await this.chatsService.getMessagesData(
       req.body.messageIds,
     );
-    console.log('Requested messageData:', messagesData);
     return messagesData;
+  }
+
+  // TODO: Remove param userId, instead use req.user
+  @Post('/createNewChat')
+  @UseGuards(JwtAuthGuard)
+  async createNewChat(@Req() req) {
+    console.log(req.user);
   }
 }

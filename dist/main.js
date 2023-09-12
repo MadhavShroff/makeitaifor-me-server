@@ -13,10 +13,6 @@ async function bootstrap() {
     });
     app.use(cookieParser());
     app.useBodyParser('json', { limit: '10mb' });
-    app.use((req, res, next) => {
-        console.log('Request body:', req.body);
-        next();
-    });
     app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(3000);
 }

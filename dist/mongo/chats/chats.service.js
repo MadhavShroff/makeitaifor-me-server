@@ -25,7 +25,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
         this.messageModel = messageModel;
         this.messageVersionModel = messageVersionModel;
     }
-    async createTempChat() {
+    async createNewChat() {
         const newChat = new this.chatModel({
             title: 'New Chat',
             messages: [],
