@@ -36,7 +36,7 @@ export const MessageVersionSchema =
 
 @Schema()
 export class Message extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'MessageVersion', default: [] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'MessageVersion' }] })
   versions: Types.ObjectId[];
 
   @Prop({ type: Types.ObjectId, ref: 'Message' })
@@ -47,7 +47,7 @@ export const MessageSchema = SchemaFactory.createForClass(Message);
 
 @Schema()
 export class Chat extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'Message', default: [] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Message' }] })
   messages: Types.ObjectId[];
 
   @Prop({ type: String, required: true })

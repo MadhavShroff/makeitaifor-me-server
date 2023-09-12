@@ -53,7 +53,7 @@ exports.MessageVersionSchema = mongoose_1.SchemaFactory.createForClass(MessageVe
 let Message = exports.Message = class Message extends mongoose_2.Document {
 };
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'MessageVersion', default: [] }),
+    (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.Types.ObjectId, ref: 'MessageVersion' }] }),
     __metadata("design:type", Array)
 ], Message.prototype, "versions", void 0);
 __decorate([
@@ -67,7 +67,7 @@ exports.MessageSchema = mongoose_1.SchemaFactory.createForClass(Message);
 let Chat = exports.Chat = class Chat extends mongoose_2.Document {
 };
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose_2.Types.ObjectId, ref: 'Message', default: [] }),
+    (0, mongoose_1.Prop)({ type: [{ type: mongoose_2.Types.ObjectId, ref: 'Message' }] }),
     __metadata("design:type", Array)
 ], Chat.prototype, "messages", void 0);
 __decorate([
