@@ -54,20 +54,20 @@ let ChatsService = exports.ChatsService = class ChatsService {
         return res;
     }
     async addChatToUser(userId, chatId) {
-        const result = await this.userModel
+        await this.userModel
+            .findOne({ userId })
             .updateOne({ userId: userId, chats: { $ne: chatId } }, { $push: { chats: chatId } })
-            .exec();
-        if (result.matchedCount === 0) {
-            throw new common_1.NotFoundException(`User with ID ${userId} not found or chat already added`);
-        }
-        if (result.modifiedCount === 0) {
-            console.warn(`No documents were modified during the update operation for user ID ${userId}`);
-        }
-        const user = await this.userModel.findOne({ userId: userId }).exec();
-        if (!user) {
-            throw new common_1.NotFoundException(`User with ID ${userId} not found`);
-        }
-        return user.chats;
+            .populate('chats')
+            .exec()
+            .then((user) => {
+            console.log('User found at addChatToUser: ', JSON.stringify(user));
+            return user;
+        })
+            .catch((err) => {
+            console.log('Error at addChatToUser: ', err);
+            return null;
+        });
+        return null;
     }
     async findChatByChatId(chatId) {
         const chat = await this.chatModel.findById(chatId).exec();
