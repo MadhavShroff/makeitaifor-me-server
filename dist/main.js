@@ -13,6 +13,10 @@ async function bootstrap() {
         credentials: true,
     });
     app.use(cookieParser());
+    app.use((req, res, next) => {
+        console.log('Cookies: ', req.cookies);
+        next();
+    });
     app.use(csurf({ cookie: true, value: (req) => req.cookies._csrf }));
     app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(3000);
