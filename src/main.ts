@@ -84,7 +84,15 @@ async function bootstrap() {
     console.log('CSRF Token:', req.cookies._csrf);
     next();
   });
-  app.use(csurf({ cookie: true, value: (req) => req.cookies._csrf }));
+  app.use(
+    csurf({
+      cookie: true,
+      value: (req) => {
+        console.log('CSRF Token:', req.cookies._csrf);
+        return req.cookies._csrf;
+      },
+    }),
+  );
   // app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
