@@ -26,7 +26,8 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return populatedUser;
     }
     async getMessagesData(req) {
-        const messagesData = await this.chatsService.getMessagesData(req.body.messages);
+        console.log('Requested messages:', req.body.messageIds);
+        const messagesData = await this.chatsService.getMessagesData(req.body.messageIds);
         console.log('Requested messageData:', messagesData);
         return messagesData;
     }

@@ -20,8 +20,9 @@ export class ChatsController {
   @Post('/getMessagesData')
   @UseGuards(JwtAuthGuard)
   async getMessagesData(@Req() req) {
+    console.log('Requested messages:', req.body.messageIds);
     const messagesData = await this.chatsService.getMessagesData(
-      req.body.messages,
+      req.body.messageIds,
     );
     console.log('Requested messageData:', messagesData);
     return messagesData;
