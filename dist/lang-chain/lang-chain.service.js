@@ -26,7 +26,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
         });
     }
     async generateText(prompt, user, callback) {
-        console.log('Generating text for ' + JSON.stringify(user));
+        console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
         let fullText = '';
         let seq = 0;
         await this.chat.call([new schema_1.SystemMessage(`You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with great enthusiasm and very very rarely some emojis BUT you NEVER comproimize on the quality and accuracy of your answers.

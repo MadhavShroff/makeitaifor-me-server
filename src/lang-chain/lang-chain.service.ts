@@ -26,7 +26,7 @@ export class LangChainService {
     user: User,
     callback: (text: string, seq: number) => void,
   ): Promise<string> {
-    console.log('Generating text for ' + JSON.stringify(user));
+    console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
 
     let fullText = '';
 
