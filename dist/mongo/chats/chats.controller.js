@@ -26,6 +26,8 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return populatedUser;
     }
     async getMessagesData(req) {
+        console.log('CSRF Token Header:', req.headers['csrf-token']);
+        console.log('CSRF Cookie:', req.cookies._csrf);
         const messagesData = await this.chatsService.getMessagesData(req.body.messages);
         console.log(messagesData);
         return messagesData;
