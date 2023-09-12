@@ -23,14 +23,10 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
     buttonClicked(data: any, client: Socket & {
         user: User;
     }): string;
-    tryButtonClicked(data: {
-        content: string;
-    }, client: Socket & {
-        user: User;
-    }): Promise<WsResponse<string>>;
     generateText(data: {
         query: string;
         ext: string;
+        versionId: string;
     }, client: Socket & {
         user: User;
     }): Promise<WsResponse<string>>;

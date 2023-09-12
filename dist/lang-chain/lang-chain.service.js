@@ -25,7 +25,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
             modelName: 'gpt-4'
         });
     }
-    async generateText(prompt, user, callback) {
+    async generateText(prompt, user, versionId, callback) {
         console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
         if (prompt === undefined)
             throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
@@ -53,7 +53,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
                 }],
         });
         fullText = fullText.trim();
-        await this.mongoService.saveGeneratedText(fullText, user);
+        await this.mongoService.saveGeneratedText(fullText, versionId);
         console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
         return fullText;
     }

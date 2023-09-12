@@ -57,20 +57,9 @@ let AppGateway = exports.AppGateway = class AppGateway {
         console.log('User: ', client.user);
         return 'Acknowledged button click! : ' + data;
     }
-    async tryButtonClicked(data, client) {
-        console.log('Received event at tryButtonClicked with data: ', data);
-        const result = await this.langChainService.generateText(data.content, client.user, (str, seq) => {
-            client.emit('textGeneratedChunk', {
-                event: 'textGeneratedChunk',
-                data: str,
-                seq: seq,
-            });
-        });
-        return { event: 'textGenerated', data: result };
-    }
     async generateText(data, client) {
         console.log('Received event at generateText with data: ', data);
-        const result = await this.langChainService.generateText(data.query, client.user, (str, seq) => {
+        const result = await this.langChainService.generateText(data.query, client.user, data.versionId, (str, seq) => {
             client.emit('textGeneratedChunk-' + data.ext, {
                 event: 'textGeneratedChunk',
                 data: str,
@@ -192,14 +181,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", String)
 ], AppGateway.prototype, "buttonClicked", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('tryButtonClicked'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AppGateway.prototype, "tryButtonClicked", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('generateText'),
     __param(0, (0, websockets_1.MessageBody)()),

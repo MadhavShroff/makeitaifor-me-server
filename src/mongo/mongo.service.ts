@@ -10,14 +10,19 @@ export class MongoService {
     private readonly generatedTextModel: Model<any>,
     @InjectModel('ProcessedText')
     private readonly processedTextModel: Model<any>,
+    @InjectModel('MessageVersion')
+    private readonly messageVersionModel: Model<any>,
   ) {}
 
-  async saveGeneratedText(text: string, user: User) {
-    const generatedText = new this.generatedTextModel({
-      userId: user.userId,
-      text: text,
-    });
-    await generatedText.save();
+  async saveGeneratedText(text: string, versionId: string) {
+    this.messageVersionModel
+      .updateOne({
+        filter: { _id: versionId },
+        update: { generatedText: text },
+      })
+      .then((res) => {
+        console.log(res);
+      });
   }
 
   async saveProcessedText(userId: string, fileId: string, text: string) {

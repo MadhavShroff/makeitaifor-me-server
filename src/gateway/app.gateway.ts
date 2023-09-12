@@ -88,35 +88,16 @@ export class AppGateway
     return 'Acknowledged button click! : ' + data;
   }
 
-  @SubscribeMessage('tryButtonClicked')
-  async tryButtonClicked(
-    @MessageBody() data: { content: string },
-    @ConnectedSocket() client: Socket & { user: User },
-  ): Promise<WsResponse<string>> {
-    console.log('Received event at tryButtonClicked with data: ', data);
-    const result = await this.langChainService.generateText(
-      data.content,
-      client.user,
-      (str: string, seq: number) => {
-        client.emit('textGeneratedChunk', {
-          event: 'textGeneratedChunk',
-          data: str,
-          seq: seq,
-        });
-      },
-    );
-    return { event: 'textGenerated', data: result };
-  }
-
   @SubscribeMessage('generateText')
   async generateText(
-    @MessageBody() data: { query: string; ext: string },
+    @MessageBody() data: { query: string; ext: string; versionId: string },
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
     console.log('Received event at generateText with data: ', data);
     const result = await this.langChainService.generateText(
       data.query,
       client.user,
+      data.versionId,
       (str: string, seq: number) => {
         client.emit('textGeneratedChunk-' + data.ext, {
           event: 'textGeneratedChunk',

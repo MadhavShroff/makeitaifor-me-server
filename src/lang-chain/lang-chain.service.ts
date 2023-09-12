@@ -24,6 +24,7 @@ export class LangChainService {
   async generateText(
     prompt: string,
     user: User,
+    versionId: string,
     callback: (text: string, seq: number) => void,
   ): Promise<string> {
     console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
@@ -64,7 +65,7 @@ export class LangChainService {
     fullText = fullText.trim();
 
     // Once finished, save the fullText in MongoDB
-    await this.mongoService.saveGeneratedText(fullText, user);
+    await this.mongoService.saveGeneratedText(fullText, versionId);
     console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
 
     return fullText;

@@ -1,10 +1,10 @@
 import { Model } from 'mongoose';
-import { User } from '../mongo/users/users.schema';
 export declare class MongoService {
     private readonly generatedTextModel;
     private readonly processedTextModel;
-    constructor(generatedTextModel: Model<any>, processedTextModel: Model<any>);
-    saveGeneratedText(text: string, user: User): Promise<void>;
+    private readonly messageVersionModel;
+    constructor(generatedTextModel: Model<any>, processedTextModel: Model<any>, messageVersionModel: Model<any>);
+    saveGeneratedText(text: string, versionId: string): Promise<void>;
     saveProcessedText(userId: string, fileId: string, text: string): Promise<void>;
     getProcessedText(userId: string, ETag: string): Promise<any>;
 }
