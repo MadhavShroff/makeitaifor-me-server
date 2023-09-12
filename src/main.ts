@@ -79,21 +79,10 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   // middleware to print cookies received from the client
-  app.use((req, res, next) => {
-    console.log('Cookies: ', req.cookies);
-    console.log('CSRF Token:', req.cookies._csrf);
-    next();
-  });
-  app.use(
-    csurf({
-      cookie: true,
-      value: (req) => {
-        console.log('CSRF Token:', req.cookies._csrf);
-        return req.cookies._csrf;
-      },
-    }),
-  );
-  // app.useGlobalPipes(new ValidationPipe());
+  // app.use((req, res, next) => {
+  //   next();
+  // });
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();
