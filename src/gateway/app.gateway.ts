@@ -113,7 +113,7 @@ export class AppGateway
     @MessageBody() data: { query: string; ext: string },
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
-    console.log('Received event at tryButtonClicked with data: ', data);
+    console.log('Received event at generateText with data: ', data);
     const result = await this.langChainService.generateText(
       data.query,
       client.user,
@@ -205,7 +205,6 @@ export class AppGateway
         new Types.ObjectId(data.chatId),
       ),
     ]).then((values) => {
-      console.log('values: ', values);
       client.emit(
         'addedQueryToChat-' + data.chatId,
         JSON.stringify({

@@ -45,6 +45,7 @@ export class ChatsService {
     });
     const res = await newMessage.save();
     console.log(res);
+    res.populate('versions');
     return res;
   }
 

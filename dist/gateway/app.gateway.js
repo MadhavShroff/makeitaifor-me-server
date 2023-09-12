@@ -69,7 +69,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
         return { event: 'textGenerated', data: result };
     }
     async generateText(data, client) {
-        console.log('Received event at tryButtonClicked with data: ', data);
+        console.log('Received event at generateText with data: ', data);
         const result = await this.langChainService.generateText(data.query, client.user, (str, seq) => {
             client.emit('textGeneratedChunk-' + data.ext, {
                 event: 'textGeneratedChunk',
@@ -137,7 +137,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
             this.chatsService.appendMessageToChat(newQueryMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
             this.chatsService.appendMessageToChat(newResponseMessage._id, new mongoose_1.Types.ObjectId(data.chatId)),
         ]).then((values) => {
-            console.log('values: ', values);
             client.emit('addedQueryToChat-' + data.chatId, JSON.stringify({
                 event: 'addedQueryAndResponseToChat-' + data.chatId,
                 message: newQueryMessage.$clone(),

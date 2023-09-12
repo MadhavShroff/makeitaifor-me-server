@@ -28,6 +28,8 @@ export class LangChainService {
   ): Promise<string> {
     console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
 
+    if(prompt === undefined) throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
+
     let fullText = '';
 
     // Create the request for the OpenAI API, based on the appropriate options
