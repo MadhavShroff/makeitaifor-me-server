@@ -15,6 +15,7 @@ async function bootstrap() {
     app.use(cookieParser());
     app.use((req, res, next) => {
         console.log('Cookies: ', req.cookies);
+        console.log('CSRF Token:', req.cookies._csrf);
         next();
     });
     app.use(csurf({ cookie: true, value: (req) => req.cookies._csrf }));
