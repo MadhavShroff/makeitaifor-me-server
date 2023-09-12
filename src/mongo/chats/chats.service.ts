@@ -103,7 +103,10 @@ export class ChatsService {
   }
 
   async getMessagesData(messages: Types.ObjectId[]): Promise<Message[]> {
-    return this.messageModel.find({ _id: { $in: messages } }).exec();
+    return this.messageModel
+      .find({ _id: { $in: messages } })
+      .populate('versions')
+      .exec();
   }
 
   async getChatsMetadata(userId: string): Promise<User> {
