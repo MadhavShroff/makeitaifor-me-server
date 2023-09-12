@@ -13,6 +13,7 @@ const generated_text_schema_1 = require("./generated-text.schema");
 const processed_text_schema_1 = require("./processed-text.schema");
 const config_1 = require("@nestjs/config");
 const mongo_service_1 = require("./mongo.service");
+const chat_schema_1 = require("./chats/chat.schema");
 let MongoModule = exports.MongoModule = class MongoModule {
 };
 exports.MongoModule = MongoModule = __decorate([
@@ -29,6 +30,7 @@ exports.MongoModule = MongoModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: 'GeneratedText', schema: generated_text_schema_1.GeneratedTextSchema },
                 { name: 'ProcessedText', schema: processed_text_schema_1.ProcessedTextSchema },
+                { name: 'MessageVersion', schema: chat_schema_1.MessageVersionSchema },
             ]),
         ],
         providers: [mongo_service_1.MongoService],
