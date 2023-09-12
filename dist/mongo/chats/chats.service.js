@@ -80,7 +80,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async getMessagesData(messages) {
         return this.messageModel
             .find({ _id: { $in: messages } })
-            .populate('versions[]')
+            .populate('versions')
             .exec();
     }
     async getChatsMetadata(userId) {
