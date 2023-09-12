@@ -85,7 +85,7 @@ async function bootstrap() {
     next();
   });
   app.use(csurf({ cookie: true, value: (req) => req.cookies._csrf }));
-  app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();
