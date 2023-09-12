@@ -36,10 +36,4 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
     }, client: Socket & {
         user: User;
     }): Promise<void>;
-    startEmptyChat(client: Socket & {
-        user: User;
-    }): Promise<WsResponse<{
-        status: string;
-        updatedUser: User;
-    }>>;
 }

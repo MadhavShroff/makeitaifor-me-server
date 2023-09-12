@@ -136,18 +136,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
             }));
         });
     }
-    async startEmptyChat(client) {
-        console.log('Received event at startEmptyChat');
-        const user = await this.chatsService.addChatToUser(client.user.id, (await this.chatsService.createNewChat())._id);
-        console.log('Updated User Object: ', user);
-        return {
-            event: 'emptyChatStarted',
-            data: {
-                status: 'success',
-                updatedUser: user,
-            },
-        };
-    }
 };
 __decorate([
     (0, websockets_1.WebSocketServer)(),
@@ -197,13 +185,6 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AppGateway.prototype, "messageSubmitted", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('startEmptyChat'),
-    __param(0, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AppGateway.prototype, "startEmptyChat", null);
 exports.AppGateway = AppGateway = __decorate([
     (0, common_1.UseGuards)(ws_jwt_guard_1.WsJwtAuthGuard),
     (0, websockets_1.WebSocketGateway)(opts),

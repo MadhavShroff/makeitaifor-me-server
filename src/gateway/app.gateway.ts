@@ -202,30 +202,4 @@ export class AppGateway
       );
     });
   }
-
-  @SubscribeMessage('startEmptyChat')
-  async startEmptyChat(
-    @ConnectedSocket() client: Socket & { user: User },
-  ): Promise<
-    WsResponse<{
-      status: string;
-      updatedUser: User;
-    }>
-  > {
-    console.log('Received event at startEmptyChat');
-    const user = await this.chatsService.addChatToUser(
-      client.user.id,
-      (
-        await this.chatsService.createNewChat()
-      )._id,
-    ); // Create a new empty chat object
-    console.log('Updated User Object: ', user);
-    return {
-      event: 'emptyChatStarted',
-      data: {
-        status: 'success',
-        updatedUser: user,
-      },
-    };
-  }
 }
