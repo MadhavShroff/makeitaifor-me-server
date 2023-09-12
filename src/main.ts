@@ -74,7 +74,7 @@ async function bootstrap() {
   // 2. Copy and paste the log content in "https://mermaid.live/"
   app.enableCors({
     origin: ['https://www.makeitaifor.me', 'http://localhost:3001'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
   });
   app.use(cookieParser());

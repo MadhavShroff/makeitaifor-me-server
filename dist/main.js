@@ -9,7 +9,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
         origin: ['https://www.makeitaifor.me', 'http://localhost:3001'],
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
         credentials: true,
     });
     app.use(cookieParser());
