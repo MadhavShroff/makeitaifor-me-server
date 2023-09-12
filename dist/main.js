@@ -13,7 +13,13 @@ async function bootstrap() {
         credentials: true,
     });
     app.use(cookieParser());
-    app.use(csurf({ cookie: true }));
+    app.use(csurf({ cookie: { sameSite: true } }));
+    app.use((req, res, next) => {
+        const token = req.csrfToken();
+        res.cookie('XSRF-TOKEN', token);
+        res.locals.csrfToken = token;
+        next();
+    });
     app.useGlobalPipes(new common_1.ValidationPipe());
     await app.listen(3000);
 }
