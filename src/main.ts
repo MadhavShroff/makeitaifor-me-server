@@ -78,10 +78,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
-  // middleware to print cookies received from the client
-  // app.use((req, res, next) => {
-  //   next();
-  // });
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }

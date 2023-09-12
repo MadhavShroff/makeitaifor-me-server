@@ -20,12 +20,10 @@ export class ChatsController {
   @Post('/getMessagesData')
   @UseGuards(JwtAuthGuard)
   async getMessagesData(@Req() req) {
-    console.log('CSRF Token Header:', req.headers['csrf-token']);
-    console.log('CSRF Cookie:', req.cookies._csrf);
     const messagesData = await this.chatsService.getMessagesData(
       req.body.messages,
     );
-    console.log(messagesData);
+    console.log('Requested messageData:', messagesData);
     return messagesData;
   }
 }
