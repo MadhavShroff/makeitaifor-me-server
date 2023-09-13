@@ -16,9 +16,11 @@ exports.ChatsController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("../../auth/jwt/jwt.guard");
 const chats_service_1 = require("./chats.service");
+const users_service_1 = require("../users/users.service");
 let ChatsController = exports.ChatsController = class ChatsController {
-    constructor(chatsService) {
+    constructor(chatsService, usersService) {
         this.chatsService = chatsService;
+        this.usersService = usersService;
     }
     async getChatsMetadata(req, userId) {
         const populatedUser = await this.chatsService.getChatsMetadata(userId);
@@ -30,11 +32,17 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return messagesData;
     }
     async createNewChat(req) {
-        const newChat = await this.chatsService.createNewChat();
-        const chats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);
-        console.log(chats);
-        console.log(newChat);
-        return chats;
+        let resultChats;
+        if (this.chatsService.emptyChatExists()) {
+            resultChats = (await this.usersService.findUserByUserId(req.user.userId))
+                .chats;
+        }
+        else {
+            const newChat = await this.chatsService.createNewChat();
+            resultChats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);
+        }
+        console.log('Result Chats: ', resultChats);
+        return resultChats;
     }
 };
 __decorate([
@@ -64,6 +72,7 @@ __decorate([
 ], ChatsController.prototype, "createNewChat", null);
 exports.ChatsController = ChatsController = __decorate([
     (0, common_1.Controller)('chats'),
-    __metadata("design:paramtypes", [chats_service_1.ChatsService])
+    __metadata("design:paramtypes", [chats_service_1.ChatsService,
+        users_service_1.UsersService])
 ], ChatsController);
 //# sourceMappingURL=chats.controller.js.map

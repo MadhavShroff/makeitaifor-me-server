@@ -25,6 +25,9 @@ let UsersService = exports.UsersService = class UsersService {
         const createdUser = new this.userModel(user);
         return createdUser.save();
     }
+    async findUserByUserId(userId) {
+        return this.userModel.findOne({ userId: userId }).exec();
+    }
     findOne(params) {
         return this.userModel.findOne(params).exec();
     }

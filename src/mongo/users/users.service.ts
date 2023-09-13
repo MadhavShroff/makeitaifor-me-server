@@ -16,6 +16,14 @@ export class UsersService {
     return createdUser.save();
   }
 
+  /**
+   * @param userId
+   * @returns User object having the given userId
+   */
+  async findUserByUserId(userId: string): Promise<User> {
+    return this.userModel.findOne({ userId: userId }).exec();
+  }
+
   findOne(params: FilterQuery<User & Document>): Promise<User> {
     return this.userModel.findOne(params).exec();
   }

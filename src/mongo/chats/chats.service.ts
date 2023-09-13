@@ -50,6 +50,15 @@ export class ChatsService {
   }
 
   /**
+   * Checks if a chat with no messages exists
+   */
+  async emptyChatExists(): Promise<boolean> {
+    const chat = await this.chatModel.findOne({ messages: [] }).exec();
+    if (chat) return true;
+    else return false;
+  }
+
+  /**
    *
    * @param userId The ID of the user
    * @param chatId The ID of the chat that is to be added to a user with userId

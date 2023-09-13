@@ -12,6 +12,7 @@ import { ChatsService } from './chats.service';
 import { ChatsResolver } from './chats.resolver';
 import { User, UserSchema } from '../users/users.schema';
 import { ChatsController } from './chats.controller';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ChatsController } from './chats.controller';
       { name: MessageVersion.name, schema: MessageVersionSchema },
     ]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    UsersModule,
   ],
   providers: [ChatsService, ChatsResolver],
   exports: [ChatsService],

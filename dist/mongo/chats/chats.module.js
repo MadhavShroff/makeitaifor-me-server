@@ -14,6 +14,7 @@ const chats_service_1 = require("./chats.service");
 const chats_resolver_1 = require("./chats.resolver");
 const users_schema_1 = require("../users/users.schema");
 const chats_controller_1 = require("./chats.controller");
+const users_module_1 = require("../users/users.module");
 let ChatsModule = exports.ChatsModule = class ChatsModule {
 };
 exports.ChatsModule = ChatsModule = __decorate([
@@ -25,6 +26,7 @@ exports.ChatsModule = ChatsModule = __decorate([
                 { name: chat_schema_1.MessageVersion.name, schema: chat_schema_1.MessageVersionSchema },
             ]),
             mongoose_1.MongooseModule.forFeature([{ name: users_schema_1.User.name, schema: users_schema_1.UserSchema }]),
+            users_module_1.UsersModule,
         ],
         providers: [chats_service_1.ChatsService, chats_resolver_1.ChatsResolver],
         exports: [chats_service_1.ChatsService],

@@ -53,6 +53,13 @@ let ChatsService = exports.ChatsService = class ChatsService {
         res.populate('versions');
         return res;
     }
+    async emptyChatExists() {
+        const chat = await this.chatModel.findOne({ messages: [] }).exec();
+        if (chat)
+            return true;
+        else
+            return false;
+    }
     async addChatToUser(userId, chatId) {
         await this.userModel
             .findOne({ userId })
