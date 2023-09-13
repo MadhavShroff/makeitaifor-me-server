@@ -54,6 +54,7 @@ export class ChatsService {
    */
   async emptyChatExists(): Promise<boolean> {
     const chat = await this.chatModel.findOne({ messages: [] }).exec();
+    console.log('Chat found at emptyChatExists: ', JSON.stringify(chat));
     if (chat) return true;
     else return false;
   }
