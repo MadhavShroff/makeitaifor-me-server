@@ -36,7 +36,7 @@ export class ChatsController {
   @UseGuards(JwtAuthGuard)
   async createNewChat(@Req() req): Promise<Types.ObjectId[]> {
     let resultChats: Types.ObjectId[];
-    if (this.chatsService.emptyChatExists()) {
+    if (this.chatsService.emptyChatExists(req.user.userId)) {
       resultChats = (await this.usersService.findUserByUserId(req.user.userId))
         .chats;
     } else {

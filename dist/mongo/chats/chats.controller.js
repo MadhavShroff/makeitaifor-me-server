@@ -33,7 +33,7 @@ let ChatsController = exports.ChatsController = class ChatsController {
     }
     async createNewChat(req) {
         let resultChats;
-        if (this.chatsService.emptyChatExists()) {
+        if (this.chatsService.emptyChatExists(req.user.userId)) {
             resultChats = (await this.usersService.findUserByUserId(req.user.userId))
                 .chats;
         }
