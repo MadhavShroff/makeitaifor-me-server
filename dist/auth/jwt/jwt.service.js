@@ -19,20 +19,20 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         this.configService = configService;
     }
     login(user) {
-        console.log('user', user);
+        console.log('user at login: ', user);
         const payload = {
             username: user.username,
             name: user.name,
             userId: user.userId,
             role: user.role,
         };
-        console.log('payload', payload);
+        console.log('payload being signed:', payload);
         return {
             accessToken: this.jwtService.sign(payload),
         };
     }
     generateWebSocketToken(user) {
-        console.log('user', user);
+        console.log('user at generateWebSocketToken: ', user);
         const payload = {
             username: user.username,
             userId: user.userId,
@@ -42,12 +42,12 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
         return this.jwtService.sign(payload);
     }
     verifyToken(token) {
-        console.log('token', token);
+        console.log('token at verifyToken:', token);
         try {
             const payload = this.jwtService.verify(token, {
                 secret: this.configService.get('JWT_SECRET_KEY'),
             });
-            console.log('payload', payload);
+            console.log('payload got post verificatation: ', payload);
             return payload;
         }
         catch (error) {

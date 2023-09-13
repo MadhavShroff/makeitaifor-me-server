@@ -50,10 +50,16 @@ export class ChatsService {
   }
 
   /**
-   * Checks if a chat with no messages exists
+   * Checks if a chat with no messages exists for user with userId
+   * @param userId The ID of the user
    */
-  async emptyChatExists(): Promise<boolean> {
-    const chat = await this.chatModel.findOne({ messages: [] }).exec();
+  async emptyChatExists(userId: string): Promise<boolean> {
+    const chat = await this.userModel
+      .findOne({
+        _id: userId,
+        'chats.messages': { $exists: true, $size: 0 },
+      })
+      .exec();
     console.log('Chat found at emptyChatExists: ', JSON.stringify(chat));
     if (chat) return true;
     else return false;
