@@ -44,6 +44,7 @@ export class ChatsController {
         req.user.userId,
         newChat._id,
       );
+      console.log('Returning Updated Chats: ', newChats);
       return newChats;
     }
   }

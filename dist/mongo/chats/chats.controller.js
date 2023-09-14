@@ -39,6 +39,7 @@ let ChatsController = exports.ChatsController = class ChatsController {
         else {
             const newChat = await this.chatsService.createNewChat();
             const newChats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);
+            console.log('Returning Updated Chats: ', newChats);
             return newChats;
         }
     }
