@@ -40,10 +40,11 @@ export class ChatsController {
     if (chatIds != null) return chatIds;
     else {
       const newChat = await this.chatsService.createNewChat();
-      return await this.chatsService.addChatToUser(
+      const newChats = await this.chatsService.addChatToUser(
         req.user.userId,
         newChat._id,
       );
+      return newChats;
     }
   }
 }
