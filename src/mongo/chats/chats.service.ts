@@ -79,7 +79,14 @@ export class ChatsService {
       const updatedUser = await this.userModel
         .findOneAndUpdate(
           { userId: userId, chats: { $ne: chatId } },
-          { $push: { chats: chatId } },
+          {
+            $push: {
+              chats: {
+                $each: [chatId], // Specify the items you want to add as an array
+                $position: 0, // Position 0 means the beginning of the array
+              },
+            },
+          },
           { new: true }, // This option ensures that the method returns the modified document rather than the original
         )
         .populate('chats')

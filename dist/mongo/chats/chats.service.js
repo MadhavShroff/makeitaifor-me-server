@@ -69,7 +69,14 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async addChatToUser(userId, chatId) {
         try {
             const updatedUser = await this.userModel
-                .findOneAndUpdate({ userId: userId, chats: { $ne: chatId } }, { $push: { chats: chatId } }, { new: true })
+                .findOneAndUpdate({ userId: userId, chats: { $ne: chatId } }, {
+                $push: {
+                    chats: {
+                        $each: [chatId],
+                        $position: 0,
+                    },
+                },
+            }, { new: true })
                 .populate('chats')
                 .exec();
             console.log('User found at addChatToUser: ', JSON.stringify(updatedUser));
