@@ -35,7 +35,7 @@ export class ChatsController {
   @Post('/createNewChat')
   @UseGuards(JwtAuthGuard)
   async createNewChat(@Req() req): Promise<Types.ObjectId[]> {
-    const chatIds = this.chatsService.emptyChatExists(req.user.userId);
+    const chatIds = await this.chatsService.emptyChatExists(req.user.userId);
     console.log('Chat Ids: ', chatIds);
     if (chatIds != null) return chatIds;
     else {

@@ -32,7 +32,7 @@ let ChatsController = exports.ChatsController = class ChatsController {
         return messagesData;
     }
     async createNewChat(req) {
-        const chatIds = this.chatsService.emptyChatExists(req.user.userId);
+        const chatIds = await this.chatsService.emptyChatExists(req.user.userId);
         console.log('Chat Ids: ', chatIds);
         if (chatIds != null)
             return chatIds;
