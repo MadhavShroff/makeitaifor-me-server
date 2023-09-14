@@ -56,7 +56,7 @@ export class ChatsService {
   async emptyChatExists(userId: string): Promise<boolean> {
     const chat = await this.userModel
       .findOne({
-        _id: userId,
+        userId: userId,
         'chats.messages': { $exists: true, $size: 0 },
       })
       .exec();
