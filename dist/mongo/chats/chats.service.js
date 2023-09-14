@@ -67,19 +67,19 @@ let ChatsService = exports.ChatsService = class ChatsService {
             return null;
     }
     async addChatToUser(userId, chatId) {
-        await this.userModel
-            .findOne({ userId })
-            .updateOne({ userId: userId, chats: { $ne: chatId } }, { $push: { chats: chatId } })
-            .populate('chats')
-            .exec()
-            .then((user) => {
-            console.log('User found at addChatToUser: ', JSON.stringify(user));
-            return user;
-        })
-            .catch((err) => {
+        try {
+            const updatedUser = await this.userModel
+                .findOneAndUpdate({ userId: userId, chats: { $ne: chatId } }, { $push: { chats: chatId } }, { new: true })
+                .populate('chats')
+                .exec();
+            console.log('User found at addChatToUser: ', JSON.stringify(updatedUser));
+            if (updatedUser) {
+                return updatedUser.chats;
+            }
+        }
+        catch (err) {
             console.log('Error at addChatToUser: ', err);
-            return null;
-        });
+        }
         return null;
     }
     async findChatByChatId(chatId) {
