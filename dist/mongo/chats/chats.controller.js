@@ -33,10 +33,9 @@ let ChatsController = exports.ChatsController = class ChatsController {
     }
     async createNewChat(req) {
         let resultChats;
-        if (this.chatsService.emptyChatExists(req.user.userId)) {
-            resultChats = (await this.usersService.findUserByUserId(req.user.userId))
-                .chats;
-        }
+        const chatIds = this.chatsService.emptyChatExists(req.user.userId);
+        if (chatIds != null)
+            return chatIds;
         else {
             const newChat = await this.chatsService.createNewChat();
             resultChats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);

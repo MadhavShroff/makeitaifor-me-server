@@ -4,6 +4,7 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { ChatsService } from './chats.service';
 import { Types } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { Chat } from './chat.schema';
 
 @Controller('chats')
 export class ChatsController {
@@ -36,10 +37,9 @@ export class ChatsController {
   @UseGuards(JwtAuthGuard)
   async createNewChat(@Req() req): Promise<Types.ObjectId[]> {
     let resultChats: Types.ObjectId[];
-    if (this.chatsService.emptyChatExists(req.user.userId)) {
-      resultChats = (await this.usersService.findUserByUserId(req.user.userId))
-        .chats;
-    } else {
+    const chatIds = this.chatsService.emptyChatExists(req.user.userId);
+    if (chatIds != null) return chatIds;
+    else {
       const newChat = await this.chatsService.createNewChat();
       resultChats = await this.chatsService.addChatToUser(
         req.user.userId,

@@ -10,7 +10,7 @@ export declare class ChatsService {
     createNewChat(): Promise<Chat>;
     createChat(obj?: any): Promise<Chat>;
     createMessage(obj: MessageVersion): Promise<Message>;
-    emptyChatExists(userId: string): Promise<boolean>;
+    emptyChatExists(userId: string): Promise<Types.ObjectId[]>;
     addChatToUser(userId: string, chatId: Types.ObjectId): Promise<Types.ObjectId[]>;
     findChatByChatId(chatId: Types.ObjectId): Promise<Chat>;
     appendMessageToChat(messageId: Types.ObjectId, chatId: Types.ObjectId): Promise<Chat>;

@@ -54,17 +54,17 @@ let ChatsService = exports.ChatsService = class ChatsService {
         return res;
     }
     async emptyChatExists(userId) {
-        const chat = await this.userModel
+        const user = await this.userModel
             .findOne({
             userId: userId,
             'chats.messages': { $exists: true, $size: 0 },
         })
             .exec();
-        console.log('Chat found at emptyChatExists: ', JSON.stringify(chat));
-        if (chat)
-            return true;
-        else
-            return false;
+        console.log('Chat found at emptyChatExists: ', JSON.stringify(user));
+        if (user != null)
+            return user.chats;
+        else if (user === null)
+            return null;
     }
     async addChatToUser(userId, chatId) {
         await this.userModel
