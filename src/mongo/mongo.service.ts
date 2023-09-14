@@ -11,6 +11,8 @@ export class MongoService {
     private readonly processedTextModel: Model<any>,
     @InjectModel('MessageVersion')
     private readonly messageVersionModel: Model<any>,
+    @InjectModel('Chat')
+    private readonly chatModel: Model<any>,
   ) {}
 
   async saveGeneratedText(text: string, versionId: string) {
@@ -28,6 +30,25 @@ export class MongoService {
     if (result.modifiedCount === 0) {
       console.warn(
         `No documents were modified during the update operation for chat ID ${versionId}`,
+      );
+    }
+  }
+
+  async saveGeneratedTitle(title: string, chatId: string) {
+    const result = await this.chatModel.updateOne(
+      { _id: chatId },
+      { $set: { title: title, updatedAt: new Date() } },
+    );
+    console.log('Saved Generated Title: ', result);
+
+    if (result.matchedCount === 0) {
+      console.error(`Failed to find chat with ID ${chatId}`);
+      throw new NotFoundException(`Chat with ID ${chatId} not found`);
+    }
+
+    if (result.modifiedCount === 0) {
+      console.warn(
+        `No documents were modified during the update operation for chat ID ${chatId}`,
       );
     }
   }

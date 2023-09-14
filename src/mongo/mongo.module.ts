@@ -4,7 +4,7 @@ import { GeneratedTextSchema } from './generated-text.schema';
 import { ProcessedTextSchema } from './processed-text.schema';
 import { ConfigService } from '@nestjs/config';
 import { MongoService } from './mongo.service';
-import { MessageVersionSchema } from './chats/chat.schema';
+import { ChatSchema, MessageVersionSchema } from './chats/chat.schema';
 
 @Module({
   imports: [
@@ -20,6 +20,7 @@ import { MessageVersionSchema } from './chats/chat.schema';
       { name: 'GeneratedText', schema: GeneratedTextSchema },
       { name: 'ProcessedText', schema: ProcessedTextSchema },
       { name: 'MessageVersion', schema: MessageVersionSchema },
+      { name: 'Chat', schema: ChatSchema },
     ]),
   ],
   providers: [MongoService],

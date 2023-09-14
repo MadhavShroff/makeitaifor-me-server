@@ -59,14 +59,22 @@ let AppGateway = exports.AppGateway = class AppGateway {
     }
     async generateText(data, client) {
         console.log('Received event at generateText with data: ', data);
-        const result = await this.langChainService.generateText(data.query, client.user, data.versionId, (str, seq) => {
-            client.emit('textGeneratedChunk-' + data.ext, {
+        const fullGeneratedText = await this.langChainService.generateText(data.query, client.user, data.versionId, (str, seq) => {
+            client.emit('textGeneratedChunk-' + data.chatId, {
                 event: 'textGeneratedChunk',
                 data: str,
                 seq: seq,
             });
         });
-        return { event: 'textGenerated-' + data.ext, data: result };
+        if (!this.chatsService.titleExistsForChat(data.chatId)) {
+            await this.langChainService.setTitle(data.query, fullGeneratedText, data.chatId, (str) => {
+                client.emit('titleGenerated-' + data.chatId, {
+                    event: 'titleGenerated',
+                    title: str,
+                });
+            });
+        }
+        return { event: 'textGenerated-' + data.chatId, data: fullGeneratedText };
     }
     async messageSubmitted(data, client) {
         if (data.chatId === '123') {

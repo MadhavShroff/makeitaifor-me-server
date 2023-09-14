@@ -166,99 +166,17 @@ export class ChatsService {
     return user;
   }
 
-  // async updateMessage(
-  //   chatId: Types.ObjectId,
-  //   messageId: Types.ObjectId,
-  //   newText: string,
-  //   type: string,
-  // ): Promise<Chat> {
-  //   const chat = await this.chatModel.findById(chatId).exec();
-  //   if (!chat) {
-  //     throw new NotFoundException(`Chat with ID ${chatId} not found`);
-  //   }
-
-  //   // Manually filter to find the message with the specific ID
-  //   const message = chat.messages.find(
-  //     (msg) => msg._id.toString() === messageId.toString(),
-  //   );
-  //   if (!message) {
-  //     throw new NotFoundException(`Message with ID ${messageId} not found`);
-  //   }
-
-  //   const newVersion = {
-  //     text: newText,
-  //     type,
-  //     isActive: true,
-  //     createdAt: new Date(),
-  //     versionNumber: message.versions.length + 1, // next version number
-  //   } as Partial<MessageVersion>;
-
-  //   message.versions.push(newVersion as MessageVersion);
-  //   chat.updatedAt = new Date();
-
-  //   return await chat.save();
-  // }
-
-  // async fetchActiveChatStream(chatId: Types.ObjectId): Promise<any> {
-  //   const chat = await this.chatModel.findById(chatId).exec();
-  //   if (!chat) {
-  //     throw new NotFoundException(`Chat with ID ${chatId} not found`);
-  //   }
-
-  //   const activeStream = chat.messages
-  //     .map((message) => {
-  //       const activeVersion = message.versions.find(
-  //         (version) => version.isActive,
-  //       );
-  //       if (activeVersion) {
-  //         return {
-  //           messageId: message._id,
-  //           text: activeVersion.text,
-  //           type: activeVersion.type,
-  //           createdAt: activeVersion.createdAt,
-  //         };
-  //       }
-  //       return null;
-  //     })
-  //     .filter((item) => item !== null);
-
-  //   return activeStream;
-  // }
-
-  // async setActiveVersion(
-  //   chatId: Types.ObjectId,
-  //   messageId: Types.ObjectId,
-  //   versionNumber: number,
-  // ): Promise<Chat> {
-  //   const chat = await this.chatModel.findById(chatId).exec();
-  //   if (!chat) {
-  //     throw new NotFoundException(`Chat with ID ${chatId} not found`);
-  //   }
-
-  //   // Manually filter to find the message with the specific ID
-  //   const message = chat.messages.find(
-  //     (msg) => msg._id.toString() === messageId.toString(),
-  //   );
-  //   if (!message) {
-  //     throw new NotFoundException(`Message with ID ${messageId} not found`);
-  //   }
-
-  //   // Deactivate all versions
-  //   message.versions.forEach((version) => {
-  //     version.isActive = false;
-  //   });
-
-  //   // Activate the selected version
-  //   const version = message.versions.find(
-  //     (v) => v.versionNumber === versionNumber,
-  //   );
-  //   if (!version) {
-  //     throw new NotFoundException('Version not found');
-  //   }
-  //   version.isActive = true;
-
-  //   chat.updatedAt = new Date();
-
-  //   return await chat.save();
-  // }
+  /**
+   * returns true if a title exists, ie is not "New Chat" for the chat with chatId
+   * @param chatId The ID of the chat
+   */
+  async titleExistsForChat(chatId: any): Promise<boolean> {
+    const exists = await this.chatModel.exists({
+      _id: chatId,
+      title: { $ne: 'New Chat' },
+    });
+    console.log('Title exists for chat: ', exists);
+    if (exists) return true;
+    else return false;
+  }
 }

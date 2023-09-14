@@ -17,10 +17,11 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 let MongoService = exports.MongoService = class MongoService {
-    constructor(generatedTextModel, processedTextModel, messageVersionModel) {
+    constructor(generatedTextModel, processedTextModel, messageVersionModel, chatModel) {
         this.generatedTextModel = generatedTextModel;
         this.processedTextModel = processedTextModel;
         this.messageVersionModel = messageVersionModel;
+        this.chatModel = chatModel;
     }
     async saveGeneratedText(text, versionId) {
         const result = await this.messageVersionModel.updateOne({ _id: versionId }, { $set: { text: text, updatedAt: new Date() } });
@@ -31,6 +32,17 @@ let MongoService = exports.MongoService = class MongoService {
         }
         if (result.modifiedCount === 0) {
             console.warn(`No documents were modified during the update operation for chat ID ${versionId}`);
+        }
+    }
+    async saveGeneratedTitle(title, chatId) {
+        const result = await this.chatModel.updateOne({ _id: chatId }, { $set: { title: title, updatedAt: new Date() } });
+        console.log('Saved Generated Title: ', result);
+        if (result.matchedCount === 0) {
+            console.error(`Failed to find chat with ID ${chatId}`);
+            throw new common_1.NotFoundException(`Chat with ID ${chatId} not found`);
+        }
+        if (result.modifiedCount === 0) {
+            console.warn(`No documents were modified during the update operation for chat ID ${chatId}`);
         }
     }
     async saveProcessedText(userId, fileId, text) {
@@ -55,7 +67,9 @@ exports.MongoService = MongoService = __decorate([
     __param(0, (0, mongoose_1.InjectModel)('GeneratedText')),
     __param(1, (0, mongoose_1.InjectModel)('ProcessedText')),
     __param(2, (0, mongoose_1.InjectModel)('MessageVersion')),
+    __param(3, (0, mongoose_1.InjectModel)('Chat')),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        mongoose_2.Model,
         mongoose_2.Model,
         mongoose_2.Model])
 ], MongoService);

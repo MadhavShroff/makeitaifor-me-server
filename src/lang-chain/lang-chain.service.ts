@@ -1,23 +1,29 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
-import { HumanMessage, SystemMessage } from 'langchain/schema';
+import { HumanMessage, LLMResult, SystemMessage } from 'langchain/schema';
 import { MongoService } from 'src/mongo/mongo.service';
 import { User } from 'src/mongo/users/users.schema';
 
 @Injectable()
 export class LangChainService {
-  private chat: ChatOpenAI;
+  private chat4: ChatOpenAI;
+  private chat3: ChatOpenAI;
 
   constructor(
     private readonly mongoService: MongoService, // Inject your MongoDB service or repository
   ) {
-    this.chat = new ChatOpenAI({
+    this.chat4 = new ChatOpenAI({
       openAIApiKey: process.env.OPENAI_API_KEY,
-      temperature: 0.5,
-      maxConcurrency: 5,
+      temperature: 0.72,
       streaming: true,
       modelName: 'gpt-4'
+    });
+    this.chat3 = new ChatOpenAI({
+      openAIApiKey: process.env.OPENAI_API_KEY,
+      temperature: 0.72,
+      streaming: true,
+      modelName: 'gpt-3.5-turbo'
     });
   }
 
@@ -37,7 +43,7 @@ export class LangChainService {
 
     // Start the stream
     let seq = 0;
-    await this.chat.call(
+    await this.chat4.call(
       [ new SystemMessage(
        `You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
         You are able to ingest documents or collections of documents to generate useful insights. 
@@ -69,6 +75,38 @@ export class LangChainService {
     console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
 
     return fullText;
+  }
+
+  async setTitle(
+    query: string,
+    response: string,
+    chatId: string,
+    callback: (text: string) => void,
+  ): Promise<string> {
+    let title = '';
+    await this.chat3.call(
+      [
+      new SystemMessage(
+        'You generate the title for the chat using the query and response. The title should be a maximum of 3 words. You can use the following words: ' + query + ' ' + response,
+      ),
+      new HumanMessage(`Generate a title for the following chat using this query and response pair. : 
+        Query: ${query}
+        Response: ${response}`)
+      ],
+      {
+        callbacks: [{
+          handleLLMNewToken(token: string) {
+            title += token;
+          },
+        }]
+      }  
+    );
+
+    // Once finished, save the title in MongoDB
+    await this.mongoService.saveGeneratedTitle(title, chatId);
+    console.log('Title saved to MongoDB.', title);
+    callback(title);
+    return title;
   }
 }
 

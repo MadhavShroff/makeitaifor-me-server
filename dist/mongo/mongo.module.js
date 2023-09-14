@@ -31,6 +31,7 @@ exports.MongoModule = MongoModule = __decorate([
                 { name: 'GeneratedText', schema: generated_text_schema_1.GeneratedTextSchema },
                 { name: 'ProcessedText', schema: processed_text_schema_1.ProcessedTextSchema },
                 { name: 'MessageVersion', schema: chat_schema_1.MessageVersionSchema },
+                { name: 'Chat', schema: chat_schema_1.ChatSchema },
             ]),
         ],
         providers: [mongo_service_1.MongoService],

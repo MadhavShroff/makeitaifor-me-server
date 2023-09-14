@@ -17,12 +17,17 @@ const mongo_service_1 = require("../mongo/mongo.service");
 let LangChainService = exports.LangChainService = class LangChainService {
     constructor(mongoService) {
         this.mongoService = mongoService;
-        this.chat = new openai_1.ChatOpenAI({
+        this.chat4 = new openai_1.ChatOpenAI({
             openAIApiKey: process.env.OPENAI_API_KEY,
-            temperature: 0.5,
-            maxConcurrency: 5,
+            temperature: 0.72,
             streaming: true,
             modelName: 'gpt-4'
+        });
+        this.chat3 = new openai_1.ChatOpenAI({
+            openAIApiKey: process.env.OPENAI_API_KEY,
+            temperature: 0.72,
+            streaming: true,
+            modelName: 'gpt-3.5-turbo'
         });
     }
     async generateText(prompt, user, versionId, callback) {
@@ -31,7 +36,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
             throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
         let fullText = '';
         let seq = 0;
-        await this.chat.call([new schema_1.SystemMessage(`You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
+        await this.chat4.call([new schema_1.SystemMessage(`You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
         You are able to ingest documents or collections of documents to generate useful insights. 
         You can also answer questions about the documents you have ingested.
         When asked to output any math, or physics or other scientific notation, you should use inline LaTeX formatting as such: $x^2$.
@@ -56,6 +61,25 @@ let LangChainService = exports.LangChainService = class LangChainService {
         await this.mongoService.saveGeneratedText(fullText, versionId);
         console.log('Text saved to MongoDB. Size:', getSizeInKB(fullText), 'KB');
         return fullText;
+    }
+    async setTitle(query, response, chatId, callback) {
+        let title = '';
+        await this.chat3.call([
+            new schema_1.SystemMessage('You generate the title for the chat using the query and response. The title should be a maximum of 3 words. You can use the following words: ' + query + ' ' + response),
+            new schema_1.HumanMessage(`Generate a title for the following chat using this query and response pair. : 
+        Query: ${query}
+        Response: ${response}`)
+        ], {
+            callbacks: [{
+                    handleLLMNewToken(token) {
+                        title += token;
+                    },
+                }]
+        });
+        await this.mongoService.saveGeneratedTitle(title, chatId);
+        console.log('Title saved to MongoDB.', title);
+        callback(title);
+        return title;
     }
 };
 exports.LangChainService = LangChainService = __decorate([

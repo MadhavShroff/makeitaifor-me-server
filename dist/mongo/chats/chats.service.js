@@ -128,6 +128,17 @@ let ChatsService = exports.ChatsService = class ChatsService {
         }
         return user;
     }
+    async titleExistsForChat(chatId) {
+        const exists = await this.chatModel.exists({
+            _id: chatId,
+            title: { $ne: 'New Chat' },
+        });
+        console.log('Title exists for chat: ', exists);
+        if (exists)
+            return true;
+        else
+            return false;
+    }
 };
 exports.ChatsService = ChatsService = __decorate([
     (0, common_1.Injectable)(),

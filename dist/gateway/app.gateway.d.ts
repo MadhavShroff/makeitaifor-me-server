@@ -25,7 +25,7 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
     }): string;
     generateText(data: {
         query: string;
-        ext: string;
+        chatId: string;
         versionId: string;
     }, client: Socket & {
         user: User;
