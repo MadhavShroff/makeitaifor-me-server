@@ -92,7 +92,10 @@ export class AppGateway
     );
     // if this chat does not have a title, get a title, and set it
     console.log('Checking if chat has a title...', data.chatId);
-    if (this.chatsService.isDefaultTitleForChat(data.chatId)) {
+    const hasTitle: boolean = await this.chatsService.isDefaultTitleForChat(
+      data.chatId,
+    );
+    if (hasTitle) {
       console.log('Chat does not have a title. Generating one...');
       await this.langChainService.setTitle(
         data.query,
