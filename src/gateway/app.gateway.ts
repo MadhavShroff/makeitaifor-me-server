@@ -73,6 +73,10 @@ export class AppGateway
     @MessageBody() data: { query: string; chatId: string; versionId: string },
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
+    if (data.chatId === undefined) throw new Error('chatId is undefined');
+    if (data.query === undefined) throw new Error('query is undefined');
+    if (data.versionId === undefined) throw new Error('versionId is undefined');
+
     console.log('Received event at generateText with data: ', data);
     const previousConversation = await this.chatsService.getActiveMessages(
       data.chatId,

@@ -48,6 +48,12 @@ let AppGateway = exports.AppGateway = class AppGateway {
     handleDisconnect(client) {
     }
     async generateText(data, client) {
+        if (data.chatId === undefined)
+            throw new Error('chatId is undefined');
+        if (data.query === undefined)
+            throw new Error('query is undefined');
+        if (data.versionId === undefined)
+            throw new Error('versionId is undefined');
         console.log('Received event at generateText with data: ', data);
         const previousConversation = await this.chatsService.getActiveMessages(data.chatId);
         const fullGeneratedText = await this.langChainService.generateText(data.query, client.user, data.versionId, previousConversation, (str, seq) => {
