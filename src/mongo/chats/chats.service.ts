@@ -169,7 +169,10 @@ export class ChatsService {
     });
     if (exists == null)
       return false; // Title is already set to something other than 'New Chat'
-    else return true;
+    else {
+      console.log('Chat in question:', await this.chatModel.findById(chatId));
+      return true; // Title is set to 'New Chat'
+    }
   }
 
   async getActiveMessageVersion(message: Message): Promise<MessageVersion> {

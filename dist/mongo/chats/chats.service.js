@@ -130,8 +130,10 @@ let ChatsService = exports.ChatsService = class ChatsService {
         });
         if (exists == null)
             return false;
-        else
+        else {
+            console.log('Chat in question:', await this.chatModel.findById(chatId));
             return true;
+        }
     }
     async getActiveMessageVersion(message) {
         if (message.versions.length == 1)
