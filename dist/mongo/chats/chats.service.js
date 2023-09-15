@@ -159,14 +159,10 @@ let ChatsService = exports.ChatsService = class ChatsService {
             });
             for (let i = 0; i < sortedMessages.length; i++) {
                 const activeMessageVersion = await this.getActiveMessageVersion(sortedMessages[i]);
-                if (activeMessageVersion.type === 'user') {
-                    console.log('HumanMessage: ', activeMessageVersion.text);
+                if (activeMessageVersion.type === 'user')
                     messages.push(new schema_1.HumanMessage(activeMessageVersion.text));
-                }
-                else {
-                    console.log('AIMessage: ', activeMessageVersion.text);
+                else
                     messages.push(new schema_1.AIMessage(activeMessageVersion.text));
-                }
             }
         }
         return messages;

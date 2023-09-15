@@ -58,6 +58,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
             });
         });
         if (this.chatsService.isDefaultTitleForChat(data.chatId)) {
+            console.log('Chat does not have a title. Generating one...');
             await this.langChainService.setTitle(data.query, fullGeneratedText, data.chatId, (str) => {
                 client.emit('titleGenerated-' + data.chatId, {
                     event: 'titleGenerated',
