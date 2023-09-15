@@ -163,16 +163,12 @@ export class ChatsService {
    * @param chatId The ID of the chat
    */
   async isDefaultTitleForChat(chatId: any): Promise<boolean> {
-    const exists = await this.chatModel.exists({
+    const chat = await this.chatModel.findOne({
       _id: chatId,
-      title: { $eq: 'New Chat' },
     });
-    if (exists == null)
-      return false; // Title is already set to something other than 'New Chat'
-    else {
-      console.log('Chat in question:', await this.chatModel.findById(chatId));
-      return true; // Title is set to 'New Chat'
-    }
+
+    if (chat.title === 'New Chat') return true;
+    else return false;
   }
 
   async getActiveMessageVersion(message: Message): Promise<MessageVersion> {

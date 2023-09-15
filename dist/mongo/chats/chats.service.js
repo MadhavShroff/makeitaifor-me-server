@@ -124,16 +124,13 @@ let ChatsService = exports.ChatsService = class ChatsService {
         return user;
     }
     async isDefaultTitleForChat(chatId) {
-        const exists = await this.chatModel.exists({
+        const chat = await this.chatModel.findOne({
             _id: chatId,
-            title: { $eq: 'New Chat' },
         });
-        if (exists == null)
-            return false;
-        else {
-            console.log('Chat in question:', await this.chatModel.findById(chatId));
+        if (chat.title === 'New Chat')
             return true;
-        }
+        else
+            return false;
     }
     async getActiveMessageVersion(message) {
         if (message.versions.length == 1)
