@@ -173,10 +173,10 @@ export class ChatsService {
   async titleExistsForChat(chatId: any): Promise<boolean> {
     const exists = await this.chatModel.exists({
       _id: chatId,
-      title: { $ne: 'New Chat' },
+      title: { $eq: 'New Chat' },
     });
     console.log('Title exists for chat: ', exists);
-    if (exists) return true;
+    if (exists != null) return true;
     else return false;
   }
 }
