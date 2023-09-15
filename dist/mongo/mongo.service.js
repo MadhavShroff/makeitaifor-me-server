@@ -33,8 +33,9 @@ let MongoService = exports.MongoService = class MongoService {
             console.warn(`No documents were modified during the update operation for chat ID ${versionId}`);
         }
     }
-    async saveGeneratedTitle(title, chatId) {
-        const result = await this.chatModel.updateOne({ _id: chatId }, { $set: { title: title, updatedAt: new Date() } });
+    async saveGeneratedTitle(newTitle, chatId) {
+        const result = await this.chatModel.findOneAndUpdate({ _id: chatId }, { $set: { title: newTitle, updatedAt: new Date() } });
+        console.log('After updated title:', result);
         if (result.matchedCount === 0) {
             console.error(`Failed to find chat with ID ${chatId}`);
             throw new common_1.NotFoundException(`Chat with ID ${chatId} not found`);

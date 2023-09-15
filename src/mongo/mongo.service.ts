@@ -33,11 +33,15 @@ export class MongoService {
     }
   }
 
-  async saveGeneratedTitle(title: string, chatId: string) {
-    const result = await this.chatModel.updateOne(
+  async saveGeneratedTitle(newTitle: string, chatId: string) {
+    const result = await this.chatModel.findOneAndUpdate(
       { _id: chatId },
-      { $set: { title: title, updatedAt: new Date() } },
+      { $set: { title: newTitle, updatedAt: new Date() } },
     );
+
+    // print resultant chat object after update
+
+    console.log('After updated title:', result);
 
     if (result.matchedCount === 0) {
       console.error(`Failed to find chat with ID ${chatId}`);
