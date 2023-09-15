@@ -127,11 +127,8 @@ let ChatsService = exports.ChatsService = class ChatsService {
         const chat = await this.chatModel.findOne({
             _id: chatId,
         });
-        console.log('Chat title for chat with ID:' + chatId + ' Is: ' + chat.title);
-        console.log('returning ' +
-            (chat.title === 'New Chat') +
-            ' or should I return ' +
-            (chat.title.toString() === 'New Chat'));
+        if (!chat)
+            return false;
         return chat.title.toString() === 'New Chat';
     }
     async getActiveMessageVersion(message) {
