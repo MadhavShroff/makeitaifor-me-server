@@ -62,7 +62,6 @@ export class LangChainService {
     {
       callbacks: [{
         handleLLMNewToken(token: string) {
-          console.log('Token at generateText: ', token);
           callback(token, seq++);
           fullText += token;
         },

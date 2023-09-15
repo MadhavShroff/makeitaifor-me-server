@@ -177,7 +177,8 @@ export class ChatsService {
       title: { $eq: 'New Chat' },
     });
     console.log('Title exists for chat: ', exists);
-    if (exists != null) return false;
+    if (exists == null)
+      return false; // Title is already set to something other than 'New Chat'
     else return true;
   }
 }

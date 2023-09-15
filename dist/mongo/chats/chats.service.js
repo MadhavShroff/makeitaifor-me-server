@@ -134,7 +134,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
             title: { $eq: 'New Chat' },
         });
         console.log('Title exists for chat: ', exists);
-        if (exists != null)
+        if (exists == null)
             return false;
         else
             return true;

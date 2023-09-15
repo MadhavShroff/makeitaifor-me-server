@@ -94,10 +94,12 @@ export class AppGateway
     @ConnectedSocket() client: Socket & { user: User },
   ): Promise<WsResponse<string>> {
     console.log('Received event at generateText with data: ', data);
+    // const previousConversation = await this.chatsService.getActiveMessages(chatId);
     const fullGeneratedText = await this.langChainService.generateText(
       data.query,
       client.user,
       data.versionId,
+      // previousConversation,
       (str: string, seq: number) => {
         client.emit('textGeneratedChunk-' + data.chatId, {
           event: 'textGeneratedChunk',

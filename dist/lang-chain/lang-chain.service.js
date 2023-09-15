@@ -52,7 +52,6 @@ let LangChainService = exports.LangChainService = class LangChainService {
             new schema_1.HumanMessage(prompt),], {
             callbacks: [{
                     handleLLMNewToken(token) {
-                        console.log('Token at generateText: ', token);
                         callback(token, seq++);
                         fullText += token;
                     },
