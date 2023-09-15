@@ -18,5 +18,6 @@ export declare class ChatsService {
     getMessagesData(messages: Types.ObjectId[]): Promise<Message[]>;
     getChatsMetadata(userId: string): Promise<User>;
     isDefaultTitleForChat(chatId: any): Promise<boolean>;
+    getActiveMessageVersion(message: Message): Promise<MessageVersion>;
     getActiveMessages(chatId: string): Promise<BaseMessage[]>;
 }

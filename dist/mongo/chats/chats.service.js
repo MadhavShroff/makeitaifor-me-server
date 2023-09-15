@@ -18,6 +18,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const chat_schema_1 = require("./chat.schema");
 const users_schema_1 = require("../users/users.schema");
+const schema_1 = require("langchain/schema");
 let ChatsService = exports.ChatsService = class ChatsService {
     constructor(chatModel, userModel, messageModel, messageVersionModel) {
         this.chatModel = chatModel;
@@ -132,7 +133,18 @@ let ChatsService = exports.ChatsService = class ChatsService {
         else
             return true;
     }
+    async getActiveMessageVersion(message) {
+        if (message.versions.length == 1)
+            return message.versions[0];
+        else {
+            for (let i = 0; i < message.versions.length; i++) {
+                if (message.versions[0].isActive)
+                    return message.versions[i];
+            }
+        }
+    }
     async getActiveMessages(chatId) {
+        const messages = [];
         const chat = await this.chatModel
             .findById(chatId)
             .populate({
@@ -140,8 +152,25 @@ let ChatsService = exports.ChatsService = class ChatsService {
             populate: { path: 'versions' },
         })
             .exec();
+        if (chat) {
+            const sortedMessages = chat.messages.sort((a, b) => {
+                return (a.versions[0].updatedAt.getTime() -
+                    b.versions[0].updatedAt.getTime());
+            });
+            for (let i = 0; i < sortedMessages.length; i++) {
+                const activeMessageVersion = await this.getActiveMessageVersion(sortedMessages[i]);
+                if (activeMessageVersion.type === 'user') {
+                    console.log('HumanMessage: ', activeMessageVersion.text);
+                    messages.push(new schema_1.HumanMessage(activeMessageVersion.text));
+                }
+                else {
+                    console.log('AIMessage: ', activeMessageVersion.text);
+                    messages.push(new schema_1.AIMessage(activeMessageVersion.text));
+                }
+            }
+        }
         console.log('Chat found at getActiveMessages: ', JSON.stringify(chat));
-        return [];
+        return messages;
     }
 };
 exports.ChatsService = ChatsService = __decorate([

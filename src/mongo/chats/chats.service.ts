@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Chat, Message, MessageVersion } from './chat.schema'; // make sure the path is correct
 import { User } from '../users/users.schema';
-import { BaseMessage } from 'langchain/schema';
+import { AIMessage, BaseMessage, HumanMessage } from 'langchain/schema';
 
 @Injectable()
 export class ChatsService {
@@ -172,7 +172,19 @@ export class ChatsService {
     else return true;
   }
 
+  async getActiveMessageVersion(message: Message): Promise<MessageVersion> {
+    if (message.versions.length == 1)
+      return message.versions[0] as unknown as MessageVersion;
+    else {
+      for (let i = 0; i < message.versions.length; i++) {
+        if ((message.versions[0] as unknown as MessageVersion).isActive)
+          return message.versions[i] as unknown as MessageVersion;
+      }
+    }
+  }
+
   async getActiveMessages(chatId: string): Promise<BaseMessage[]> {
+    const messages: BaseMessage[] = [];
     const chat = await this.chatModel
       .findById(chatId)
       .populate({
@@ -181,7 +193,30 @@ export class ChatsService {
       })
       .exec();
 
+    if (chat) {
+      const sortedMessages = (chat.messages as unknown as Message[]).sort(
+        (a, b) => {
+          return (
+            (a.versions[0] as unknown as MessageVersion).updatedAt.getTime() -
+            (b.versions[0] as unknown as MessageVersion).updatedAt.getTime()
+          );
+        },
+      );
+      for (let i = 0; i < sortedMessages.length; i++) {
+        const activeMessageVersion = await this.getActiveMessageVersion(
+          sortedMessages[i],
+        );
+        if (activeMessageVersion.type === 'user') {
+          console.log('HumanMessage: ', activeMessageVersion.text);
+          messages.push(new HumanMessage(activeMessageVersion.text));
+        } else {
+          console.log('AIMessage: ', activeMessageVersion.text);
+          messages.push(new AIMessage(activeMessageVersion.text));
+        }
+      }
+    }
+
     console.log('Chat found at getActiveMessages: ', JSON.stringify(chat));
-    return [];
+    return messages;
   }
 }
