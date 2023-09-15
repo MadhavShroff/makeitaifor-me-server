@@ -127,6 +127,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
         const chat = await this.chatModel.findOne({
             _id: chatId,
         });
+        console.log('Chat title for chat with ID:' + chatId + ' Is: ' + chat.title);
         if (chat.title === 'New Chat')
             return true;
         else

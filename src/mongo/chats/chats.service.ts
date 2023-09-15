@@ -167,6 +167,8 @@ export class ChatsService {
       _id: chatId,
     });
 
+    console.log('Chat title for chat with ID:' + chatId + ' Is: ' + chat.title);
+
     if (chat.title === 'New Chat') return true;
     else return false;
   }
