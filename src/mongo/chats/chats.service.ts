@@ -122,7 +122,7 @@ export class ChatsService {
       { _id: chatId },
       {
         $push: { messages: messageId },
-        $set: { updatedAt: new Date(), title: 'New Chat' },
+        $set: { updatedAt: new Date() },
       },
     );
 

@@ -96,7 +96,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async appendMessageToChat(messageId, chatId) {
         const result = await this.chatModel.updateOne({ _id: chatId }, {
             $push: { messages: messageId },
-            $set: { updatedAt: new Date(), title: 'New Chat' },
+            $set: { updatedAt: new Date() },
         });
         if (result.matchedCount === 0) {
             console.error(`Failed to find chat with ID ${chatId}`);
