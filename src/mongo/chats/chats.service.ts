@@ -175,8 +175,7 @@ export class ChatsService {
         (chat.title.toString() === 'New Chat'),
     );
 
-    if (chat.title.toString() === 'New Chat') return true;
-    else return false;
+    return chat.title.toString() === 'New Chat';
   }
 
   async getActiveMessageVersion(message: Message): Promise<MessageVersion> {

@@ -40,8 +40,6 @@ export class MongoService {
       { new: true },
     );
 
-    console.log('After updated title:', result);
-
     if (result.matchedCount === 0) {
       console.error(`Failed to find chat with ID ${chatId}`);
       throw new NotFoundException(`Chat with ID ${chatId} not found`);

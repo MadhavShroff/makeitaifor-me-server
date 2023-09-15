@@ -132,10 +132,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
             (chat.title === 'New Chat') +
             ' or should I return ' +
             (chat.title.toString() === 'New Chat'));
-        if (chat.title.toString() === 'New Chat')
-            return true;
-        else
-            return false;
+        return chat.title.toString() === 'New Chat';
     }
     async getActiveMessageVersion(message) {
         if (message.versions.length == 1)

@@ -35,7 +35,6 @@ let MongoService = exports.MongoService = class MongoService {
     }
     async saveGeneratedTitle(newTitle, chatId) {
         const result = await this.chatModel.findOneAndUpdate({ _id: chatId }, { $set: { title: newTitle, updatedAt: new Date() } }, { new: true });
-        console.log('After updated title:', result);
         if (result.matchedCount === 0) {
             console.error(`Failed to find chat with ID ${chatId}`);
             throw new common_1.NotFoundException(`Chat with ID ${chatId} not found`);
