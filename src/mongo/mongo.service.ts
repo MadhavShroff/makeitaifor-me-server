@@ -37,9 +37,8 @@ export class MongoService {
     const result = await this.chatModel.findOneAndUpdate(
       { _id: chatId },
       { $set: { title: newTitle, updatedAt: new Date() } },
+      { new: true },
     );
-
-    // print resultant chat object after update
 
     console.log('After updated title:', result);
 
