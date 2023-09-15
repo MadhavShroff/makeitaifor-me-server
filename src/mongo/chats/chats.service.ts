@@ -168,8 +168,14 @@ export class ChatsService {
     });
 
     console.log('Chat title for chat with ID:' + chatId + ' Is: ' + chat.title);
+    console.log(
+      'returning ' +
+        (chat.title === 'New Chat') +
+        ' or should I return ' +
+        (chat.title.toString() === 'New Chat'),
+    );
 
-    if (chat.title === 'New Chat') return true;
+    if (chat.title.toString() === 'New Chat') return true;
     else return false;
   }
 

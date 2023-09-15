@@ -128,7 +128,11 @@ let ChatsService = exports.ChatsService = class ChatsService {
             _id: chatId,
         });
         console.log('Chat title for chat with ID:' + chatId + ' Is: ' + chat.title);
-        if (chat.title === 'New Chat')
+        console.log('returning ' +
+            (chat.title === 'New Chat') +
+            ' or should I return ' +
+            (chat.title.toString() === 'New Chat'));
+        if (chat.title.toString() === 'New Chat')
             return true;
         else
             return false;
