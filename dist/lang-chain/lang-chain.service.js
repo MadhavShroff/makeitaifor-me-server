@@ -30,7 +30,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
             modelName: 'gpt-3.5-turbo'
         });
     }
-    async generateText(prompt, user, versionId, callback) {
+    async generateText(prompt, user, versionId, previousConversation, callback) {
         console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
         if (prompt === undefined)
             throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
@@ -49,6 +49,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
          - You can ingest many formats of documents, like Scientific PDFs, Youtube videos, Web articles like blog posts, Handwritten notes, and more coming soon(Specify ALL). You can also understand, output, and work on Mathematical and Scientific notation, and code. You can also work in multiple languages. 
          - Powered by Vector semantic search and openai's API's the user can ask questions about the documents you have ingested, and get relavant answers with citations linking to the source, inline.
          - You stay updated with the latest and greatest APIs, with improvements made every week. `),
+            ...previousConversation,
             new schema_1.HumanMessage(prompt),], {
             callbacks: [{
                     handleLLMNewToken(token) {
@@ -72,13 +73,11 @@ let LangChainService = exports.LangChainService = class LangChainService {
         ], {
             callbacks: [{
                     handleLLMNewToken(token) {
-                        console.log('Token at setTitle: ', token);
                         title += token;
                     },
                 }]
         });
         await this.mongoService.saveGeneratedTitle(title, chatId);
-        console.log('Title saved to MongoDB.', title);
         callback(title);
         return title;
     }

@@ -20,7 +20,6 @@ export class MongoService {
       { _id: versionId },
       { $set: { text: text, updatedAt: new Date() } },
     );
-    console.log('Saved Generated Text: ', result);
 
     if (result.matchedCount === 0) {
       console.error(`Failed to find message version with ID ${versionId}`);
@@ -39,7 +38,6 @@ export class MongoService {
       { _id: chatId },
       { $set: { title: title, updatedAt: new Date() } },
     );
-    console.log('Saved Generated Title: ', result);
 
     if (result.matchedCount === 0) {
       console.error(`Failed to find chat with ID ${chatId}`);

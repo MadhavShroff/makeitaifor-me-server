@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
-import { HumanMessage, LLMResult, SystemMessage } from 'langchain/schema';
+import { BaseMessage, HumanMessage, LLMResult, SystemMessage } from 'langchain/schema';
 import { MongoService } from 'src/mongo/mongo.service';
 import { User } from 'src/mongo/users/users.schema';
 
@@ -31,11 +31,12 @@ export class LangChainService {
     prompt: string,
     user: User,
     versionId: string,
+    previousConversation: BaseMessage[],
     callback: (text: string, seq: number) => void,
   ): Promise<string> {
     console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
 
-    if(prompt === undefined) throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
+    if (prompt === undefined) throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
 
     let fullText = '';
 
@@ -44,8 +45,8 @@ export class LangChainService {
     // Start the stream
     let seq = 0;
     await this.chat4.call(
-      [ new SystemMessage(
-       `You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
+      [new SystemMessage(
+        `You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
         You are able to ingest documents or collections of documents to generate useful insights. 
         You can also answer questions about the documents you have ingested.
         When asked to output any math, or physics or other scientific notation, you should use inline LaTeX formatting as such: $x^2$.
@@ -58,15 +59,16 @@ export class LangChainService {
          - You can ingest many formats of documents, like Scientific PDFs, Youtube videos, Web articles like blog posts, Handwritten notes, and more coming soon(Specify ALL). You can also understand, output, and work on Mathematical and Scientific notation, and code. You can also work in multiple languages. 
          - Powered by Vector semantic search and openai's API's the user can ask questions about the documents you have ingested, and get relavant answers with citations linking to the source, inline.
          - You stay updated with the latest and greatest APIs, with improvements made every week. `),
-        new HumanMessage(prompt),], 
-    {
-      callbacks: [{
-        handleLLMNewToken(token: string) {
-          callback(token, seq++);
-          fullText += token;
-        },
-      }],
-    });
+      ...previousConversation,
+      new HumanMessage(prompt),],
+      {
+        callbacks: [{
+          handleLLMNewToken(token: string) {
+            callback(token, seq++);
+            fullText += token;
+          },
+        }],
+      });
 
     fullText = fullText.trim();
 
@@ -86,26 +88,24 @@ export class LangChainService {
     let title = '';
     await this.chat3.call(
       [
-      new SystemMessage(
-        'You generate the title for the chat using the query and response. The title should be a maximum of 3 words. You can use the following words: ' + query + ' ' + response,
-      ),
-      new HumanMessage(`Generate a title for the following chat using this query and response pair. : 
+        new SystemMessage(
+          'You generate the title for the chat using the query and response. The title should be a maximum of 3 words. You can use the following words: ' + query + ' ' + response,
+        ),
+        new HumanMessage(`Generate a title for the following chat using this query and response pair. : 
         Query: ${query}
         Response: ${response}`)
       ],
       {
         callbacks: [{
           handleLLMNewToken(token: string) {
-            console.log('Token at setTitle: ', token);
             title += token;
           },
         }]
-      }  
+      }
     );
 
     // Once finished, save the title in MongoDB
     await this.mongoService.saveGeneratedTitle(title, chatId);
-    console.log('Title saved to MongoDB.', title);
     callback(title);
     return title;
   }

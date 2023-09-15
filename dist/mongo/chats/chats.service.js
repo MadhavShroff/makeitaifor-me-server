@@ -133,11 +133,18 @@ let ChatsService = exports.ChatsService = class ChatsService {
             _id: chatId,
             title: { $eq: 'New Chat' },
         });
-        console.log('Title exists for chat: ', exists);
         if (exists == null)
             return false;
         else
             return true;
+    }
+    async getActiveMessages(chatId) {
+        const chat = await this.chatModel
+            .findById(chatId)
+            .populate('messages messages.versions')
+            .exec();
+        console.log('Chat found at getActiveMessages: ', JSON.stringify(chat));
+        return [];
     }
 };
 exports.ChatsService = ChatsService = __decorate([

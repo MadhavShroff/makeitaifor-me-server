@@ -1,6 +1,7 @@
 import { Model, Types } from 'mongoose';
 import { Chat, Message, MessageVersion } from './chat.schema';
 import { User } from '../users/users.schema';
+import { BaseMessage } from 'langchain/schema';
 export declare class ChatsService {
     private readonly chatModel;
     private readonly userModel;
@@ -17,4 +18,5 @@ export declare class ChatsService {
     getMessagesData(messages: Types.ObjectId[]): Promise<Message[]>;
     getChatsMetadata(userId: string): Promise<User>;
     isDefaultTitleForChat(chatId: any): Promise<boolean>;
+    getActiveMessages(chatId: string): Promise<BaseMessage[]>;
 }

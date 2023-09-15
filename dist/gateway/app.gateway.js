@@ -59,7 +59,8 @@ let AppGateway = exports.AppGateway = class AppGateway {
     }
     async generateText(data, client) {
         console.log('Received event at generateText with data: ', data);
-        const fullGeneratedText = await this.langChainService.generateText(data.query, client.user, data.versionId, (str, seq) => {
+        const previousConversation = await this.chatsService.getActiveMessages(data.chatId);
+        const fullGeneratedText = await this.langChainService.generateText(data.query, client.user, data.versionId, previousConversation, (str, seq) => {
             client.emit('textGeneratedChunk-' + data.chatId, {
                 event: 'textGeneratedChunk',
                 data: str,

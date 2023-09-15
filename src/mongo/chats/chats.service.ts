@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Chat, Message, MessageVersion } from './chat.schema'; // make sure the path is correct
 import { User } from '../users/users.schema';
+import { BaseMessage } from 'langchain/schema';
 
 @Injectable()
 export class ChatsService {
@@ -176,9 +177,18 @@ export class ChatsService {
       _id: chatId,
       title: { $eq: 'New Chat' },
     });
-    console.log('Title exists for chat: ', exists);
     if (exists == null)
       return false; // Title is already set to something other than 'New Chat'
     else return true;
+  }
+
+  async getActiveMessages(chatId: string): Promise<BaseMessage[]> {
+    const chat = await this.chatModel
+      .findById(chatId)
+      .populate('messages messages.versions')
+      .exec();
+
+    console.log('Chat found at getActiveMessages: ', JSON.stringify(chat));
+    return [];
   }
 }

@@ -25,7 +25,6 @@ let MongoService = exports.MongoService = class MongoService {
     }
     async saveGeneratedText(text, versionId) {
         const result = await this.messageVersionModel.updateOne({ _id: versionId }, { $set: { text: text, updatedAt: new Date() } });
-        console.log('Saved Generated Text: ', result);
         if (result.matchedCount === 0) {
             console.error(`Failed to find message version with ID ${versionId}`);
             throw new common_1.NotFoundException(`Chat with ID ${versionId} not found`);
@@ -36,7 +35,6 @@ let MongoService = exports.MongoService = class MongoService {
     }
     async saveGeneratedTitle(title, chatId) {
         const result = await this.chatModel.updateOne({ _id: chatId }, { $set: { title: title, updatedAt: new Date() } });
-        console.log('Saved Generated Title: ', result);
         if (result.matchedCount === 0) {
             console.error(`Failed to find chat with ID ${chatId}`);
             throw new common_1.NotFoundException(`Chat with ID ${chatId} not found`);
