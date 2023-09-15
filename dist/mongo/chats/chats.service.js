@@ -128,16 +128,16 @@ let ChatsService = exports.ChatsService = class ChatsService {
         }
         return user;
     }
-    async titleExistsForChat(chatId) {
+    async isDefaultTitleForChat(chatId) {
         const exists = await this.chatModel.exists({
             _id: chatId,
             title: { $eq: 'New Chat' },
         });
         console.log('Title exists for chat: ', exists);
         if (exists != null)
-            return true;
-        else
             return false;
+        else
+            return true;
     }
 };
 exports.ChatsService = ChatsService = __decorate([

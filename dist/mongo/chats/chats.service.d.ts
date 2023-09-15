@@ -16,5 +16,5 @@ export declare class ChatsService {
     appendMessageToChat(messageId: Types.ObjectId, chatId: Types.ObjectId): Promise<Chat>;
     getMessagesData(messages: Types.ObjectId[]): Promise<Message[]>;
     getChatsMetadata(userId: string): Promise<User>;
-    titleExistsForChat(chatId: any): Promise<boolean>;
+    isDefaultTitleForChat(chatId: any): Promise<boolean>;
 }

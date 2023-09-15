@@ -167,16 +167,17 @@ export class ChatsService {
   }
 
   /**
-   * returns true if a title exists, ie is not "New Chat" for the chat with chatId
+   * returns true if a title for the chat is not 'New Chat'
+   * 'New Chat' is the default title for a chat
    * @param chatId The ID of the chat
    */
-  async titleExistsForChat(chatId: any): Promise<boolean> {
+  async isDefaultTitleForChat(chatId: any): Promise<boolean> {
     const exists = await this.chatModel.exists({
       _id: chatId,
       title: { $eq: 'New Chat' },
     });
     console.log('Title exists for chat: ', exists);
-    if (exists != null) return true;
-    else return false;
+    if (exists != null) return false;
+    else return true;
   }
 }

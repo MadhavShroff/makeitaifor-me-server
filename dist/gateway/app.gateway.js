@@ -66,7 +66,7 @@ let AppGateway = exports.AppGateway = class AppGateway {
                 seq: seq,
             });
         });
-        if (!this.chatsService.titleExistsForChat(data.chatId)) {
+        if (!this.chatsService.isDefaultTitleForChat(data.chatId)) {
             await this.langChainService.setTitle(data.query, fullGeneratedText, data.chatId, (str) => {
                 client.emit('titleGenerated-' + data.chatId, {
                     event: 'titleGenerated',
