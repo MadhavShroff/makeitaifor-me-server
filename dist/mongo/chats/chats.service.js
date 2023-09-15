@@ -128,7 +128,7 @@ let ChatsService = exports.ChatsService = class ChatsService {
             _id: chatId,
             title: { $eq: 'New Chat' },
         });
-        if (exists != null)
+        if (exists == null)
             return false;
         else
             return true;

@@ -167,7 +167,7 @@ export class ChatsService {
       _id: chatId,
       title: { $eq: 'New Chat' },
     });
-    if (exists != null)
+    if (exists == null)
       return false; // Title is already set to something other than 'New Chat'
     else return true;
   }
