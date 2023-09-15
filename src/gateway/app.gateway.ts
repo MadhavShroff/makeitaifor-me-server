@@ -107,7 +107,7 @@ export class AppGateway
       },
     );
     // if this chat does not have a title, get a title, and set it
-    if (!this.chatsService.isDefaultTitleForChat(data.chatId)) {
+    if (this.chatsService.isDefaultTitleForChat(data.chatId)) {
       await this.langChainService.setTitle(
         data.query,
         fullGeneratedText,
