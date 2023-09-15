@@ -175,7 +175,10 @@ export class ChatsService {
   async getActiveMessages(chatId: string): Promise<BaseMessage[]> {
     const chat = await this.chatModel
       .findById(chatId)
-      .populate([{ path: 'messages' }, { path: 'messages.versions' }])
+      .populate({
+        path: 'messages',
+        populate: { path: 'versions' },
+      })
       .exec();
 
     console.log('Chat found at getActiveMessages: ', JSON.stringify(chat));
