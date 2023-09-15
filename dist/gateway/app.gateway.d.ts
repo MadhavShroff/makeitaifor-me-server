@@ -17,12 +17,6 @@ export declare class AppGateway implements OnGatewayConnection, OnGatewayDisconn
         user: User;
     }): void;
     handleDisconnect(client: Socket): void;
-    handleMessage(message: string, client: Socket & {
-        user: User;
-    }): string;
-    buttonClicked(data: any, client: Socket & {
-        user: User;
-    }): string;
     generateText(data: {
         query: string;
         chatId: string;

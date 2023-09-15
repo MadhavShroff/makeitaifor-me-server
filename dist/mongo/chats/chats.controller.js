@@ -24,7 +24,6 @@ let ChatsController = exports.ChatsController = class ChatsController {
     }
     async getChatsMetadata(req, userId) {
         const populatedUser = await this.chatsService.getChatsMetadata(userId);
-        console.log(populatedUser);
         return populatedUser;
     }
     async getMessagesData(req) {
@@ -33,13 +32,11 @@ let ChatsController = exports.ChatsController = class ChatsController {
     }
     async createNewChat(req) {
         const chatIds = await this.chatsService.emptyChatExists(req.user.userId);
-        console.log('Chat Ids: ', chatIds);
         if (chatIds != null)
             return chatIds;
         else {
             const newChat = await this.chatsService.createNewChat();
             const newChats = await this.chatsService.addChatToUser(req.user.userId, newChat._id);
-            console.log('Returning Updated Chats: ', newChats);
             return newChats;
         }
     }

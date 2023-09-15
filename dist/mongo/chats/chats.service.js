@@ -44,12 +44,10 @@ let ChatsService = exports.ChatsService = class ChatsService {
     async createMessage(obj) {
         const newMessageVersion = new this.messageVersionModel(obj == undefined ? {} : obj);
         const mv = await newMessageVersion.save();
-        console.log('New Message Version: ', mv);
         const newMessage = new this.messageModel({
             versions: [mv._id],
         });
         const res = await newMessage.save();
-        console.log(res);
         res.populate('versions');
         return res;
     }
@@ -60,7 +58,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
             'chats.messages': { $exists: true, $size: 0 },
         })
             .exec();
-        console.log('Chat found at emptyChatExists: ', JSON.stringify(user));
         if (user != null)
             return user.chats;
         else if (user === null)
@@ -79,7 +76,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
             }, { new: true })
                 .populate('chats')
                 .exec();
-            console.log('User found at addChatToUser: ', JSON.stringify(updatedUser));
             if (updatedUser) {
                 return updatedUser.chats;
             }
@@ -101,7 +97,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
             $push: { messages: messageId },
             $set: { updatedAt: new Date(), title: 'New Chat' },
         });
-        console.log(result);
         if (result.matchedCount === 0) {
             console.error(`Failed to find chat with ID ${chatId}`);
             throw new common_1.NotFoundException(`Chat with ID ${chatId} not found`);
@@ -122,7 +117,6 @@ let ChatsService = exports.ChatsService = class ChatsService {
             .findOne({ userId })
             .populate('chats')
             .exec();
-        console.log('User found at getChatsMetadata: ', JSON.stringify(user));
         if (!user) {
             throw new common_1.NotFoundException(`User with ID ${userId} not found`);
         }

@@ -17,7 +17,6 @@ export class ChatsController {
   @UseGuards(JwtAuthGuard)
   async getChatsMetadata(@Req() req, @Param('userId') userId: string) {
     const populatedUser = await this.chatsService.getChatsMetadata(userId);
-    console.log(populatedUser);
     return populatedUser;
   }
 
@@ -36,7 +35,6 @@ export class ChatsController {
   @UseGuards(JwtAuthGuard)
   async createNewChat(@Req() req): Promise<Types.ObjectId[]> {
     const chatIds = await this.chatsService.emptyChatExists(req.user.userId);
-    console.log('Chat Ids: ', chatIds);
     if (chatIds != null) return chatIds;
     else {
       const newChat = await this.chatsService.createNewChat();
@@ -44,7 +42,6 @@ export class ChatsController {
         req.user.userId,
         newChat._id,
       );
-      console.log('Returning Updated Chats: ', newChats);
       return newChats;
     }
   }

@@ -47,16 +47,6 @@ let AppGateway = exports.AppGateway = class AppGateway {
     }
     handleDisconnect(client) {
     }
-    handleMessage(message, client) {
-        console.log('Received message: ', message);
-        console.log('User: ', client.user);
-        return `Received at 'message', you sent: ${message}`;
-    }
-    buttonClicked(data, client) {
-        console.log('Received event at buttonClicked with data: ', data);
-        console.log('User: ', client.user);
-        return 'Acknowledged button click! : ' + data;
-    }
     async generateText(data, client) {
         console.log('Received event at generateText with data: ', data);
         const previousConversation = await this.chatsService.getActiveMessages(data.chatId);
@@ -162,22 +152,6 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", void 0)
 ], AppGateway.prototype, "handleDisconnect", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('message'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
-    __metadata("design:returntype", String)
-], AppGateway.prototype, "handleMessage", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)('buttonClicked'),
-    __param(0, (0, websockets_1.MessageBody)()),
-    __param(1, (0, websockets_1.ConnectedSocket)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", String)
-], AppGateway.prototype, "buttonClicked", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)('generateText'),
     __param(0, (0, websockets_1.MessageBody)()),

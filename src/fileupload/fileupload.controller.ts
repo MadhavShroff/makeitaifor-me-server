@@ -79,7 +79,6 @@ export class FileUploadController {
     @Query('mimetype') mimetype: string,
     @Req() req,
   ): Promise<{ uploadUrl: string }> {
-    console.log('Generating Temporary upload url for: ', filename, mimetype);
     console.log(req.user);
     const uploadUrl = await this.fileUploadService.generateUploadUrl(
       filename,
@@ -112,7 +111,7 @@ export class FileUploadController {
         objKey.substring(37),
         parsedString,
       );
-      console.log('Saved to MongoDB');
+      console.log('Processed Text Saved to MongoDB');
       return res.status(200).json({ status: 'acknowledged' });
     } catch (error) {
       console.error('Operation failed:', error);

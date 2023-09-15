@@ -45,7 +45,6 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         }
     }
     async generateUploadUrl(filename, mimetype, req) {
-        console.log('Generating Temporary upload url for: ', filename, mimetype);
         console.log(req.user);
         const uploadUrl = await this.fileUploadService.generateUploadUrl(filename, mimetype, req.user);
         return { uploadUrl };
@@ -63,7 +62,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const parsedString = await this.processDocument(objKey);
         try {
             await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey.substring(37), parsedString);
-            console.log('Saved to MongoDB');
+            console.log('Processed Text Saved to MongoDB');
             return res.status(200).json({ status: 'acknowledged' });
         }
         catch (error) {

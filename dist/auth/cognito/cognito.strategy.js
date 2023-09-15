@@ -49,12 +49,9 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
         const userinfo = (await axios_1.default.get(CognitoStrategy_1.userInfoUrl(this.domain, this.region), {
             headers: { Authorization: `Bearer ${accessToken}` },
         })).data;
-        console.log('userinfo: ', userinfo);
         let user = await this.usersService.findOne({ userId: userinfo.sub });
-        console.log('user exists: ', user);
         if (user == null) {
             const newChat = await this.chatsService.createNewChat();
-            console.log('newChat: ', newChat);
             user = await this.usersService.create({
                 provider: 'cognito',
                 userId: userinfo.sub,
@@ -64,7 +61,6 @@ let CognitoStrategy = exports.CognitoStrategy = CognitoStrategy_1 = class Cognit
                 chats: [newChat._id],
                 role: 'authenticated user',
             });
-            console.log('created user: ', user);
         }
         return user;
     }

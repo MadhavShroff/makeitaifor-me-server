@@ -68,26 +68,6 @@ export class AppGateway
     // console.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('message')
-  handleMessage(
-    @MessageBody() message: string,
-    @ConnectedSocket() client: Socket & { user: User },
-  ): string {
-    console.log('Received message: ', message);
-    console.log('User: ', client.user);
-    return `Received at 'message', you sent: ${message}`;
-  }
-
-  @SubscribeMessage('buttonClicked')
-  buttonClicked(
-    @MessageBody() data: any,
-    @ConnectedSocket() client: Socket & { user: User },
-  ): string {
-    console.log('Received event at buttonClicked with data: ', data);
-    console.log('User: ', client.user);
-    return 'Acknowledged button click! : ' + data;
-  }
-
   @SubscribeMessage('generateText')
   async generateText(
     @MessageBody() data: { query: string; chatId: string; versionId: string },
