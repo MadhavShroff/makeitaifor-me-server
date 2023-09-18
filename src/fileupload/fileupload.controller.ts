@@ -46,7 +46,7 @@ export class FileUploadController {
 
   @Post('/getDocumentContent')
   @UseGuards(JwtAuthGuard)
-  async getDocumentContent(@Req() req): Promise<FileData | null> {
+  async getDocumentContent(@Req() req): Promise<{ text: string }> {
     const { fileKey } = req.body;
     try {
       // Fetching the processed text from the database
@@ -61,7 +61,7 @@ export class FileUploadController {
         throw new HttpException('File not found', HttpStatus.NOT_FOUND);
       }
 
-      return text;
+      return { text };
     } catch (error) {
       // Handling error based on the nature of the error
       throw new HttpException(

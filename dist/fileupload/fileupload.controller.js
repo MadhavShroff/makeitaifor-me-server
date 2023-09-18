@@ -40,7 +40,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
             if (!text) {
                 throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
             }
-            return text;
+            return { text };
         }
         catch (error) {
             throw new common_1.HttpException(error.message, error.status || common_1.HttpStatus.INTERNAL_SERVER_ERROR);

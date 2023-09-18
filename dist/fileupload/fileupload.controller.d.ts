@@ -1,7 +1,6 @@
 import { FileUploadService } from './fileupload.service';
 import { MongoService } from 'src/mongo/mongo.service';
 import { ConfigService } from '@nestjs/config';
-import { FileData } from 'src/types';
 export declare class FileUploadController {
     private fileUploadService;
     private mongoService;
@@ -10,7 +9,9 @@ export declare class FileUploadController {
     uploadFile(file: any, req: any): Promise<{
         url: string;
     }>;
-    getDocumentContent(req: any): Promise<FileData | null>;
+    getDocumentContent(req: any): Promise<{
+        text: string;
+    }>;
     generateUploadUrl(filename: string, mimetype: string, req: any): Promise<{
         uploadUrl: string;
     }>;
