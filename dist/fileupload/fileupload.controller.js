@@ -76,14 +76,11 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
     }
     async validateObjKey(objKey) {
         console.log(`Validating objKey: ${objKey}`);
-        const sanitizedObjKey = validator_1.default.escape(objKey).split('&#x2F;');
+        const sanitizedObjKey = validator_1.default.escape(objKey).substring(0, 36);
         console.log(`Sanitized objKey: ${sanitizedObjKey}`);
-        const regex = /^[a-zA-Z0-9_\-\.]+\.[a-zA-Z0-9]{2,}$/;
-        const isUUIDValid = validator_1.default.isUUID(sanitizedObjKey[0], 4);
-        const isRegexTestPassed = regex.test(sanitizedObjKey[1]);
-        console.log(`UUID validation for ${sanitizedObjKey[0]}: ${isUUIDValid}`);
-        console.log(`Regex test for ${sanitizedObjKey[1]}: ${isRegexTestPassed}`);
-        if (isUUIDValid && isRegexTestPassed) {
+        const isUUIDValid = validator_1.default.isUUID(sanitizedObjKey, 4);
+        console.log(`UUID validation for ${sanitizedObjKey}: ${isUUIDValid}`);
+        if (isUUIDValid) {
             console.log('Overall validation successful');
             return true;
         }
