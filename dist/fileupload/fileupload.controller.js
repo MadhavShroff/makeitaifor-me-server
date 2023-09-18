@@ -32,9 +32,11 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         const url = await this.fileUploadService.uploadFile(buffer, originalname, mimetype, { user: req.user });
         return { url };
     }
-    async getDocumentContent(ETag, userId, req) {
+    async getDocumentContent(req) {
+        const { fileId } = req.body;
         try {
-            const text = await this.mongoService.getProcessedText(req.user.userId, ETag);
+            const text = await this.mongoService.getProcessedText(req.user.userId, fileId);
+            console.log('Processed Text: ', text);
             if (!text) {
                 throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
             }
@@ -73,11 +75,19 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         }
     }
     async validateObjKey(objKey) {
+        console.log(`Validating objKey: ${objKey}`);
         const sanitizedObjKey = validator_1.default.escape(objKey).split('&#x2F;');
+        console.log(`Sanitized objKey: ${sanitizedObjKey}`);
         const regex = /^[a-zA-Z0-9_\-\.]+\.[a-zA-Z0-9]{2,}$/;
-        if (validator_1.default.isUUID(sanitizedObjKey[0], 4) &&
-            regex.test(sanitizedObjKey[1]))
+        const isUUIDValid = validator_1.default.isUUID(sanitizedObjKey[0], 4);
+        const isRegexTestPassed = regex.test(sanitizedObjKey[1]);
+        console.log(`UUID validation for ${sanitizedObjKey[0]}: ${isUUIDValid}`);
+        console.log(`Regex test for ${sanitizedObjKey[1]}: ${isRegexTestPassed}`);
+        if (isUUIDValid && isRegexTestPassed) {
+            console.log('Overall validation successful');
             return true;
+        }
+        console.log('Overall validation failed');
         return false;
     }
     async processDocument(objKey) {
@@ -135,13 +145,11 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "uploadFile", null);
 __decorate([
-    (0, common_1.Get)('/getDocumentContent'),
+    (0, common_1.Post)('/getDocumentContent'),
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    __param(0, (0, common_1.Query)('fileId')),
-    __param(1, (0, common_1.Query)('userId')),
-    __param(2, (0, common_1.Req)()),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], FileUploadController.prototype, "getDocumentContent", null);
 __decorate([

@@ -44,19 +44,18 @@ export class FileUploadController {
     return { url };
   }
 
-  @Get('/getDocumentContent')
+  @Post('/getDocumentContent')
   @UseGuards(JwtAuthGuard)
-  async getDocumentContent(
-    @Query('fileId') ETag: string,
-    @Query('userId') userId: string, // Extract userId from query params
-    @Req() req,
-  ): Promise<FileData | null> {
+  async getDocumentContent(@Req() req): Promise<FileData | null> {
+    const { fileId } = req.body;
     try {
       // Fetching the processed text from the database
       const text = await this.mongoService.getProcessedText(
         req.user.userId,
-        ETag,
+        fileId,
       );
+
+      console.log('Processed Text: ', text);
 
       if (!text) {
         throw new HttpException('File not found', HttpStatus.NOT_FOUND);
@@ -122,13 +121,25 @@ export class FileUploadController {
   }
 
   async validateObjKey(objKey: string): Promise<boolean> {
+    console.log(`Validating objKey: ${objKey}`);
+
     const sanitizedObjKey = validator.escape(objKey).split('&#x2F;');
+    console.log(`Sanitized objKey: ${sanitizedObjKey}`);
+
     const regex = /^[a-zA-Z0-9_\-\.]+\.[a-zA-Z0-9]{2,}$/;
-    if (
-      validator.isUUID(sanitizedObjKey[0], 4) &&
-      regex.test(sanitizedObjKey[1])
-    )
+
+    const isUUIDValid = validator.isUUID(sanitizedObjKey[0], 4);
+    const isRegexTestPassed = regex.test(sanitizedObjKey[1]);
+
+    console.log(`UUID validation for ${sanitizedObjKey[0]}: ${isUUIDValid}`);
+    console.log(`Regex test for ${sanitizedObjKey[1]}: ${isRegexTestPassed}`);
+
+    if (isUUIDValid && isRegexTestPassed) {
+      console.log('Overall validation successful');
       return true;
+    }
+
+    console.log('Overall validation failed');
     return false;
   }
 
