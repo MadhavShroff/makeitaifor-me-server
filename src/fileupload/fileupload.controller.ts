@@ -121,18 +121,11 @@ export class FileUploadController {
   }
 
   async validateObjKey(objKey: string): Promise<boolean> {
-    console.log(`Validating objKey: ${objKey}`);
     const sanitizedObjKey = validator.escape(objKey).substring(0, 36);
-    console.log(`Sanitized objKey: ${sanitizedObjKey}`);
     const isUUIDValid = validator.isUUID(sanitizedObjKey, 4);
-    console.log(`UUID validation for ${sanitizedObjKey}: ${isUUIDValid}`);
-
     if (isUUIDValid) {
-      console.log('Overall validation successful');
       return true;
     }
-
-    console.log('Overall validation failed');
     return false;
   }
 
@@ -140,12 +133,14 @@ export class FileUploadController {
     const url = await this.fileUploadService.generateTemporaryDownloadUrl(
       objKey,
     );
+    console.log('Temporary Download URL: ', url);
     const pdf_id = await this.callMathpixApi(url);
-
+    console.log('PDF ID: ', pdf_id);
     let statusResponse;
     do {
       await new Promise((resolve) => setTimeout(resolve, 5000));
       statusResponse = await this.checkProcessingStatus(pdf_id);
+      console.log('Status Response: ', statusResponse);
     } while (
       statusResponse.status !== 'completed' &&
       statusResponse.status !== 'error'
@@ -186,6 +181,9 @@ export class FileUploadController {
         app_id: this.configService.get('MATHPIX_APP_ID'),
         app_key: this.configService.get('MATHPIX_APP_KEY'),
       },
-    }).then((response) => response.data);
+    }).then((response) => {
+      console.log(response.data);
+      return response.data;
+    });
   }
 }
