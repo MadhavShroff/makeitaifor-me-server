@@ -142,6 +142,12 @@ export class FileUploadController {
     do {
       await new Promise((resolve) => setTimeout(resolve, 5000));
       statusResponse = await this.checkProcessingStatus(pdf_id);
+      if (statusResponse.status === 'error') {
+        throw new HttpException(
+          'Error in processing the document',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
       console.log('Status Response: ', statusResponse);
     } while (
       statusResponse.status !== 'completed' &&
