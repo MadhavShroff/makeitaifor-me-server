@@ -54,10 +54,7 @@ export class FileUploadController {
     console.log('File Key: ', fileKey);
     try {
       // Fetching the processed text from the database
-      const text = await this.mongoService.getProcessedText(
-        req.user.userId,
-        fileKey,
-      );
+      const text = await this.mongoService.getProcessedText(fileKey);
 
       console.log('Processed Text from Mongo Service: ', text);
 
