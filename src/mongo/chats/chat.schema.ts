@@ -29,6 +29,14 @@ export class MessageVersion extends Document {
   @Field()
   @Prop({ type: Number, required: true })
   versionNumber: number;
+
+  @Field()
+  @Prop({ type: String })
+  docOrCollectionId: string;
+
+  @Field()
+  @Prop({ type: String })
+  modelUsed: string;
 }
 
 export const MessageVersionSchema =

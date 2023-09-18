@@ -45,4 +45,28 @@ export class ChatsController {
       return newChats;
     }
   }
+
+  // GET route to return a list of available models
+  @Get('/getModels')
+  @UseGuards(JwtAuthGuard)
+  async getModels() {
+    return [
+      {
+        color: 'orange-500',
+        name: 'GPT-4',
+      },
+      {
+        color: 'blue-500',
+        name: 'GPT-3.5',
+      },
+      {
+        image: 'https://avatars.githubusercontent.com/u/76263028?s=200&amp;v=4',
+        name: 'Claude',
+      },
+      {
+        image: 'https://avatars.githubusercontent.com/u/76263028?s=200&amp;v=4',
+        name: 'Claude 2',
+      },
+    ];
+  }
 }

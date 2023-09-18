@@ -8,4 +8,13 @@ export declare class ChatsController {
     getChatsMetadata(req: any, userId: string): Promise<import("../users/users.schema").User>;
     getMessagesData(req: any): Promise<import("./chat.schema").Message[]>;
     createNewChat(req: any): Promise<Types.ObjectId[]>;
+    getModels(): Promise<({
+        color: string;
+        name: string;
+        image?: undefined;
+    } | {
+        image: string;
+        name: string;
+        color?: undefined;
+    })[]>;
 }

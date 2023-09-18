@@ -45,6 +45,16 @@ __decorate([
     (0, mongoose_1.Prop)({ type: Number, required: true }),
     __metadata("design:type", Number)
 ], MessageVersion.prototype, "versionNumber", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], MessageVersion.prototype, "docOrCollectionId", void 0);
+__decorate([
+    (0, graphql_1.Field)(),
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], MessageVersion.prototype, "modelUsed", void 0);
 exports.MessageVersion = MessageVersion = __decorate([
     (0, graphql_1.ObjectType)(),
     (0, mongoose_1.Schema)()

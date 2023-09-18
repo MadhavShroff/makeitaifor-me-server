@@ -30,6 +30,8 @@ export declare class MessageVersion extends Document {
     createdAt: Date;
     updatedAt: Date;
     versionNumber: number;
+    docOrCollectionId: string;
+    modelUsed: string;
 }
 export declare const MessageVersionSchema: import("mongoose").Schema<MessageVersion, import("mongoose").Model<MessageVersion, any, any, any, Document<unknown, any, MessageVersion> & Omit<MessageVersion & {
     _id: Types.ObjectId;
