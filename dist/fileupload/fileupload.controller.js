@@ -56,6 +56,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         return { files };
     }
     async fileUploaded(objKey, res) {
+        objKey = decodeURIComponent(objKey);
         if ((await this.validateObjKey(objKey)) === false) {
             console.log('Invalid objKey received (BAD/CORRUPTED REQUEST): ' + objKey);
             return res.status(400).json({ status: 'Bad Request' });

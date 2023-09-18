@@ -59,6 +59,7 @@ export class FileUploadService {
   }
 
   async generateTemporaryDownloadUrl(objKey: string): Promise<string> {
+    console.log('objKey: ', objKey);
     const params = {
       Bucket: `${this.configService.get('AWS_S3_BUCKET_NAME')}`,
       Key: objKey,

@@ -96,6 +96,7 @@ export class FileUploadController {
 
   @Get('/s3-file-uploaded')
   async fileUploaded(@Query('objKey') objKey: string, @Res() res) {
+    objKey = decodeURIComponent(objKey); // Add this line
     if ((await this.validateObjKey(objKey)) === false) {
       console.log('Invalid objKey received (BAD/CORRUPTED REQUEST): ' + objKey);
       return res.status(400).json({ status: 'Bad Request' });
