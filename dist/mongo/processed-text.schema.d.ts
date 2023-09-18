@@ -27,17 +27,17 @@ export declare const ProcessedTextSchema: Schema<any, import("mongoose").Model<a
     timestamp: Date;
     text?: string;
     userId?: string;
-    Etag?: string;
+    Key?: string;
 }, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<{
     timestamp: Date;
     text?: string;
     userId?: string;
-    Etag?: string;
+    Key?: string;
 }>> & Omit<import("mongoose").FlatRecord<{
     timestamp: Date;
     text?: string;
     userId?: string;
-    Etag?: string;
+    Key?: string;
 }> & {
     _id: import("mongoose").Types.ObjectId;
 }, never>>;

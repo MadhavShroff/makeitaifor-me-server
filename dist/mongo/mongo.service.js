@@ -47,15 +47,15 @@ let MongoService = exports.MongoService = class MongoService {
         const generatedText = new this.processedTextModel({
             userId: userId,
             text: text,
-            Etag: fileId,
+            Key: fileId,
             timestamp: new Date(),
         });
         await generatedText.save();
     }
-    async getProcessedText(userId, ETag) {
+    async getProcessedText(userId, Key) {
         const processedText = await this.processedTextModel.findOne({
             userId: userId,
-            Etag: ETag,
+            Key: Key,
         });
         console.log('Processed Text: ', processedText);
         return processedText.text;

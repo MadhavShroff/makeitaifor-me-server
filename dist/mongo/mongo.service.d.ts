@@ -8,5 +8,5 @@ export declare class MongoService {
     saveGeneratedText(text: string, versionId: string): Promise<void>;
     saveGeneratedTitle(newTitle: string, chatId: string): Promise<void>;
     saveProcessedText(userId: string, fileId: string, text: string): Promise<void>;
-    getProcessedText(userId: string, ETag: string): Promise<any>;
+    getProcessedText(userId: string, Key: string): Promise<any>;
 }

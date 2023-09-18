@@ -47,12 +47,12 @@ export class FileUploadController {
   @Post('/getDocumentContent')
   @UseGuards(JwtAuthGuard)
   async getDocumentContent(@Req() req): Promise<FileData | null> {
-    const { fileId } = req.body;
+    const { fileKey } = req.body;
     try {
       // Fetching the processed text from the database
       const text = await this.mongoService.getProcessedText(
         req.user.userId,
-        fileId,
+        fileKey,
       );
 
       console.log('Processed Text: ', text);

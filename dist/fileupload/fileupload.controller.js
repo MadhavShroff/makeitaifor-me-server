@@ -33,9 +33,9 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         return { url };
     }
     async getDocumentContent(req) {
-        const { fileId } = req.body;
+        const { fileKey } = req.body;
         try {
-            const text = await this.mongoService.getProcessedText(req.user.userId, fileId);
+            const text = await this.mongoService.getProcessedText(req.user.userId, fileKey);
             console.log('Processed Text: ', text);
             if (!text) {
                 throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
