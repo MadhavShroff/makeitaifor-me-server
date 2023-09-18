@@ -20,7 +20,6 @@ import validator from 'validator';
 import { MongoService } from 'src/mongo/mongo.service';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { FileData } from 'src/types';
 
 @Controller('fileupload')
 export class FileUploadController {
@@ -48,6 +47,10 @@ export class FileUploadController {
   @UseGuards(JwtAuthGuard)
   async getDocumentContent(@Req() req): Promise<{ text: string }> {
     const { fileKey } = req.body;
+    if (!fileKey) {
+      console.log('File key not found', fileKey);
+      throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+    }
     try {
       // Fetching the processed text from the database
       const text = await this.mongoService.getProcessedText(
