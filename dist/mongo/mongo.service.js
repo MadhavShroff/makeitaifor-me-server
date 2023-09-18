@@ -57,6 +57,7 @@ let MongoService = exports.MongoService = class MongoService {
             userId: userId,
             Etag: ETag,
         });
+        console.log('Processed Text: ', processedText);
         return processedText.text;
     }
 };
