@@ -50,7 +50,7 @@ let MongoService = exports.MongoService = class MongoService {
             Key: fileId,
             timestamp: new Date(),
         });
-        const res = generatedText.save();
+        const res = await generatedText.save();
         console.log('Saved Processed Text: ', res);
         return res;
     }
