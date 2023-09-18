@@ -43,11 +43,11 @@ let MongoService = exports.MongoService = class MongoService {
             console.warn(`No documents were modified during the update operation for chat ID ${chatId}`);
         }
     }
-    async saveProcessedText(userId, fileId, text) {
+    async saveProcessedText(userId, fileKey, text) {
         const generatedText = new this.processedTextModel({
             userId: userId,
             text: text,
-            Key: fileId,
+            Key: fileKey,
             timestamp: new Date(),
         });
         const res = await generatedText.save();

@@ -109,7 +109,7 @@ export class FileUploadController {
     try {
       await this.mongoService.saveProcessedText(
         objKey.substring(0, 36),
-        objKey.substring(37),
+        objKey,
         parsedString,
       );
       console.log('Processed Text Saved to MongoDB');

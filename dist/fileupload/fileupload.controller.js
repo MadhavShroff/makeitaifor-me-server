@@ -69,7 +69,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         console.log('S3 File uploaded: ' + JSON.stringify(objKey) + ' Now processing...');
         const parsedString = await this.processDocument(objKey);
         try {
-            await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey.substring(37), parsedString);
+            await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey, parsedString);
             console.log('Processed Text Saved to MongoDB');
             return res.status(200).json({ status: 'acknowledged' });
         }

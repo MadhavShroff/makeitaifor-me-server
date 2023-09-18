@@ -7,6 +7,6 @@ export declare class MongoService {
     constructor(generatedTextModel: Model<any>, processedTextModel: Model<any>, messageVersionModel: Model<any>, chatModel: Model<any>);
     saveGeneratedText(text: string, versionId: string): Promise<void>;
     saveGeneratedTitle(newTitle: string, chatId: string): Promise<void>;
-    saveProcessedText(userId: string, fileId: string, text: string): Promise<any>;
+    saveProcessedText(userId: string, fileKey: string, text: string): Promise<any>;
     getProcessedText(Key: string): Promise<any>;
 }
