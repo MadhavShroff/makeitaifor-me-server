@@ -38,7 +38,6 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
             console.log('File key not found', fileKey);
             throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
         }
-        console.log('File Key: ', fileKey);
         try {
             const text = await this.mongoService.getProcessedText(fileKey);
             if (!text) {
