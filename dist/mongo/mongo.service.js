@@ -51,14 +51,12 @@ let MongoService = exports.MongoService = class MongoService {
             timestamp: new Date(),
         });
         const res = await generatedText.save();
-        console.log('Saved Processed Text: ', res);
         return res;
     }
     async getProcessedText(Key) {
         const processedText = await this.processedTextModel.findOne({
             Key: Key,
         });
-        console.log('Processed Text: ', processedText);
         return processedText.text;
     }
 };

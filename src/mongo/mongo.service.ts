@@ -60,7 +60,6 @@ export class MongoService {
       timestamp: new Date(),
     });
     const res = await generatedText.save();
-    console.log('Saved Processed Text: ', res);
     return res;
   }
 
@@ -68,7 +67,6 @@ export class MongoService {
     const processedText = await this.processedTextModel.findOne({
       Key: Key,
     });
-    console.log('Processed Text: ', processedText);
     return processedText.text;
   }
 }
