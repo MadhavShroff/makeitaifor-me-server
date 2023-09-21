@@ -56,8 +56,6 @@ export class FileUploadController {
       // Fetching the processed text from the database
       const text = await this.mongoService.getProcessedText(fileKey);
 
-      console.log('Processed Text from Mongo Service: ', text);
-
       if (!text) {
         throw new HttpException('File not found', HttpStatus.NOT_FOUND);
       }
