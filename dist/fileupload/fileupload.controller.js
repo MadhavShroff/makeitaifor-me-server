@@ -69,7 +69,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         console.log('S3 File uploaded: ' + JSON.stringify(objKey) + ' Now processing...');
         const parsedString = await this.processDocument(objKey);
         try {
-            const embeddingPromise = this.langChainService.createEmbedding(objKey, parsedString);
+            const embeddingPromise = this.langChainService.createEmbedding(this.langChainService.getAlphanumericString(objKey), parsedString);
             const savePromise = this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey, parsedString);
             res.status(200).json({ status: 'acknowledged' });
             await Promise.all([embeddingPromise, savePromise]);

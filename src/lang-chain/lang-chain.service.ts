@@ -38,6 +38,13 @@ export class LangChainService {
       environment: process.env.PINECONE_ENVIRONMENT,
     });
   }
+
+  getAlphanumericString(str : string) : string {
+    const s = str;
+    s.replace(/\W/g, '')
+    return s;
+  }
+
   /**
    * returns true if the embedding was created successfully
    * @param objKey 
@@ -50,15 +57,15 @@ export class LangChainService {
     });
 
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 10,
-      chunkOverlap: 1,
+      chunkSize: 100,
+      chunkOverlap: 10,
     });
 
     const docs = await splitter.splitDocuments([
       new Document({ pageContent: text }),
     ]);
 
-    console.log("First 5 objects in docs :", docs.slice(0, 5));
+    console.log("First 5 objects in docs :", JSON.stringify(docs.slice(0, 5)));
 
     console.log("Split into :", docs.length, "chunks");
 

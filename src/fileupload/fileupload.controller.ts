@@ -107,7 +107,7 @@ export class FileUploadController {
     const parsedString = await this.processDocument(objKey);
     try {
       const embeddingPromise = this.langChainService.createEmbedding(
-        objKey,
+        this.langChainService.getAlphanumericString(objKey),
         parsedString,
       );
       const savePromise = this.mongoService.saveProcessedText(

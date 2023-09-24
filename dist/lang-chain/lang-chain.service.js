@@ -38,18 +38,23 @@ let LangChainService = exports.LangChainService = class LangChainService {
             environment: process.env.PINECONE_ENVIRONMENT,
         });
     }
+    getAlphanumericString(str) {
+        const s = str;
+        s.replace(/\W/g, '');
+        return s;
+    }
     async createEmbedding(objKey, text) {
         const embedder = new openai_2.OpenAIEmbeddings({
             modelName: "text-embedding-ada-002",
         });
         const splitter = new text_splitter_1.RecursiveCharacterTextSplitter({
-            chunkSize: 10,
-            chunkOverlap: 1,
+            chunkSize: 100,
+            chunkOverlap: 10,
         });
         const docs = await splitter.splitDocuments([
             new document_1.Document({ pageContent: text }),
         ]);
-        console.log("First 5 objects in docs :", docs.slice(0, 5));
+        console.log("First 5 objects in docs :", JSON.stringify(docs.slice(0, 5)));
         console.log("Split into :", docs.length, "chunks");
         const embeddings = (await embedder.embedDocuments(docs.map((doc) => doc.pageContent)));
         const records = await docs.map((doc, i) => {
