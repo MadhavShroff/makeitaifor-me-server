@@ -39,10 +39,8 @@ export class LangChainService {
     });
   }
 
-  getAlphanumericString(str : string) : string {
-    str.replace(/\W/g, '')
-    console.log("Replaced string", str);
-    return str;
+  getAlphanumericString(input: string): string {
+    return input.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
   }
 
   /**

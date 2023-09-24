@@ -38,10 +38,8 @@ let LangChainService = exports.LangChainService = class LangChainService {
             environment: process.env.PINECONE_ENVIRONMENT,
         });
     }
-    getAlphanumericString(str) {
-        str.replace(/\W/g, '');
-        console.log("Replaced string", str);
-        return str;
+    getAlphanumericString(input) {
+        return input.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
     }
     async createEmbedding(objKey, text) {
         const embedder = new openai_2.OpenAIEmbeddings({

@@ -7,7 +7,7 @@ export declare class LangChainService {
     private chat3;
     private pinecone;
     constructor(mongoService: MongoService);
-    getAlphanumericString(str: string): string;
+    getAlphanumericString(input: string): string;
     createEmbedding(objKey: string, text: string): Promise<boolean>;
     deleteEmbedding(objKey: string): Promise<boolean>;
     generateText(prompt: string, user: User, versionId: string, previousConversation: BaseMessage[], callback: (text: string, seq: number) => void): Promise<string>;
