@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from './fileupload.service';
+import { LangChainService } from 'src/lang-chain/lang-chain.service';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import validator from 'validator';
 import { MongoService } from 'src/mongo/mongo.service';
@@ -27,6 +28,7 @@ export class FileUploadController {
     private fileUploadService: FileUploadService,
     private mongoService: MongoService,
     private configService: ConfigService,
+    private langChainService: LangChainService,
   ) {}
 
   @Post()
@@ -110,6 +112,7 @@ export class FileUploadController {
         parsedString,
       );
       console.log('Processed Text Saved to MongoDB');
+      await this.langChainService.createEmbedding(objKey, parsedString);
       return res.status(200).json({ status: 'acknowledged' });
     } catch (error) {
       console.error('Operation failed:', error);

@@ -16,16 +16,18 @@ exports.FileUploadController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const fileupload_service_1 = require("./fileupload.service");
+const lang_chain_service_1 = require("../lang-chain/lang-chain.service");
 const jwt_guard_1 = require("../auth/jwt/jwt.guard");
 const validator_1 = require("validator");
 const mongo_service_1 = require("../mongo/mongo.service");
 const config_1 = require("@nestjs/config");
 const axios_1 = require("axios");
 let FileUploadController = exports.FileUploadController = class FileUploadController {
-    constructor(fileUploadService, mongoService, configService) {
+    constructor(fileUploadService, mongoService, configService, langChainService) {
         this.fileUploadService = fileUploadService;
         this.mongoService = mongoService;
         this.configService = configService;
+        this.langChainService = langChainService;
     }
     async uploadFile(file, req) {
         const { originalname, buffer, mimetype } = file;
@@ -69,6 +71,7 @@ let FileUploadController = exports.FileUploadController = class FileUploadContro
         try {
             await this.mongoService.saveProcessedText(objKey.substring(0, 36), objKey, parsedString);
             console.log('Processed Text Saved to MongoDB');
+            await this.langChainService.createEmbedding(objKey, parsedString);
             return res.status(200).json({ status: 'acknowledged' });
         }
         catch (error) {
@@ -187,6 +190,7 @@ exports.FileUploadController = FileUploadController = __decorate([
     (0, common_1.Controller)('fileupload'),
     __metadata("design:paramtypes", [fileupload_service_1.FileUploadService,
         mongo_service_1.MongoService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        lang_chain_service_1.LangChainService])
 ], FileUploadController);
 //# sourceMappingURL=fileupload.controller.js.map

@@ -11,11 +11,12 @@ const common_1 = require("@nestjs/common");
 const fileupload_service_1 = require("./fileupload.service");
 const fileupload_controller_1 = require("./fileupload.controller");
 const mongo_module_1 = require("../mongo/mongo.module");
+const lang_chain_module_1 = require("../lang-chain/lang-chain.module");
 let FileUploadModule = exports.FileUploadModule = class FileUploadModule {
 };
 exports.FileUploadModule = FileUploadModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongo_module_1.MongoModule],
+        imports: [mongo_module_1.MongoModule, lang_chain_module_1.LangChainModule],
         providers: [fileupload_service_1.FileUploadService],
         controllers: [fileupload_controller_1.FileUploadController],
         exports: [fileupload_service_1.FileUploadService],

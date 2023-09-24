@@ -2,13 +2,21 @@
 import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BaseMessage, HumanMessage, LLMResult, SystemMessage } from 'langchain/schema';
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { Index, PineconeClient, PineconeRecord, RecordId, RecordMetadata, Vector,} from '@pinecone-database/pinecone'
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { MongoService } from 'src/mongo/mongo.service';
 import { User } from 'src/mongo/users/users.schema';
+import { Pinecone } from "@pinecone-database/pinecone";
+import { Document } from "langchain/document";
+import { createIndex } from '@pinecone-database/pinecone/dist/control';
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 
 @Injectable()
 export class LangChainService {
   private chat4: ChatOpenAI;
   private chat3: ChatOpenAI;
+  private pinecone: Pinecone;
 
   constructor(
     private readonly mongoService: MongoService, // Inject your MongoDB service or repository
@@ -24,6 +32,71 @@ export class LangChainService {
       temperature: 0.72,
       streaming: true,
       modelName: 'gpt-3.5-turbo'
+    });
+    this.pinecone = new Pinecone({
+      apiKey: process.env.PINECONE_API_KEY,
+      environment: process.env.PINECONE_ENVIRONMENT,
+    });
+  }
+  /**
+   * returns true if the embedding was created successfully
+   * @param objKey 
+   * @param text 
+   */
+  async createEmbedding(objKey: string, text: string) : Promise<boolean> {
+
+    const embedder = new OpenAIEmbeddings({
+      modelName: "text-embedding-ada-002",
+    });
+
+    const splitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 10,
+      chunkOverlap: 1,
+    });
+
+    const docs = await splitter.splitDocuments([
+      new Document({ pageContent: text }),
+    ]);
+
+    const embeddings = (await embedder.embedDocuments(docs.map((doc) => doc.pageContent)));
+    const records = docs.map((doc, i) => {
+      return {
+        id: i.toString(),
+        values: embeddings[i],
+        metadata: {
+          content: doc.pageContent,
+        },
+      };
+    });
+
+    console.log("Split into", docs.length, "chunks");
+    console.log("Records", JSON.stringify(records));
+
+    const res = await this.pinecone.createIndex({
+      name: objKey,
+      dimension: 1536,
+      waitUntilReady: true,
+    });
+
+    await this.pinecone.Index(objKey).upsert(records)
+
+    console.log(JSON.stringify(await this.pinecone.describeIndex(objKey)));
+    console.log("Index created", objKey);
+    return true;
+  }
+
+  /**
+   * returns true if the embedding was deleted successfully
+   * @param objKey 
+   * @returns 
+   */
+  async deleteEmbedding(objKey: string) : Promise<boolean> {
+    return this.pinecone.deleteIndex(objKey).then(() => {
+      console.log('Index deleted', objKey);
+      return true;
+    }).catch((err) => {
+      console.error('Error deleting index', err);
+      return false;
     });
   }
 
