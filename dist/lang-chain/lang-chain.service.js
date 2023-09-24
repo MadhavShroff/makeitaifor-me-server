@@ -39,7 +39,11 @@ let LangChainService = exports.LangChainService = class LangChainService {
         });
     }
     getAlphanumericString(input) {
-        return input.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        let smolStr = input.replace(/\//g, '--');
+        smolStr = smolStr.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+        if (smolStr.length > 45)
+            smolStr = smolStr.substring(0, 45);
+        return smolStr;
     }
     async createEmbedding(objKey, text) {
         const embedder = new openai_2.OpenAIEmbeddings({

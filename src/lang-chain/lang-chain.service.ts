@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { BaseMessage, HumanMessage, LLMResult, SystemMessage } from 'langchain/schema';
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { Index, PineconeClient, PineconeRecord, RecordId, RecordMetadata, Vector,} from '@pinecone-database/pinecone'
+import { Index, PineconeClient, PineconeRecord, RecordId, RecordMetadata, Vector, } from '@pinecone-database/pinecone'
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { MongoService } from 'src/mongo/mongo.service';
 import { User } from 'src/mongo/users/users.schema';
@@ -40,7 +40,10 @@ export class LangChainService {
   }
 
   getAlphanumericString(input: string): string {
-    return input.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+    let smolStr = input.replace(/\//g, '--');
+    smolStr = smolStr.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
+    if (smolStr.length > 45) smolStr = smolStr.substring(0, 45);
+    return smolStr;
   }
 
   /**
@@ -48,8 +51,7 @@ export class LangChainService {
    * @param objKey 
    * @param text 
    */
-  async createEmbedding(objKey: string, text: string) : Promise<boolean> {
-
+  async createEmbedding(objKey: string, text: string): Promise<boolean> {
     const embedder = new OpenAIEmbeddings({
       modelName: "text-embedding-ada-002",
     });
@@ -77,7 +79,7 @@ export class LangChainService {
         },
       };
     });
-    
+
     console.log("Number of Records :", records.length);
 
     const res = await this.pinecone.createIndex({
@@ -101,7 +103,7 @@ export class LangChainService {
    * @param objKey 
    * @returns 
    */
-  async deleteEmbedding(objKey: string) : Promise<boolean> {
+  async deleteEmbedding(objKey: string): Promise<boolean> {
     return this.pinecone.deleteIndex(objKey).then(() => {
       console.log('Index deleted', objKey);
       return true;
