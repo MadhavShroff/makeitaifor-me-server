@@ -42,6 +42,7 @@ export class LangChainService {
   getAlphanumericString(str : string) : string {
     const s = str;
     s.replace(/\W/g, '')
+    console.log("Replaced string", s);
     return s;
   }
 

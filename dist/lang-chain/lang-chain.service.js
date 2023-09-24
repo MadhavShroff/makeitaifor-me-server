@@ -41,6 +41,7 @@ let LangChainService = exports.LangChainService = class LangChainService {
     getAlphanumericString(str) {
         const s = str;
         s.replace(/\W/g, '');
+        console.log("Replaced string", s);
         return s;
     }
     async createEmbedding(objKey, text) {
