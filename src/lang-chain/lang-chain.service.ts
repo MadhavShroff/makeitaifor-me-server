@@ -91,7 +91,12 @@ export class LangChainService {
 
     console.log("Index created", res);
 
-    await this.pinecone.Index(objKey).upsert(records)
+    // upsert records 400 at a time because of HTTPS size contraints
+    const chunkSize = 400;
+    for (let i = 0; i < records.length; i += chunkSize) {
+      const chunk = records.slice(i, i + chunkSize);
+      await this.pinecone.Index(objKey).upsert(chunk);
+    }
 
     console.log(JSON.stringify(await this.pinecone.describeIndex(objKey)));
     console.log("Index created", objKey);
