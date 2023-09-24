@@ -39,10 +39,9 @@ let LangChainService = exports.LangChainService = class LangChainService {
         });
     }
     getAlphanumericString(str) {
-        const s = str;
-        s.replace(/\W/g, '');
-        console.log("Replaced string", s);
-        return s;
+        str.replace(/\W/g, '');
+        console.log("Replaced string", str);
+        return str;
     }
     async createEmbedding(objKey, text) {
         const embedder = new openai_2.OpenAIEmbeddings({
