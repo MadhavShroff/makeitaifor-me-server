@@ -106,14 +106,18 @@ export class FileUploadController {
     );
     const parsedString = await this.processDocument(objKey);
     try {
-      await this.mongoService.saveProcessedText(
+      const embeddingPromise = this.langChainService.createEmbedding(
+        objKey,
+        parsedString,
+      );
+      const savePromise = this.mongoService.saveProcessedText(
         objKey.substring(0, 36),
         objKey,
         parsedString,
       );
+      res.status(200).json({ status: 'acknowledged' });
+      await Promise.all([embeddingPromise, savePromise]);
       console.log('Processed Text Saved to MongoDB');
-      await this.langChainService.createEmbedding(objKey, parsedString);
-      return res.status(200).json({ status: 'acknowledged' });
     } catch (error) {
       console.error('Operation failed:', error);
       return res
@@ -135,9 +139,7 @@ export class FileUploadController {
     const url = await this.fileUploadService.generateTemporaryDownloadUrl(
       objKey,
     );
-    console.log('Temporary Download URL: ', url);
     const pdf_id = await this.callMathpixApi(url);
-    console.log('PDF ID: ', pdf_id);
     let statusResponse;
     do {
       await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -190,7 +192,6 @@ export class FileUploadController {
         app_key: this.configService.get('MATHPIX_APP_KEY'),
       },
     }).then((response) => {
-      console.log(response.data);
       return response.data;
     });
   }

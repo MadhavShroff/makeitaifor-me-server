@@ -58,8 +58,12 @@ export class LangChainService {
       new Document({ pageContent: text }),
     ]);
 
+    console.log("First 5 objects in docs :", docs.slice(0, 5));
+
+    console.log("Split into :", docs.length, "chunks");
+
     const embeddings = (await embedder.embedDocuments(docs.map((doc) => doc.pageContent)));
-    const records = docs.map((doc, i) => {
+    const records = await docs.map((doc, i) => {
       return {
         id: i.toString(),
         values: embeddings[i],
@@ -68,15 +72,17 @@ export class LangChainService {
         },
       };
     });
-
-    console.log("Split into", docs.length, "chunks");
-    console.log("Records", JSON.stringify(records));
+    
+    console.log("Number of Records :", records.length);
 
     const res = await this.pinecone.createIndex({
+      metric: "cosine",
       name: objKey,
       dimension: 1536,
       waitUntilReady: true,
     });
+
+    console.log("Index created", res);
 
     await this.pinecone.Index(objKey).upsert(records)
 
