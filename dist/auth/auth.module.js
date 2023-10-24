@@ -12,12 +12,14 @@ const auth_controller_1 = require("./auth.controller");
 const cognito_module_1 = require("./cognito/cognito.module");
 const jwt_module_1 = require("./jwt/jwt.module");
 const passport_1 = require("@nestjs/passport");
+const chats_module_1 = require("../mongo/chats/chats.module");
+const users_module_1 = require("../mongo/users/users.module");
 let AuthModule = exports.AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         controllers: [auth_controller_1.AuthController],
-        imports: [cognito_module_1.CognitoModule, jwt_module_1.JwtModule, passport_1.PassportModule],
+        imports: [cognito_module_1.CognitoModule, jwt_module_1.JwtModule, passport_1.PassportModule, chats_module_1.ChatsModule, users_module_1.UsersModule],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map
