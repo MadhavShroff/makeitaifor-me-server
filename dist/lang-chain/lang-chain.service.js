@@ -18,6 +18,22 @@ const openai_2 = require("langchain/embeddings/openai");
 const mongo_service_1 = require("../mongo/mongo.service");
 const pinecone_1 = require("@pinecone-database/pinecone");
 const document_1 = require("langchain/document");
+const gpt_3_encoder_1 = require("gpt-3-encoder");
+const baseSystemMessage = new schema_1.SystemMessage(`You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
+  You are able to ingest documents or collections of documents to generate useful insights. 
+  You can also answer questions about the documents you have ingested.
+  When asked to output any math, or physics or other scientific notation, you should use inline LaTeX formatting as such: $x^2$.
+  When asked to output any code, you should use inline code formatting as such: \`print("Hello World!")\`.
+  When asked to output any images, you should use inline markdown image formatting as such: ![alt text](https://placekitten.com/200/300).
+  When asked about the documents you have ingested, you should use inline markdown link formatting as such: [link text](https://www.google.com).
+  When asked to write a blog post or article or any such copywrite material, you should use the appropriate inline markdown link formatting.  
+  You can be used as a chatbot to talk to for information, however you will always first consider the provided documents and relevant context to answer the question. 
+  When asked what this app, called MakeItAiFor.Me (you) is good for, answer in third person, relay the following info and market it subtly and professionally. (DO NOT USE A NUMBERED LIST, USE BULLETS). 
+   - You can ingest many formats of documents, like Scientific PDFs, Youtube videos, Web articles like blog posts, Handwritten notes, and more coming soon(Specify ALL). You can also understand, output, and work on Mathematical and Scientific notation, and code. You can also work in multiple languages. 
+   - Powered by Vector semantic search and openai's API's the user can ask questions about the documents you have ingested, and get relavant answers with citations linking to the source, inline.
+   - You stay updated with the latest and greatest APIs, with improvements made every week. 
+   - Mention how you are always willing to hear from its users, and that the founder loves to hear from them! Provide them with his personal email: madhav@makeitaifor.me so that they can reach out to him with feedback or feature suggestions.
+  Any time you are asked to do math or science, you should use the appropriate inline LaTeX formatting. ALWAYS Take a deep breath, and answer step by step, in a calm, professional, and formal manner.`);
 let LangChainService = exports.LangChainService = class LangChainService {
     constructor(mongoService) {
         this.mongoService = mongoService;
@@ -94,27 +110,61 @@ let LangChainService = exports.LangChainService = class LangChainService {
             return false;
         });
     }
+    getMaxContextSize(model) {
+        switch (model) {
+            case "gpt-4":
+                return 8192;
+            case "gpt-3.5-turbo":
+                return 4096;
+            default:
+                return 4096;
+        }
+    }
+    getTokenCount(message) {
+        return (0, gpt_3_encoder_1.encode)(message.content).length;
+    }
+    async fitToContextWindow(sys, prev, prompt, model) {
+        const maxContextSize = this.getMaxContextSize(model);
+        const sysTokens = this.getTokenCount(sys);
+        const promptTokens = this.getTokenCount(prompt);
+        const prevTokens = prev.reduce((acc, msg) => acc + this.getTokenCount(msg), 0);
+        const totalTokens = sysTokens + prevTokens + promptTokens;
+        const tokensToRemove = totalTokens - maxContextSize;
+        if (tokensToRemove <= 0) {
+            return prev;
+        }
+        else {
+            let tokensToRemove = totalTokens - maxContextSize;
+            const newPrev = [...prev];
+            const windowSize = maxContextSize - sysTokens - promptTokens;
+            while (tokensToRemove > 0) {
+                if (tokensToRemove < prevTokens) {
+                    const lastMessage = newPrev[newPrev.length - 1];
+                    const lastMessageTokens = this.getTokenCount(lastMessage);
+                    if (lastMessageTokens <= tokensToRemove) {
+                        newPrev.pop();
+                        tokensToRemove -= lastMessageTokens;
+                    }
+                    else {
+                        lastMessage.content = lastMessage.content.slice(0, lastMessage.content.length - tokensToRemove);
+                        tokensToRemove = 0;
+                    }
+                }
+            }
+            return newPrev;
+        }
+    }
     async generateText(prompt, user, versionId, previousConversation, callback) {
         console.log('Generating text for ' + JSON.stringify(user) + ' with prompt: ' + prompt);
         if (prompt === undefined)
             throw new Error('@lang-chain.service.ts: Parameter prompt is undefined');
         let fullText = '';
         let seq = 0;
-        await this.chat4.call([new schema_1.SystemMessage(`You are MakeItAiFor.Me, a documents processing AI chatbot, eager to help, and with a mildly enthusiastic attitude. You answer questions with zeal and very very rarely emojis in approprioate contexts. You NEVER comproimize on the quality and accuracy and professional, formal presentation of your answers.
-        You are able to ingest documents or collections of documents to generate useful insights. 
-        You can also answer questions about the documents you have ingested.
-        When asked to output any math, or physics or other scientific notation, you should use inline LaTeX formatting as such: $x^2$.
-        When asked to output any code, you should use inline code formatting as such: \`print("Hello World!")\`.
-        When asked to output any images, you should use inline markdown image formatting as such: ![alt text](https://placekitten.com/200/300).
-        When asked about the documents you have ingested, you should use inline markdown link formatting as such: [link text](https://www.google.com).
-        When asked to write a blog post or article or any such copywrite material, you should use the appropriate inline markdown link formatting.  
-        You can be used as a chatbot to talk to for information, however you will always first consider the provided documents and relevant context to answer the question. 
-        When asked what this app, called MakeItAiFor.Me (you) is good for, answer in third person, relay the following info and market it subtly(DO NOT USE A NUMBERED LIST, USE BULLETS). (also add a line diagram using "➡️" of the broad usecases and architecture of the app (That could be understood by a layman)):
-         - You can ingest many formats of documents, like Scientific PDFs, Youtube videos, Web articles like blog posts, Handwritten notes, and more coming soon(Specify ALL). You can also understand, output, and work on Mathematical and Scientific notation, and code. You can also work in multiple languages. 
-         - Powered by Vector semantic search and openai's API's the user can ask questions about the documents you have ingested, and get relavant answers with citations linking to the source, inline.
-         - You stay updated with the latest and greatest APIs, with improvements made every week. `),
-            ...previousConversation,
-            new schema_1.HumanMessage(prompt),], {
+        await this.chat4.call([
+            baseSystemMessage,
+            ...await this.fitToContextWindow(baseSystemMessage, previousConversation, new schema_1.HumanMessage(prompt), 'gpt-4'),
+            new schema_1.HumanMessage(prompt)
+        ], {
             callbacks: [{
                     handleLLMNewToken(token) {
                         callback(token, seq++);

@@ -16,10 +16,14 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("./jwt/jwt.guard");
 const jwt_service_1 = require("./jwt/jwt.service");
-const types_1 = require("../types");
+const chats_service_1 = require("../mongo/chats/chats.service");
+const users_service_1 = require("../mongo/users/users.service");
+const uuid_1 = require("uuid");
 let AuthController = exports.AuthController = class AuthController {
-    constructor(jwtService) {
+    constructor(jwtService, chatsService, usersService) {
         this.jwtService = jwtService;
+        this.chatsService = chatsService;
+        this.usersService = usersService;
     }
     getWebSocketToken(req) {
         const token = this.jwtService.generateWebSocketToken({
@@ -28,8 +32,20 @@ let AuthController = exports.AuthController = class AuthController {
         });
         return { token };
     }
-    getGuestToken(res) {
-        const token = this.jwtService.generateWebSocketToken(types_1.GuestUser);
+    async getGuestToken(res) {
+        const newChat = await this.chatsService.createNewChat();
+        const expiryDate = new Date(Date.now() + 12 * 60 * 60 * 1000);
+        const user = await this.usersService.createWithExpiry({
+            userId: (0, uuid_1.v4)(),
+            name: 'Guest',
+            role: 'guest',
+            provider: 'server',
+            email: 'guest@makeitaifor.me',
+            username: 'Guest',
+            chats: [newChat._id],
+        }, expiryDate);
+        console.log('Created guest user', user);
+        const token = this.jwtService.generateWebSocketToken(user);
         res.cookie('guest_token', token, {
             httpOnly: true,
             sameSite: 'lax',
@@ -51,10 +67,12 @@ __decorate([
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getGuestToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [jwt_service_1.JwtAuthService])
+    __metadata("design:paramtypes", [jwt_service_1.JwtAuthService,
+        chats_service_1.ChatsService,
+        users_service_1.UsersService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

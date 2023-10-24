@@ -1,11 +1,18 @@
 import { Controller, Get, UseGuards, Request, Res } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt/jwt.guard';
 import { JwtAuthService } from './jwt/jwt.service';
-import { GuestUser } from 'src/types';
+import { ChatsService } from 'src/mongo/chats/chats.service';
+import { UsersService } from 'src/mongo/users/users.service';
+import { v4 as uuidv4 } from 'uuid';
+import { User } from 'src/mongo/users/users.schema';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private jwtService: JwtAuthService) {}
+  constructor(
+    private jwtService: JwtAuthService,
+    private chatsService: ChatsService,
+    private usersService: UsersService,
+  ) {}
 
   @Get('ws-token')
   @UseGuards(JwtAuthGuard)
@@ -18,8 +25,23 @@ export class AuthController {
   }
 
   @Get('guest')
-  getGuestToken(@Res() res) {
-    const token = this.jwtService.generateWebSocketToken(GuestUser);
+  async getGuestToken(@Res() res) {
+    const newChat = await this.chatsService.createNewChat();
+    const expiryDate = new Date(Date.now() + 12 * 60 * 60 * 1000); // 12 hours from now
+    const user = await this.usersService.createWithExpiry(
+      {
+        userId: uuidv4(),
+        name: 'Guest',
+        role: 'guest',
+        provider: 'server',
+        email: 'guest@makeitaifor.me',
+        username: 'Guest',
+        chats: [newChat._id],
+      } as User,
+      expiryDate,
+    );
+    console.log('Created guest user', user);
+    const token = this.jwtService.generateWebSocketToken(user);
     res.cookie('guest_token', token, {
       httpOnly: true,
       sameSite: 'lax',

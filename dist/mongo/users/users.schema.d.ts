@@ -36,6 +36,7 @@ export declare class User extends Document {
     role: string;
     _id: Types.ObjectId;
     __v: number;
+    expiration: Date;
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, Document<unknown, any, User> & Omit<User & Required<{
     _id: Types.ObjectId;

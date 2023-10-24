@@ -22,6 +22,12 @@ let UsersService = exports.UsersService = class UsersService {
         this.userModel = userModel;
     }
     async create(user) {
+        user.expiration = null;
+        const createdUser = new this.userModel(user);
+        return createdUser.save();
+    }
+    async createWithExpiry(user, expiryDate) {
+        user.expiration = expiryDate;
         const createdUser = new this.userModel(user);
         return createdUser.save();
     }

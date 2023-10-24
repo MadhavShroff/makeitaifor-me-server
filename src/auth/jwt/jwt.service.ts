@@ -41,8 +41,7 @@ export class JwtAuthService {
       });
       return payload; // if verification succeeds, it returns the payload
     } catch (error) {
-      console.log('error', error);
-      throw new Error('Invalid token'); // if verification fails, it throws an error
+      throw new Error('Invalid JWT Token at jwt.service.ts > verifyToken'); // if verification fails, it throws an error
     }
   }
 }

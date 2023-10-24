@@ -46,8 +46,7 @@ let JwtAuthService = exports.JwtAuthService = class JwtAuthService {
             return payload;
         }
         catch (error) {
-            console.log('error', error);
-            throw new Error('Invalid token');
+            throw new Error('Invalid JWT Token at jwt.service.ts > verifyToken');
         }
     }
 };

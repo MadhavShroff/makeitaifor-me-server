@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Document, FilterQuery } from 'mongoose';
-import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './users.schema';
 
 @Injectable()
@@ -12,6 +11,13 @@ export class UsersService {
   ) {}
 
   async create(user: User): Promise<User> {
+    user.expiration = null;
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
+  }
+
+  async createWithExpiry(user: User, expiryDate: Date): Promise<User> {
+    user.expiration = expiryDate;
     const createdUser = new this.userModel(user);
     return createdUser.save();
   }

@@ -13,7 +13,7 @@ export type JwtPayload = {
   role: string;
 };
 
-export type Provider = 'google' | 'cognito';
+export type Provider = 'google' | 'cognito' | 'server';
 
 export const GuestId = '915b7cd5-08c1-45c2-9709-7585af332ee4';
 
