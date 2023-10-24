@@ -1,12 +1,10 @@
 import { ChatsService } from './chats.service';
 import { Types } from 'mongoose';
 import { UsersService } from '../users/users.service';
-import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 export declare class ChatsController {
     private chatsService;
     private usersService;
-    private jwtAuthService;
-    constructor(chatsService: ChatsService, usersService: UsersService, jwtAuthService: JwtAuthService);
+    constructor(chatsService: ChatsService, usersService: UsersService);
     getChatsMetadata(req: any, userId: string): Promise<import("../users/users.schema").User>;
     getMessagesData(req: any): Promise<import("./chat.schema").Message[]>;
     createNewChat(req: any): Promise<Types.ObjectId[]>;

@@ -11,7 +11,6 @@ export class ChatsController {
   constructor(
     private chatsService: ChatsService,
     private usersService: UsersService,
-    private jwtAuthService: JwtAuthService,
   ) {}
 
   // TODO: Remove param userId, instead use req.user

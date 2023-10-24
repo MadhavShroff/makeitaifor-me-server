@@ -17,12 +17,10 @@ const common_1 = require("@nestjs/common");
 const jwt_guard_1 = require("../../auth/jwt/jwt.guard");
 const chats_service_1 = require("./chats.service");
 const users_service_1 = require("../users/users.service");
-const jwt_service_1 = require("../../auth/jwt/jwt.service");
 let ChatsController = exports.ChatsController = class ChatsController {
-    constructor(chatsService, usersService, jwtAuthService) {
+    constructor(chatsService, usersService) {
         this.chatsService = chatsService;
         this.usersService = usersService;
-        this.jwtAuthService = jwtAuthService;
     }
     async getChatsMetadata(req, userId) {
         console.log('userId @ getChatsMetadata', userId);
@@ -99,7 +97,6 @@ __decorate([
 exports.ChatsController = ChatsController = __decorate([
     (0, common_1.Controller)('chats'),
     __metadata("design:paramtypes", [chats_service_1.ChatsService,
-        users_service_1.UsersService,
-        jwt_service_1.JwtAuthService])
+        users_service_1.UsersService])
 ], ChatsController);
 //# sourceMappingURL=chats.controller.js.map

@@ -19,8 +19,6 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
         this.jwtAuthService = jwtAuthService;
     }
     async canActivate(context) {
-        console.log('JwtAuthGuard canActivate called');
-        console.log('jwtAuthService is:', this.jwtAuthService);
         try {
             const superResult = await super.canActivate(context);
             if (superResult) {
