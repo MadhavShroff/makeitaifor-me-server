@@ -17,7 +17,7 @@ export class CognitoController {
   @UseGuards(CognitoOauthGuard)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async cognitoAuth(@Req() _req) {
-    // Guard redirects
+    // Guard redirects to hosted aws cognito login page
   }
 
   @Get('/me')
