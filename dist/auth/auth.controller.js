@@ -35,12 +35,13 @@ let AuthController = exports.AuthController = class AuthController {
     async getGuestToken(res) {
         const newChat = await this.chatsService.createNewChat();
         const expiryDate = new Date(Date.now() + 12 * 60 * 60 * 1000);
+        const userId = (0, uuid_1.v4)();
         const user = await this.usersService.createWithExpiry({
-            userId: (0, uuid_1.v4)(),
+            userId: userId,
             name: 'Guest',
             role: 'guest',
             provider: 'server',
-            email: 'guest@makeitaifor.me',
+            email: `guest-${userId}@makeitaifor.me`,
             username: 'Guest',
             chats: [newChat._id],
         }, expiryDate);
