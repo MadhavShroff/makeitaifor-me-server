@@ -23,6 +23,7 @@ export class CognitoController {
   @Get('/me')
   @UseGuards(JwtAuthGuard)
   async cognitoAuthMe(@Req() req: Request) {
+    console.log('at /me: req.user is ', req.user);
     return req.user;
   }
 

@@ -26,6 +26,7 @@ let CognitoController = exports.CognitoController = class CognitoController {
     async cognitoAuth(_req) {
     }
     async cognitoAuthMe(req) {
+        console.log('at /me: req.user is ', req.user);
         return req.user;
     }
     async cognitoAuthRedirect(req, res) {
