@@ -10,6 +10,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('JwtAuthGuard canActivate called');
+    console.log('jwtAuthService is:', this.jwtAuthService);
     // Try normal JWT authentication first
     try {
       const superResult = await super.canActivate(context);
