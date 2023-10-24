@@ -16,6 +16,7 @@ export class ChatsController {
   @Get('/getChatsMetadata/:userId')
   @UseGuards(JwtAuthGuard)
   async getChatsMetadata(@Req() req, @Param('userId') userId: string) {
+    console.log('userId @ getChatsMetadata', userId);
     const populatedUser = await this.chatsService.getChatsMetadata(userId);
     return populatedUser;
   }

@@ -23,6 +23,7 @@ let ChatsController = exports.ChatsController = class ChatsController {
         this.usersService = usersService;
     }
     async getChatsMetadata(req, userId) {
+        console.log('userId @ getChatsMetadata', userId);
         const populatedUser = await this.chatsService.getChatsMetadata(userId);
         return populatedUser;
     }
