@@ -4,12 +4,14 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { ChatsService } from './chats.service';
 import { Types } from 'mongoose';
 import { UsersService } from '../users/users.service';
+import { JwtAuthService } from 'src/auth/jwt/jwt.service';
 
 @Controller('chats')
 export class ChatsController {
   constructor(
     private chatsService: ChatsService,
     private usersService: UsersService,
+    private jwtAuthService: JwtAuthService,
   ) {}
 
   // TODO: Remove param userId, instead use req.user

@@ -13,6 +13,7 @@ import { ChatsResolver } from './chats.resolver';
 import { User, UserSchema } from '../users/users.schema';
 import { ChatsController } from './chats.controller';
 import { UsersModule } from '../users/users.module';
+import { JwtModule } from 'src/auth/jwt/jwt.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsersModule } from '../users/users.module';
     ]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UsersModule,
+    JwtModule,
   ],
   providers: [ChatsService, ChatsResolver],
   exports: [ChatsService],
