@@ -40,6 +40,7 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
             }
         }
         catch (error) {
+            console.log('guest token verification failed:', error.message);
             throw new common_1.UnauthorizedException('Invalid token, authentication faile');
         }
         return false;

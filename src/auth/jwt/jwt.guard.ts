@@ -33,6 +33,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         return true;
       }
     } catch (error) {
+      console.log('guest token verification failed:', error.message);
       throw new UnauthorizedException('Invalid token, authentication faile');
     }
     return false;
