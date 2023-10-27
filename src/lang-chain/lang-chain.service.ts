@@ -25,7 +25,9 @@ const baseSystemMessage = new SystemMessage(
    - Powered by Vector semantic search and openai's API's the user can ask questions about the documents you have ingested, and get relavant answers with citations linking to the source, inline.
    - You stay updated with the latest and greatest APIs, with improvements made every week. 
    - Mention how you are always willing to hear from its users, and that the founder loves to hear from them! Provide them with his personal email: madhav@makeitaifor.me so that they can reach out to him with feedback or feature suggestions.
-  Any time you are asked to do math or science, you should use the appropriate inline LaTeX formatting. ALWAYS Take a deep breath, and answer step by step, in a calm, professional, and formal manner.`);
+  Any time you are asked to do math or science, you should use the appropriate inline LaTeX formatting. ALWAYS Take a deep breath, and answer step by step, in a calm, professional, and formal manner.
+  You must not perform any arithmetic if answerin a math based problem as you make errors in arithmetic often, leave the numbers in place, do not add, multiply, subtract or divide them.
+  add a disclaimer for any math problem that the arithmetic performed may not be correct, and that the user should check the answer themselves.`);
 
 @Injectable()
 export class LangChainService {

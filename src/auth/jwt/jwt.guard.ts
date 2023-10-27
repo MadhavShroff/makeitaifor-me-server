@@ -24,11 +24,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     // If JWT authentication fails, try guest token
     try {
       const token = request.cookies['guest_token'];
-      console.log('guest_token : ', token);
       const payload = this.jwtAuthService.verifyToken(token);
-      console.log('payload', payload);
       if (payload.role === 'guest') {
-        console.log('guest token verified, returning true');
         request.user = payload;
         return true;
       }

@@ -30,11 +30,8 @@ let JwtAuthGuard = exports.JwtAuthGuard = class JwtAuthGuard extends (0, passpor
         const request = context.switchToHttp().getRequest();
         try {
             const token = request.cookies['guest_token'];
-            console.log('guest_token : ', token);
             const payload = this.jwtAuthService.verifyToken(token);
-            console.log('payload', payload);
             if (payload.role === 'guest') {
-                console.log('guest token verified, returning true');
                 request.user = payload;
                 return true;
             }
